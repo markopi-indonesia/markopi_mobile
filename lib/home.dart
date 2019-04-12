@@ -57,15 +57,15 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AspectRatio(
-                          aspectRatio: 12.0 / 11.0,
-                          child: Image.asset('assets/diamond.png'),
+                          aspectRatio: 13.0 / 11.0,
+                          child: Image.asset('assets/pembibitan.jpeg', fit: BoxFit.cover),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Pembibitan'),
+                              Text('Pembibitan', style: TextStyle(fontWeight: FontWeight.w900)),
                             ],
                           ),
                         ),
@@ -78,15 +78,15 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AspectRatio(
-                          aspectRatio: 12.0 / 11.0,
-                          child: Image.asset('assets/diamond.png'),
+                          aspectRatio: 13.0 / 11.0,
+                          child: Image.asset('assets/pola_tanam.jpeg', fit: BoxFit.cover),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Pola Tanam'),
+                              Text('Pola Tanam', style: TextStyle(fontWeight: FontWeight.w900)),
                             ],
                           ),
                         ),
@@ -99,15 +99,15 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AspectRatio(
-                          aspectRatio: 12.0 / 11.0,
-                          child: Image.asset('assets/diamond.png'),
+                          aspectRatio: 13.0 / 11.0,
+                          child: Image.asset('assets/pohon_pelindung.jpeg', fit: BoxFit.cover),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Pohon Pelindung'),
+                              Text('Pohon Pelindung', style: TextStyle(fontWeight: FontWeight.w900)),
                             ],
                           ),
                         ),
@@ -120,15 +120,15 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AspectRatio(
-                          aspectRatio: 12.0 / 11.0,
-                          child: Image.asset('assets/diamond.png'),
+                          aspectRatio: 13.0 / 11.0,
+                          child: Image.asset('assets/pemupukan_kopi.jpg', fit: BoxFit.cover),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Pemupukan'),
+                              Text('Pemupukan', style: TextStyle(fontWeight: FontWeight.w900)),
                             ],
                           ),
                         ),
