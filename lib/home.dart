@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 60.0),
+        padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.only(top: 22.0),
                 childAspectRatio: 8.0 / 10.0, //size card
                 children: <Widget>[
                   Card(
