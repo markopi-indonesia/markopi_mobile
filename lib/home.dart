@@ -51,90 +51,94 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 22.0),
                 childAspectRatio: 8.0 / 10.0, //size card
                 children: <Widget>[
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: 13.0 / 11.0,
-                          child: Image.asset('assets/pembibitan.jpeg', fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Pembibitan', style: TextStyle(fontWeight: FontWeight.w900)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: 13.0 / 11.0,
-                          child: Image.asset('assets/pola_tanam.jpeg', fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Pola Tanam', style: TextStyle(fontWeight: FontWeight.w900)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: 13.0 / 11.0,
-                          child: Image.asset('assets/pohon_pelindung.jpeg', fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Pohon Pelindung', style: TextStyle(fontWeight: FontWeight.w900)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: 13.0 / 11.0,
-                          child: Image.asset('assets/pemupukan_kopi.jpg', fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Pemupukan', style: TextStyle(fontWeight: FontWeight.w900)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+//                  Card(
+//                    clipBehavior: Clip.antiAlias,
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        AspectRatio(
+//                          aspectRatio: 13.0 / 11.0,
+//                          child: Image.asset('assets/pembibitan.jpeg', fit: BoxFit.cover),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
+//                          child: Column(
+//                            crossAxisAlignment: CrossAxisAlignment.start,
+//                            children: <Widget>[
+//                              Text('Pembibitan', style: TextStyle(fontWeight: FontWeight.w900)),
+//                            ],
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                  Card(
+//                    clipBehavior: Clip.antiAlias,
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        AspectRatio(
+//                          aspectRatio: 13.0 / 11.0,
+//                          child: Image.asset('assets/pola_tanam.jpeg', fit: BoxFit.cover),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
+//                          child: Column(
+//                            crossAxisAlignment: CrossAxisAlignment.start,
+//                            children: <Widget>[
+//                              Text('Pola Tanam', style: TextStyle(fontWeight: FontWeight.w900)),
+//                            ],
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                  Card(
+//                    clipBehavior: Clip.antiAlias,
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        AspectRatio(
+//                          aspectRatio: 13.0 / 11.0,
+//                          child: Image.asset('assets/pohon_pelindung.jpeg', fit: BoxFit.cover),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
+//                          child: Column(
+//                            crossAxisAlignment: CrossAxisAlignment.start,
+//                            children: <Widget>[
+//                              Text('Pohon Pelindung', style: TextStyle(fontWeight: FontWeight.w900)),
+//                            ],
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                  Card(
+//                    clipBehavior: Clip.antiAlias,
+//                    child: Column(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        AspectRatio(
+//                          aspectRatio: 13.0 / 11.0,
+//                          child: Image.asset('assets/pemupukan_kopi.jpg', fit: BoxFit.cover),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
+//                          child: Column(
+//                            crossAxisAlignment: CrossAxisAlignment.start,
+//                            children: <Widget>[
+//                              Text('Pemupukan', style: TextStyle(fontWeight: FontWeight.w900)),
+//                            ],
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+                  new CardMenu(name: 'Pembibitan', image: Image.asset('assets/pembibitan.jpeg', fit: BoxFit.cover)),
+                  new CardMenu(name: 'Pola Tanam', image: Image.asset('assets/pola_tanam.jpeg', fit: BoxFit.cover)),
+                  new CardMenu(name: 'Pohon Pelindung', image: Image.asset('assets/pohon_pelindung.jpeg', fit: BoxFit.cover)),
+                  new CardMenu(name: 'Pemupukan', image: Image.asset('assets/pemupukan_kopi.jpg', fit: BoxFit.cover)),
                 ],
               ),
             ),
@@ -143,4 +147,38 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class CardMenu extends StatelessWidget{
+
+  CardMenu({this.name, this.image});
+
+  final String name;
+  final Image image;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          AspectRatio(
+            aspectRatio: 13.0 / 11.0,
+            child: this.image,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(this.name, style: TextStyle(fontWeight: FontWeight.w900)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
