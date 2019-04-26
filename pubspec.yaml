@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  responsive_container:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,10 +47,12 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/diamond.png
-    - assets/pembibitan.jpeg
+    - assets/hama_penyakit.jpeg
+    - assets/pemangkasan.jpeg
     - assets/pemupukan_kopi.jpg
     - assets/pohon_pelindung.jpeg
     - assets/pola_tanam.jpeg
+    - assets/sanitasi.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
