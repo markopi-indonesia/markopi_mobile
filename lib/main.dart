@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Markopi',
+      debugShowCheckedModeBanner:false,
       theme: _markopiTheme,
       home: HomePage(),
     );
