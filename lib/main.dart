@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'colors.dart';
+//import 'package:markopi_mobile/ui/menu/home.dart';
+import 'package:markopi_mobile/ui/menu/submenu.dart';
+import 'package:markopi_mobile/ui/color/colors.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Markopi',
       theme: _markopiTheme,
-      home: HomePage(),
+      home: SubMenu(),
     );
   }
 }
