@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+//Self import
+import 'package:markopi_mobile/pages/authentication/login.dart';
+import 'package:markopi_mobile/pages/authentication/register.dart';
+import 'package:markopi_mobile/home.dart';
 class DrawerPage extends StatefulWidget {
   @override
   _DrawerPageState createState() => _DrawerPageState();
@@ -29,7 +33,13 @@ class _DrawerPageState extends State<DrawerPage> {
 
 //            body
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+            },
             child: ListTile(
               title: Text('Beranda'),
               leading: Icon(Icons.home),
@@ -37,7 +47,13 @@ class _DrawerPageState extends State<DrawerPage> {
           ),
 
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Login()),
+            );
+            },
             child: ListTile(
               title: Text('Masuk'),
               leading: Icon(Icons.person),
@@ -45,7 +61,13 @@ class _DrawerPageState extends State<DrawerPage> {
           ),
 
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Register()),
+            );
+            },
             child: ListTile(
               title: Text('Daftar'),
               leading: Icon(Icons.person_add),

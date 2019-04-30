@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "60427625294",
+    "firebase_url": "https://markopi.firebaseio.com",
+    "project_id": "markopi",
+    "storage_bucket": "markopi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60427625294:android:ac78b83f237103bf",
+        "android_client_info": {
+          "package_name": "com.example.markopi_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60427625294-jvffflku8co30h1geoef6b8g8ih4a8d5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDArloCfO8Il41k1gE0Drl4cbYoLJswjo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60427625294-jvffflku8co30h1geoef6b8g8ih4a8d5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
