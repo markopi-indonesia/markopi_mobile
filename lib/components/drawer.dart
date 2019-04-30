@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 //Self import
 import 'package:markopi_mobile/pages/authentication/login.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
-import 'package:markopi_mobile/home.dart';
+import 'package:markopi_mobile/ui/menu/home.dart';
 class DrawerPage extends StatefulWidget {
   @override
   _DrawerPageState createState() => _DrawerPageState();

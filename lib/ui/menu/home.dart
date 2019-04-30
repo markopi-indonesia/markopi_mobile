@@ -1,36 +1,16 @@
 import 'package:flutter/material.dart';
 import 'submenu.dart';
 
+// Self import
+import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/components/drawer.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Markopi'),
-        leading: IconButton(
-            icon: Icon(Icons.menu, semanticLabel: 'menu'),
-            onPressed: () {
-              print('Menu button');
-            }),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search, semanticLabel: 'search'),
-            onPressed: () {
-              print('Search button');
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-              semanticLabel: 'more',
-            ),
-            onPressed: () {
-              print('More button');
-            },
-          ),
-        ],
-      ),
+      appBar: Header(),
+      drawer: DrawerPage(),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
         child: Column(
