@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:markopi_mobile/ui/menu/home.dart';
-import 'package:markopi_mobile/ui/menu/submenu.dart';
+import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
 
 void main() => runApp(MyApp());
@@ -10,9 +9,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Markopi',
       theme: _markopiTheme,
-      home: SubMenu(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+      },
     );
   }
 }
