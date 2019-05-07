@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'submenu.dart';
+import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 // Self import
 import 'package:markopi_mobile/components/header.dart';

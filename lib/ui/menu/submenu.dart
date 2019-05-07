@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markopi_mobile/ui/menu/detail.dart';
 
 class SubMenu extends StatelessWidget {
 
@@ -38,7 +39,7 @@ class SubMenu extends StatelessWidget {
       body: Row(
         children: <Widget>[
           Flexible(
-              flex: 3,
+                flex: 3,
               child: Container(
                 child: Center(
                   child: new FractionallySizedBox(
@@ -114,7 +115,12 @@ class SubMenuButton extends StatelessWidget {
             color: Colors.white,
             splashColor: Colors.blueGrey,
             onPressed: () {
-              // Perform some action
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailMenu()
+                  )
+              );
             },
           )
         )
