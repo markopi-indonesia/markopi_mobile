@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
+import 'package:markopi_mobile/pages/authentication/register.dart';
+import 'package:markopi_mobile/pages/authentication/login.dart';
+import 'package:markopi_mobile/pages/crud_kategori/index.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +18,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
+        '/register': (context) => Register(),
+        '/login': (context) => Login(),
+        '/category': (context) => Category(),
       },
     );
   }
