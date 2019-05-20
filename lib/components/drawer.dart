@@ -165,6 +165,17 @@ class _DrawerPageState extends State<DrawerPage> {
 
               InkWell(
                 onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushNamed("/informasi");
+                },
+                child: ListTile(
+                  title: Text('Informasiku'),
+                  leading: Icon(Icons.info),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
                   this._signOut();
                   Navigator.pop(context);
                   Navigator.of(context).pushNamed("/");

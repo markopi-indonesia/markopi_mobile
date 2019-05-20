@@ -35,141 +35,81 @@ class _CategoryState extends State<Category> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      // stream: CategoryController.categoryStream,
-      // builder: (context, snapshot) {
-      //   if (!snapshot.hasData) {
-      //     print("gak ada data");
-      //     // return LinearProgressIndicator();
-      //   }
-      //   else{
-      //     print("ada data");
-      //   }
-        // if (snapshot.data.documents.length > 0) {
-        //   return SingleChildScrollView(
-        //     physics: BouncingScrollPhysics(),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: <Widget>[
-        //         Padding(
-        //           padding: const EdgeInsets.only(
-        //               left: 16, right: 16, top: 16, bottom: 8),
-        //           child: Text(
-        //             "Categories List",
-        //             style: TextStyle(
-        //               fontWeight: FontWeight.bold,
-        //               fontSize: 36,
-        //             ),
-        //           ),
-        //         ),
-        //         Padding(
-        //           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        //           child: Text(
-        //             "${snapshot.data.documents.length.toString()} Categories",
-        //             style: TextStyle(fontSize: 16),
-        //           ),
-        //         ),
-        //         _buildCategoryList(context, snapshot.data.documents),
-        //       ],
-        //     ),
-        //   );
-        // } else {
-        //   return Center(
-        //     child: Text(
-        //       "Tidak ada daftar kategori.",
-        //       style: Theme.of(context).textTheme.title,
-        //     ),
-        //   );
-        // }
-      // },
+      stream: Firestore.instance.collection('category').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _buildList(context, snapshot.data.documents);
+      },
     );
   }
 
-  Widget _buildCategoryList(
-      BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
-      shrinkWrap: true,
+      // shrinkWrap: true,
       padding: const EdgeInsets.only(top: 20.0),
-      children:
-          snapshot.map((data) => _buildCategoryItem(context, data)).toList(),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
-  Widget _buildCategoryItem(BuildContext context, DocumentSnapshot data) {
-    final Category = CategoryModel.fromSnapshot(data);
-    return Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+    final category = CategoryModel.fromSnapshot(data);
+
+    return Padding(
+      key: ValueKey(category.name),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        color: Colors.white,
-        child: ListTile(
-          title: Text(Category.name),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        child: Slidable(
+          key: ValueKey(category.name),
+          actionPane: SlidableScrollActionPane(),
+          secondaryActions: <Widget>[
+            IconSlideAction(
+              caption: 'Edit',
+              color: Colors.blue,
+              icon: Icons.edit,
+              onTap: () => _updateData(context, data.documentID, category.name),
+              // closeOnTap: false,
+            ),
+            IconSlideAction(
+              caption: 'Hapus',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () => _buildConfirmationDialog(context, data.documentID),
+            ),
+          ],
+          dismissal: SlidableDismissal(
+            child: SlidableDrawerDismissal(),
+            onWillDismiss: (actionType) {
+              return showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Delete'),
+                    content: Text('Item will be deleted'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Cancel'),
+                        onPressed: () => Navigator.of(context).pop(false),
+                      ),
+                      FlatButton(
+                        child: Text('Ok'),
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+          child: ListTile(
+            title: Text(category.name),
+          ),
         ),
       ),
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: Colors.blue,
-          icon: Icons.edit,
-          onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddCategoryDialog(
-                        docId: data.documentID,
-                        name: Category.name,
-                      ),
-                  fullscreenDialog: true,
-                ),
-              ),
-          closeOnTap: false,
-        ),
-        IconSlideAction(
-          caption: 'Delete',
-          closeOnTap: false,
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: () => _buildConfirmationDialog(context, data.documentID),
-        ),
-      ],
     );
-    // return Card(
-    //   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    //   child: Slidable.builder(
-    //     secondaryActionDelegate: new SlideActionBuilderDelegate(
-    //         actionCount: 2,
-    //         builder: (context, index, animation, renderingMode) {
-    //           if (index == 0) {
-    //             return new IconSlideAction(
-    //               caption: 'Edit',
-    //               color: Colors.blue,
-    //               icon: Icons.edit,
-    //               onTap: () => Navigator.of(context).push(
-    //                     MaterialPageRoute(
-    //                       builder: (context) => AddCategoryDialog(
-    //                             docId: data.documentID,
-    //                             name: Category.name,
-    //                           ),
-    //                       fullscreenDialog: true,
-    //                     ),
-    //                   ),
-    //               closeOnTap: false,
-    //             );
-    //           } else {
-    //             return new IconSlideAction(
-    //               caption: 'Delete',
-    //               closeOnTap: false,
-    //               color: Colors.red,
-    //               icon: Icons.delete,
-    //               onTap: () =>
-    //                   _buildConfirmationDialog(context, data.documentID),
-    //             );
-    //           }
-    //         }),
-    //     key: Key(Category.name),
-    //     child: ListTile(
-    //       title: Text(Category.name),
-    //       onTap: () => print(Category),
-    //     ),
-    //   ),
-    // );
   }
 
   Future<bool> _buildConfirmationDialog(
@@ -178,15 +118,15 @@ class _CategoryState extends State<Category> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete'),
-          content: Text('Category will be deleted'),
+          title: Text('Hapus'),
+          content: Text('Anda yakin ingin menghapus kategori?'),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel'),
+              child: Text('Batal'),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             FlatButton(
-                child: Text('Delete'),
+                child: Text('Hapus'),
                 onPressed: () {
                   CategoryController.removeCategory(documentID);
                   Navigator.of(context).pop(true);
@@ -204,5 +144,23 @@ class _CategoryState extends State<Category> {
         fullscreenDialog: true,
       ),
     );
+  }
+
+  void _updateData(BuildContext context, String documentID, String _name) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddCategoryDialog(
+              docId: documentID,
+              name: _name,
+            ),
+        fullscreenDialog: true,
+      ),
+    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => AddCategoryDialog(),
+    //     fullscreenDialog: true,
+    //   ),
+    // );
   }
 }
