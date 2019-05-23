@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/informasi_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +22,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
+  String ownerRole = "";
 
   bool _isIos;
   bool _isLoading;
@@ -53,15 +53,22 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     });
     if (_validateAndSave()) {
       try {
+        Firestore.instance
+            .collection('profile')
+            .where("userID", isEqualTo: userID)
+            .snapshots()
+            .listen((data) => data.documents.forEach((doc) => setState(() {
+                  ownerRole = doc["role"];
+                  print(ownerRole);
+                  InformasiController.addInformasi(
+                      title, categoryID, deskripsi, userID, ownerRole);
+                })));
+        // InformasiController.addInformasi(
+        //     title, categoryID, deskripsi, userID, ownerRole);
         setState(() {
           _isLoading = false;
         });
-        InformasiController.addInformasi(title, categoryID, deskripsi, userID);
         Navigator.pop(context);
-        // print("masuk");
-        // print(title);
-        // print(categoryID);
-        // print(userID);
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -73,7 +80,6 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
         });
       }
     } else {
-      print("tidak masuk");
       setState(() {
         _isLoading = false;
       });
@@ -155,8 +161,6 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                                   value: _mySelection,
                                   onChanged: (String newValue) {
                                     state.didChange(newValue);
-                                    print("Category ID = ");
-                                    print(_mySelection);
                                     setState(() {
                                       _mySelection = newValue;
                                     });
@@ -174,7 +178,6 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                             );
                           },
                           validator: (_mySelection) {
-                            print(_mySelection);
                             if (_mySelection == null) {
                               return "Kategori tidak boleh kosong";
                             }

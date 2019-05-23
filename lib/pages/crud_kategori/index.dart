@@ -156,11 +156,5 @@ class _CategoryState extends State<Category> {
         fullscreenDialog: true,
       ),
     );
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => AddCategoryDialog(),
-    //     fullscreenDialog: true,
-    //   ),
-    // );
   }
 }

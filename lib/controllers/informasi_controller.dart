@@ -7,13 +7,14 @@ class InformasiController {
   static CollectionReference reference =
       Firestore.instance.collection('informasi');
 
-  static addInformasi(String title, String categoryID, String deskripsi, String userID) {
+  static addInformasi(String title, String categoryID, String deskripsi, String userID, String ownerRole) {
     Firestore.instance.runTransaction((Transaction transaction) async {
       await reference.add({
         "title": title,
         "categoryID": categoryID,
         "deskripsi": deskripsi,
         "userID": userID,
+        "ownerRole": ownerRole,
       });
     });
   }
