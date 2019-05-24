@@ -13,17 +13,42 @@ import 'package:markopi_mobile/resources/repository.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:flutter/services.dart';
 
-class AddInformasiDialog extends StatefulWidget {
+class EditInformasiDialog extends StatefulWidget {
+  final String documentID;
+  final String categoryID;
+  final String cover;
+  final String deskripsi;
+  final String images;
+  final String ownerRole;
+  final String title;
+  final String userID;
+  final String video;
+
+  EditInformasiDialog(
+      {this.documentID,
+      this.categoryID,
+      this.cover,
+      this.deskripsi,
+      this.images,
+      this.ownerRole,
+      this.title,
+      this.userID,
+      this.video});
   @override
-  _AddInformasiDialogState createState() => _AddInformasiDialogState();
+  _EditInformasiDialogState createState() => _EditInformasiDialogState();
 }
 
-class _AddInformasiDialogState extends State<AddInformasiDialog> {
+class _EditInformasiDialogState extends State<EditInformasiDialog> {
   var _repository = Repository();
   final _formAddCategoryKey = GlobalKey<FormState>();
-  String title;
   String categoryID;
+  String cover;
   String deskripsi;
+  String images;
+  String ownerRole;
+  String title;
+  String userID;
+  String video;
   String _mySelection;
   String _errorMessage;
   String _photoUrl;
@@ -33,8 +58,6 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
-  String userID = "";
-  String ownerRole = "";
   StorageReference _storageReference;
 
   bool _isIos;
@@ -64,11 +87,11 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   List<File> _imageList = [];
   File _image;
   String urls = "";
-  List<Asset> images = List<Asset>();
+  List<Asset> image = List<Asset>();
 
   Future<void> loadAssets() async {
     setState(() {
-      images = List<Asset>();
+      image = List<Asset>();
     });
 
     List<Asset> resultList;
@@ -88,7 +111,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     if (!mounted) return;
 
     setState(() {
-      images = resultList;
+      image = resultList;
       if (error == null) _error = 'No Error Dectected';
     });
   }
@@ -122,15 +145,8 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     });
     if (_validateAndSave()) {
       try {
-        Firestore.instance
-            .collection('profile')
-            .where("userID", isEqualTo: userID)
-            .snapshots()
-            .listen((data) => data.documents.forEach((doc) => setState(() {
-                  ownerRole = doc["role"];
-                  print(ownerRole);
-                  addInformasi();
-                })));
+        updateInformasi();
+
         setState(() {
           _isLoading = false;
         });
@@ -152,49 +168,72 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     }
   }
 
-  void addInformasi() async {
-    final docRef = await Firestore.instance.collection('informasi').add({
-      'title': title,
-      'deskripsi': deskripsi,
-      "categoryID": categoryID,
-      'userID': userID,
-      'ownerRole': ownerRole,
-      'cover': '',
-      'images': '',
-      'video': ''
-    });
-    print(docRef.documentID);
-    _repository.uploadImageToStorage(imageFile).then((url) {
-      _repository.addPhoto(url, docRef.documentID).then((v) {});
-    });
-    images.forEach((f) {
-      _repository.saveImage(f).then((url) {
-        if(urls.isEmpty){
-          urls = url;  
-        }else{
-          urls = urls + ";" + url;
-        }
-        print(urls);
-        print("masuk");
-        _repository.addImage(urls, docRef.documentID).then((v) {});
+  void updateInformasi() async {
+    // final docRef = await Firestore.instance.collection('informasi').add({
+    //   'title': title,
+    //   'deskripsi': deskripsi,
+    //   "categoryID": categoryID,
+    //   'userID': userID,
+    //   'ownerRole': ownerRole,
+    //   'cover': '',
+    //   'images': '',
+    //   'video': ''
+    // });
+    CollectionReference reference = Firestore.instance.collection('informasi');
+    Firestore.instance.runTransaction((Transaction transaction) async {
+      await reference.document(widget.documentID).updateData({
+        'title': title,
+        'deskripsi': deskripsi,
+        "categoryID": categoryID,
+        'userID': userID,
+        'ownerRole': ownerRole,
+        'cover': cover,
+        'images': images,
+        'video': video,
+      }).catchError((error) {
+        print(error);
       });
     });
-    _repository.uploadVideoToStorage(videoFile).then((url) {
-      _repository.addVideo(url, docRef.documentID).then((v) {});
-    });
+    if (imageFile != null) {
+      _repository.uploadImageToStorage(imageFile).then((url) {
+        _repository.addPhoto(url, widget.documentID).then((v) {});
+      });
+    }
+    if (image != null) {
+      image.forEach((f) {
+        _repository.saveImage(f).then((url) {
+          if (urls.isEmpty) {
+            urls = url;
+          } else {
+            urls = urls + ";" + url;
+          }
+          print(urls);
+          print("masuk");
+          _repository.addImage(urls, widget.documentID).then((v) {});
+        });
+      });
+    }
+    if (videoFile != null) {
+      _repository.uploadVideoToStorage(videoFile).then((url) {
+        _repository.addVideo(url, widget.documentID).then((v) {});
+      });
+    }
   }
 
   @override
   void initState() {
     _errorMessage = "";
     _isLoading = false;
-    this.getCurrentUser().then((user) {
-      setState(() {
-        if (user != null) {
-          currentUser = user;
-          userID = user?.uid;
-        }
-      });
+
+    setState(() {
+      categoryID = widget.categoryID;
+      cover = widget.cover;
+      deskripsi = widget.deskripsi;
+      images = widget.images;
+      ownerRole = widget.ownerRole;
+      title = widget.title;
+      userID = widget.userID;
+      video = widget.video;
     });
     super.initState();
   }
@@ -237,6 +276,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(20.0))),
+                          initialValue: widget.title,
                           validator: (value) =>
                               value.isEmpty ? 'Judul tidak boleh kosong' : null,
                           onSaved: (value) => title = value,
@@ -285,6 +325,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                               ),
                             );
                           },
+                          initialValue: widget.categoryID,
                           validator: (_mySelection) {
                             if (_mySelection == null) {
                               return "Kategori tidak boleh kosong";
@@ -301,6 +342,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(20.0))),
+                          initialValue: widget.deskripsi,
                           validator: (value) => value.isEmpty
                               ? 'Deskripsi tidak boleh kosong'
                               : null,
