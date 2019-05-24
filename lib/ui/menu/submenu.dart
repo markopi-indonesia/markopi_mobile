@@ -5,9 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
-import 'package:markopi_mobile/pages/crud_informasi/add.dart';
 import 'package:markopi_mobile/models/informasi.dart';
-import 'package:markopi_mobile/pages/crud_informasi/detail.dart';
+import 'package:markopi_mobile/ui/menu/detail.dart';
 
 class SubMenu extends StatefulWidget {
   final String title;
@@ -30,14 +29,7 @@ class SubMenuState extends State<SubMenu> {
     return Scaffold(
         appBar: Header(),
         drawer: DrawerPage(),
-        body: PageView(
-          children: <Widget>[
-            Text("test"),
-            
-            // new Padding(padding: new EdgeInsets.only(top: 100.0)),
-            _buildBody(context),
-          ],
-        )
+        body: _buildBody(context),
 
 //       body: Row(
 //         children: <Widget>[
@@ -133,18 +125,48 @@ class SubMenuState extends State<SubMenu> {
             backgroundImage: NetworkImage(informasi.cover),
           ),
           title: new Text(informasi.title),
-          // onTap: () => _detail(
-          //     context,
-          //     data.documentID,
-          //     informasi.categoryID,
-          //     informasi.cover,
-          //     informasi.deskripsi,
-          //     informasi.images,
-          //     informasi.ownerRole,
-          //     informasi.title,
-          //     informasi.userID,
-          //     informasi.video),
+          onTap: () => _detail(
+              context,
+              data.documentID,
+              informasi.categoryID,
+              informasi.cover,
+              informasi.deskripsi,
+              informasi.images,
+              informasi.ownerRole,
+              informasi.title,
+              informasi.userID,
+              informasi.video),
         ),
+      ),
+    );
+  }
+
+  void _detail(
+    BuildContext context,
+    String documentID,
+    String categoryID,
+    String cover,
+    String deskripsi,
+    String images,
+    String ownerRole,
+    String title,
+    String userID,
+    String video,
+  ) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DetailInformasi(
+              documentID: documentID,
+              categoryID: categoryID,
+              cover: cover,
+              deskripsi: deskripsi,
+              images: images,
+              ownerRole: ownerRole,
+              title: title,
+              userID: userID,
+              video: video,
+            ),
+        fullscreenDialog: true,
       ),
     );
   }

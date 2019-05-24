@@ -98,18 +98,27 @@ class _DrawerPageState extends State<DrawerPage> {
             children: <Widget>[
 //            header
               new UserAccountsDrawerHeader(
-                accountName: Text('Belum Masuk'),
-                accountEmail: Text('Belum Masuk'),
+                accountName: Text(
+                  "Markopi Indonesia",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                // accountEmail: Text(
+                //   email,
+                //   style: TextStyle(color: Colors.white),
+                // ),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
                     backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
+                    backgroundImage: AssetImage('assets/logo.png'),
                   ),
                 ),
-                decoration: new BoxDecoration(color: Colors.yellow.shade900),
+                decoration: new BoxDecoration(
+                  // borderRadius: BorderRadius.circular(100.0),
+                  image: DecorationImage(
+                      image: AssetImage('assets/sanitasi.jpeg'),
+                      fit: BoxFit.cover),
+                ),
               ),
 
 //            body
@@ -156,23 +165,29 @@ class _DrawerPageState extends State<DrawerPage> {
               children: <Widget>[
 //            header
                 new UserAccountsDrawerHeader(
-                  accountName: Text(nama),
-                  accountEmail: Text(email),
+                  accountName: Text(
+                    nama,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  accountEmail: Text(
+                    email,
+                    style: TextStyle(color: Colors.white),
+                  ),
                   currentAccountPicture: GestureDetector(
                     child: new CircleAvatar(
                       backgroundColor: Colors.grey,
-                      child: image.isEmpty
-                        ? Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          )
-                        : Icon(
-                            Icons.laptop,
-                            color: Colors.red,
-                          ),
+                      backgroundImage: image.isNotEmpty
+                          ? NetworkImage(image)
+                          : AssetImage('assets/no_user.jpg'),
                     ),
                   ),
-                  decoration: new BoxDecoration(color: Colors.yellow.shade900),
+                  decoration: new BoxDecoration(
+                    // borderRadius: BorderRadius.circular(100.0),
+                    image: DecorationImage(
+                        image: AssetImage('assets/sanitasi.jpeg'),
+                        fit: BoxFit.cover),
+                  ),
                 ),
 
 //            body
@@ -187,16 +202,16 @@ class _DrawerPageState extends State<DrawerPage> {
                   ),
                 ),
 
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/category");
-                  },
-                  child: ListTile(
-                    title: Text('Kategori'),
-                    leading: Icon(Icons.category),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pop(context);
+                //     Navigator.of(context).pushNamed("/category");
+                //   },
+                //   child: ListTile(
+                //     title: Text('Kategori'),
+                //     leading: Icon(Icons.category),
+                //   ),
+                // ),
 
                 InkWell(
                   onTap: () {

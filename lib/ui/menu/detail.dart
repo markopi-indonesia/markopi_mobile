@@ -1,34 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/components/drawer.dart';
+import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
+import 'package:markopi_mobile/models/informasi.dart';
+import 'package:markopi_mobile/controllers/informasi_controller.dart';
 
-class DetailMenu extends StatelessWidget {
+class DetailInformasi extends StatefulWidget {
+  final String documentID;
+  final String categoryID;
+  final String cover;
+  final String deskripsi;
+  final String images;
+  final String ownerRole;
+  final String title;
+  final String userID;
+  final String video;
+
+  DetailInformasi(
+      {this.documentID,
+      this.categoryID,
+      this.cover,
+      this.deskripsi,
+      this.images,
+      this.ownerRole,
+      this.title,
+      this.userID,
+      this.video});
+  @override
+  State<StatefulWidget> createState() => new _DetailInformasiState();
+}
+
+class _DetailInformasiState extends State<DetailInformasi> {
+  var images = [];
+  @override
+  void initState() {
+    setState(() {
+      images = widget.images.split(";");
+    });
+    super.initState();
+    images.forEach((f) {
+      print(f);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Markopi'),
-          leading: IconButton(
-              icon: Icon(Icons.menu, semanticLabel: 'menu'),
-              onPressed: () {
-                print('Menu button');
-              }),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search, semanticLabel: 'search'),
-              onPressed: () {
-                print('Search button');
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.more_vert,
-                semanticLabel: 'more',
-              ),
-              onPressed: () {
-                print('More button');
-              },
-            ),
-          ],
-        ),
+        appBar: Header(),
+        drawer: DrawerPage(),
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
             child: Column(children: <Widget>[
@@ -40,8 +62,100 @@ class DetailMenu extends StatelessWidget {
 //                padding: EdgeInsets.only(top: 20.0),
                 child: new Stack(
                   children: <Widget>[
-                    DetailThumbnail(),
-                    DetailImage(),
+                    // DetailThumbnail(),
+                    // DetailImage(),
+                    new Center(
+                        child: new Container(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 15),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: new Container(
+                        height: MediaQuery.of(context).size.height / 4,
+                        decoration: new BoxDecoration(
+                          color: Color(0xFF1C8134),
+                          shape: BoxShape.rectangle,
+                          borderRadius: new BorderRadius.circular(8.0),
+                          boxShadow: <BoxShadow>[
+                            new BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 0.0,
+                                offset: new Offset(0.0, 0.0))
+                          ],
+                        ),
+                        child: new Container(
+                            margin: const EdgeInsets.all(10.0),
+                            constraints: new BoxConstraints.expand(),
+                            child: Stack(
+                              children: <Widget>[
+                                new Column(
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.bottomCenter,
+//                      width: 190.0,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.09,
+                                      child: new Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          new Text(
+                                            widget.title,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18.0),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.bottomCenter,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              16.0,
+                                      child: new Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          new Text("by: " + widget.ownerRole,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          Spacer(flex: 1),
+                                          // new Text("date: 23 April 2019",
+                                          //     style: TextStyle(
+                                          //         color: Colors.white)),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            )),
+                      ),
+                    )),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+//        color: Colors.red
+                          ),
+//      constraints: BoxConstraints.expand(),
+                      child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: 90.0,
+                            height: 90.0,
+                            decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: new NetworkImage(widget.cover))),
+                          )),
+                    ),
                   ],
                 ),
               ),
@@ -56,20 +170,8 @@ class DetailMenu extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
-                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'),
+                  Text(widget.deskripsi),
                   Divider(),
-                  Text(
-                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'),
-                  Divider(),
-                  Text(
-                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'),
-                  Divider(),
-                  Text(
-                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'),
-                  Divider(),
-                  Text(
-                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'),
                 ],
               ),
             ),
@@ -91,7 +193,11 @@ class DetailMenu extends StatelessWidget {
                                 fontSize: 22.0, fontWeight: FontWeight.w700)),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: Image.asset('assets/pola_tanam.jpeg'),
+                          child: Column(
+                            children: <Widget>[
+                              for (var item in images) Image.network(item)
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -110,7 +216,9 @@ class DetailMenu extends StatelessWidget {
                                 fontSize: 22.0, fontWeight: FontWeight.w700)),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: Image.asset('assets/pola_tanam.jpeg'),
+                          child: widget.video.isNotEmpty
+                              ? Image.asset('assets/pola_tanam.jpeg')
+                              : Text("Tidak ada Video"),
                         )
                       ],
                     ),
@@ -118,99 +226,71 @@ class DetailMenu extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ])));
   }
-}
 
-class DetailImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      height: MediaQuery.of(context).size.height * 0.3,
-      width: double.infinity,
-      decoration: BoxDecoration(
-//        color: Colors.red
-          ),
-//      constraints: BoxConstraints.expand(),
-      child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            width: 90.0,
-            height: 90.0,
-            decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                image: new DecorationImage(
-                    fit: BoxFit.cover,
-                    image: new AssetImage('assets/pola_tanam.jpeg'))),
-          )),
+  void _update(
+    BuildContext context,
+    String documentID,
+    String categoryID,
+    String cover,
+    String deskripsi,
+    String images,
+    String ownerRole,
+    String title,
+    String userID,
+    String video,
+  ) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EditInformasiDialog(
+              documentID: documentID,
+              categoryID: categoryID,
+              cover: cover,
+              deskripsi: deskripsi,
+              images: images,
+              ownerRole: ownerRole,
+              title: title,
+              userID: userID,
+              video: video,
+            ),
+        fullscreenDialog: true,
+      ),
     );
   }
-}
 
-class DetailThumbnail extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Center(
-        child: new Container(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: new Container(
-        height: MediaQuery.of(context).size.height / 4,
-        decoration: new BoxDecoration(
-          color: Color(0xFF1C8134),
-          shape: BoxShape.rectangle,
-          borderRadius: new BorderRadius.circular(8.0),
-          boxShadow: <BoxShadow>[
-            new BoxShadow(
-                color: Colors.black,
-                blurRadius: 0.0,
-                offset: new Offset(0.0, 0.0))
+  Widget getTextWidgets(List<String> strings) {
+    List<Widget> list = new List<Widget>();
+    for (var i = 0; i < strings.length; i++) {
+      list.add(new Text(strings[i]));
+    }
+    return new Row(children: list);
+  }
+
+  Future<bool> _buildConfirmationDialog(
+      BuildContext context, String documentID) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Hapus'),
+          content: Text('Apakah anda ingin menghapus artikel ini?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Tidak'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            FlatButton(
+                child: Text('Ya'),
+                onPressed: () => {
+                  InformasiController.removeInformasi(documentID),
+                  Navigator.pop(context),
+                  // Navigator.of(context).pushNamed("/informasi"),
+                }),
           ],
-        ),
-        child: new Container(
-            margin: const EdgeInsets.all(10.0),
-            constraints: new BoxConstraints.expand(),
-            child: Stack(
-              children: <Widget>[
-                new Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.bottomCenter,
-//                      width: 190.0,
-                      height: MediaQuery.of(context).size.height * 0.09,
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          new Text(
-                            'Persiapan Lahan',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18.0),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      height: MediaQuery.of(context).size.height / 16.0,
-                      child: new Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          new Text("by: Admin",
-                              style: TextStyle(color: Colors.white)),
-                          Spacer(flex: 1),
-                          new Text("date: 23 April 2019",
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            )),
-      ),
-    ));
+        );
+      },
+    );
   }
 }
