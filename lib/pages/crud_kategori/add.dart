@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/category_controller.dart';
 import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
@@ -26,31 +25,6 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
       return null;
     }
   }
-
-//  Widget _previewImage() {
-//    return FutureBuilder<File>(
-//        future: _imageFile,
-//        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-//          if (snapshot.connectionState == ConnectionState.done &&
-//              snapshot.data != null) {
-//            return Image.file(snapshot.data);
-//          } else if (snapshot.error != null) {
-//            return const Text(
-//              'Error picking image.',
-//              textAlign: TextAlign.center,
-//            );
-//          } else {
-//            return const Text(
-//              'You have not yet picked an image.',
-//              textAlign: TextAlign.center,
-//            );
-//          }
-//        });
-//  }
-
-//  getImage(){
-//    _imageFile = ImagePicker.pickImage(source: ImageSource.gallery);
-//  }
 
   @override
   Widget build(BuildContext context) {

@@ -48,14 +48,8 @@ class _LoginState extends State<Login> {
         });
 
         if (user.uid.length > 0 && user.uid != null) {
-          // if(!user.isEmailVerified){
-          //   _showVerifyEmailSentDialog();
-          // }
           Navigator.pop(context);
           Navigator.of(context).pushNamed("/");
-          // if(user.isEmailVerified){
-          //   _showVerifyEmailSentDialog();
-          // }
           print(user.email);
         }
       } catch (e) {
@@ -192,7 +186,7 @@ class _LoginState extends State<Login> {
               Icons.mail,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        validator: (value) => value.isEmpty ? 'Email tidak boleh kosong' : null,
         onSaved: (value) => _email = value,
       ),
     );
@@ -206,12 +200,12 @@ class _LoginState extends State<Login> {
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Password',
+            hintText: 'Kata Sandi',
             icon: new Icon(
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+        validator: (value) => value.isEmpty ? 'Kata sandi tidak boleh kosong' : null,
         onSaved: (value) => _password = value,
       ),
     );
@@ -219,7 +213,7 @@ class _LoginState extends State<Login> {
 
   Widget _showSecondaryButton() {
     return new FlatButton(
-      child: new Text('Create an account',
+      child: new Text('Buat akun baru',
           style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
     );
   }
@@ -234,7 +228,7 @@ class _LoginState extends State<Login> {
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
             color: Colors.blue,
-            child: new Text('Login',
+            child: new Text('Masuk',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),

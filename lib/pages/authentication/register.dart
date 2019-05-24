@@ -3,6 +3,7 @@ import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:markopi_mobile/controllers/profile_controller.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -44,11 +45,16 @@ class _RegisterState extends State<Register> {
           email: _email,
           password: _password,
         );
+        var string = user.email;
+        var nama = string.split("@");
+        ProfileController.addProfile(user.uid, nama[0], "https://firebasestorage.googleapis.com/v0/b/markopi.appspot.com/o/1558608508082?alt=media&token=7117934e-c055-4839-8e00-cac507de918b", "Fasilitator", "", "", "", "", "", "", "");
         user.sendEmailVerification();
-        _showVerifyEmailSentDialog();      ;
         setState(() {
           _isLoading = false;
         });
+        Navigator.pop(context);
+        Navigator.of(context).pushNamed("/");
+        _showVerifyEmailSentDialog();
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -105,7 +111,7 @@ class _RegisterState extends State<Register> {
         return AlertDialog(
           title: new Text("Verifikasi Akun Anda"),
           content:
-              new Text("Anda sudah terdaftar dan sudah dapat masuk ke akun anda.\n Link untuk verifikasi akun sudah dikirim ke email anda.\n Silahkan verifikasi akun anda."),
+              new Text("Anda sudah terdaftar dan sudah dapat masuk ke akun anda.\nLink untuk verifikasi akun sudah dikirim ke email anda.\nSilahkan verifikasi akun anda."),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Tutup"),

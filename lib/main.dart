@@ -4,6 +4,8 @@ import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
 import 'package:markopi_mobile/pages/authentication/login.dart';
 import 'package:markopi_mobile/pages/crud_kategori/index.dart';
+import 'package:markopi_mobile/pages/crud_informasi/index.dart';
+import 'package:markopi_mobile/pages/profile/edit.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
         '/register': (context) => Register(),
         '/login': (context) => Login(),
         '/category': (context) => Category(),
+        '/informasi': (context) => Informasi(),
+        '/profile': (context) => EditProfileDialog(),
       },
     );
   }
