@@ -273,7 +273,7 @@ class _RegisterState extends State<Register> {
             )),
         validator: (value) =>
             value.isEmpty ? 'Konfirmasi kata sandi tidak boleh kosong' : null,
-        onSaved: (value) => _password = value,
+        onSaved: (value) => _confirmPassword = value,
       ),
     );
   }

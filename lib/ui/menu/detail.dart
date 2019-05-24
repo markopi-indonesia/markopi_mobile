@@ -193,11 +193,11 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                 fontSize: 22.0, fontWeight: FontWeight.w700)),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: Column(
+                          child: widget.images.isNotEmpty? Column(
                             children: <Widget>[
                               for (var item in images) Image.network(item)
                             ],
-                          ),
+                          ) : Text("Tidak ada gambar"),
                         )
                       ],
                     ),
@@ -218,7 +218,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                           margin: EdgeInsets.all(10.0),
                           child: widget.video.isNotEmpty
                               ? Image.asset('assets/pola_tanam.jpeg')
-                              : Text("Tidak ada Video"),
+                              : Text("Tidak ada video"),
                         )
                       ],
                     ),
@@ -227,6 +227,40 @@ class _DetailInformasiState extends State<DetailInformasi> {
               ],
             ),
           ),
+          Divider(),
+          // new Padding(padding: new EdgeInsets.only(top: 30.0)),
+          // new Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: <Widget>[
+          //     new RaisedButton(
+          //       padding: const EdgeInsets.all(8.0),
+          //       textColor: Colors.white,
+          //       color: Colors.green,
+          //       onPressed: () => _update(
+          //           context,
+          //           widget.documentID,
+          //           widget.categoryID,
+          //           widget.cover,
+          //           widget.deskripsi,
+          //           widget.images,
+          //           widget.ownerRole,
+          //           widget.title,
+          //           widget.userID,
+          //           widget.video),
+          //       child: new Text("Ubah"),
+          //     ),
+          //     new RaisedButton(
+          //       onPressed: () =>
+          //           _buildConfirmationDialog(context, widget.documentID),
+          //       textColor: Colors.white,
+          //       color: Colors.lightGreen[800],
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: new Text(
+          //         "Hapus",
+          //       ),
+          //     ),
+          //   ],
+          // )
         ])));
   }
 

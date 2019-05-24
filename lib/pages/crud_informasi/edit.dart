@@ -151,6 +151,7 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
           _isLoading = false;
         });
         Navigator.pop(context);
+        Navigator.of(context).pushNamed("/informasi");
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -218,6 +219,8 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
         _repository.addVideo(url, widget.documentID).then((v) {});
       });
     }
+    Navigator.pop(context);
+    Navigator.of(context).pushNamed("/informasi");
   }
 
   @override
@@ -269,13 +272,21 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                     padding: new EdgeInsets.all(10.0),
                     child: new Column(
                       children: <Widget>[
+                        new Center(
+                          child: Text(
+                            "Form Ubah Informasi",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20.0),
+                          ),
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
                               hintText: "Judul",
                               labelText: "Judul",
                               border: new OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(20.0))),
+                                      new BorderRadius.circular(5.0))),
                           initialValue: widget.title,
                           validator: (value) =>
                               value.isEmpty ? 'Judul tidak boleh kosong' : null,
@@ -285,9 +296,9 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         GestureDetector(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Cover',
+                            child: Text('Ganti Cover',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -305,7 +316,7 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                               child: new DropdownButtonHideUnderline(
                                 child: new DropdownButton<String>(
                                   isDense: true,
-                                  hint: new Text("Pilih Kategori"),
+                                  hint: new Text("Ganti Kategori"),
                                   value: _mySelection,
                                   onChanged: (String newValue) {
                                     state.didChange(newValue);
@@ -335,13 +346,13 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
-                          maxLines: 6,
+                          maxLines: 10,
                           decoration: new InputDecoration(
                               hintText: "Deskripsi",
                               labelText: "Deskripsi",
                               border: new OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(20.0))),
+                                      new BorderRadius.circular(5.0))),
                           initialValue: widget.deskripsi,
                           validator: (value) => value.isEmpty
                               ? 'Deskripsi tidak boleh kosong'
@@ -351,9 +362,9 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         GestureDetector(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Gambar',
+                            child: Text('Perbaharui Gambar',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -363,9 +374,9 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         GestureDetector(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Video',
+                            child: Text('Perbaharui Video',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -380,8 +391,8 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                                 elevation: 5.0,
                                 shape: new RoundedRectangleBorder(
                                     borderRadius:
-                                        new BorderRadius.circular(30.0)),
-                                color: Colors.blue,
+                                        new BorderRadius.circular(5.0)),
+                                color: Colors.green,
                                 child: new Text('Simpan',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
