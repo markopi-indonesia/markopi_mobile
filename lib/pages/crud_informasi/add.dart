@@ -1,3 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:math';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image/image.dart' as Im;
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/informasi_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:markopi_mobile/resources/repository.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart' as p;
 
 class AddInformasiDialog extends StatefulWidget {
   @override
@@ -12,17 +23,23 @@ class AddInformasiDialog extends StatefulWidget {
 }
 
 class _AddInformasiDialogState extends State<AddInformasiDialog> {
+  var _repository = Repository();
   final _formAddCategoryKey = GlobalKey<FormState>();
   String title;
   String categoryID;
   String deskripsi;
   String _mySelection;
   String _errorMessage;
+  String _photoUrl;
+  String _videoUrl;
+  String _error;
+  FirebaseUser currentUser;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
   String ownerRole = "";
+  StorageReference _storageReference;
 
   bool _isIos;
   bool _isLoading;
@@ -46,6 +63,62 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     );
   }
 
+  File imageFile;
+  File videoFile;
+  List<File> _imageList = [];
+  File _image;
+  String urls = "";
+  List<Asset> images = List<Asset>();
+
+  Future<void> loadAssets() async {
+    setState(() {
+      images = List<Asset>();
+    });
+
+    List<Asset> resultList;
+    String error;
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 10,
+      );
+    } on PlatformException catch (e) {
+      error = e.message;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      if (error == null) _error = 'No Error Dectected';
+    });
+  }
+
+  Future<File> _pickImage(String action) async {
+    File selectedImage;
+
+    action == 'Gallery'
+        ? selectedImage =
+            await ImagePicker.pickImage(source: ImageSource.gallery)
+        : await ImagePicker.pickImage(source: ImageSource.camera);
+
+    return selectedImage;
+  }
+
+  Future<File> _pickVideo(String action) async {
+    File selectedVideo;
+
+    action == 'Gallery'
+        ? selectedVideo =
+            await ImagePicker.pickVideo(source: ImageSource.gallery)
+        : await ImagePicker.pickVideo(source: ImageSource.camera);
+
+    return selectedVideo;
+  }
+
   void _validateAndSubmit() async {
     setState(() {
       _errorMessage = "";
@@ -60,11 +133,8 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
             .listen((data) => data.documents.forEach((doc) => setState(() {
                   ownerRole = doc["role"];
                   print(ownerRole);
-                  InformasiController.addInformasi(
-                      title, categoryID, deskripsi, userID, ownerRole);
+                  addInformasi();
                 })));
-        // InformasiController.addInformasi(
-        //     title, categoryID, deskripsi, userID, ownerRole);
         setState(() {
           _isLoading = false;
         });
@@ -86,6 +156,38 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     }
   }
 
+  void addInformasi() async {
+    final docRef = await Firestore.instance.collection('informasi').add({
+      'title': title,
+      'deskripsi': deskripsi,
+      "categoryID": categoryID,
+      'userID': userID,
+      'ownerRole': ownerRole,
+      'cover': '',
+      'images': '',
+      'video': ''
+    });
+    print(docRef.documentID);
+    _repository.uploadImageToStorage(imageFile).then((url) {
+      _repository.addPhoto(url, docRef.documentID).then((v) {});
+    });
+    images.forEach((f) {
+      _repository.saveImage(f).then((url) {
+        if(urls.isEmpty){
+          urls = url;  
+        }else{
+          urls = urls + ";" + url;
+        }
+        print(urls);
+        print("masuk");
+        _repository.addImage(urls, docRef.documentID).then((v) {});
+      });
+    });
+    _repository.uploadVideoToStorage(videoFile).then((url) {
+      _repository.addVideo(url, docRef.documentID).then((v) {});
+    });
+  }
+
   @override
   void initState() {
     _errorMessage = "";
@@ -93,6 +195,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     this.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
+          currentUser = user;
           userID = user?.uid;
         }
       });
@@ -143,13 +246,22 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                           onSaved: (value) => title = value,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-
+                        GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Text('Tambah Cover',
+                                style: TextStyle(
+                                    color: Colors.blue[700],
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          onTap: _showImageDialog,
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new FormField<String>(
                           builder: (FormFieldState<String> state) {
                             return InputDecorator(
                               decoration: InputDecoration(
-                                // icon: const Icon(Icons.color_lens),
-                                // labelText: 'Kategori',
                                 errorText:
                                     state.hasError ? state.errorText : null,
                               ),
@@ -184,16 +296,6 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                           },
                           onSaved: (value) => categoryID = value,
                         ),
-
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new TextField(
-                        //   decoration: new InputDecoration(
-                        //       hintText: "Foto Sampul",
-                        //       labelText: "Foto Sampul",
-                        //       border: new OutlineInputBorder(
-                        //           borderRadius:
-                        //               new BorderRadius.circular(20.0))),
-                        // ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           maxLines: 6,
@@ -208,24 +310,30 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                               : null,
                           onSaved: (value) => deskripsi = value,
                         ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new TextField(
-                        //   decoration: new InputDecoration(
-                        //       hintText: "Gambar",
-                        //       labelText: "Gambar",
-                        //       border: new OutlineInputBorder(
-                        //           borderRadius:
-                        //               new BorderRadius.circular(20.0))),
-                        // ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new TextField(
-                        //   decoration: new InputDecoration(
-                        //       hintText: "Video",
-                        //       labelText: "Video",
-                        //       border: new OutlineInputBorder(
-                        //           borderRadius:
-                        //               new BorderRadius.circular(20.0))),
-                        // ),
+                        GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Text('Tambah Gambar',
+                                style: TextStyle(
+                                    color: Colors.blue[700],
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          onTap: loadAssets,
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Text('Tambah Video',
+                                style: TextStyle(
+                                    color: Colors.blue[700],
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          onTap: _showVideoDialog,
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
                             child: SizedBox(
@@ -248,5 +356,65 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
             );
           }),
     );
+  }
+
+  _showImageDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: ((context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text('Choose from Gallery'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage('Gallery').then((selectedImage) {
+                    setState(() {
+                      imageFile = selectedImage;
+                      // _isLoading = true;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }));
+  }
+
+  _showVideoDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: ((context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text('Choose from Gallery'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickVideo('Gallery').then((selectedVideo) {
+                    setState(() {
+                      videoFile = selectedVideo;
+                      // _isLoading = true;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }));
   }
 }

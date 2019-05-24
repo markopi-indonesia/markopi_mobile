@@ -1,3 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:math';
+import 'package:image/image.dart' as Im;
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:markopi_mobile/resources/repository.dart';
 
 class EditProfileDialog extends StatefulWidget {
   @override
@@ -12,6 +19,7 @@ class EditProfileDialog extends StatefulWidget {
 }
 
 class _EditProfileDialogState extends State<EditProfileDialog> {
+  var _repository = Repository();
   final _formEditProfileKey = GlobalKey<FormState>();
   String _userID;
   String _nama;
@@ -27,6 +35,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   String _docID;
   String _errorMessage;
   TextEditingController _namaController = TextEditingController();
+  TextEditingController _photoUrlController = TextEditingController();
   TextEditingController _profesiController = TextEditingController();
   TextEditingController _noHPController = TextEditingController();
   TextEditingController _provinsiController = TextEditingController();
@@ -35,11 +44,15 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   TextEditingController _alamatController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
 
+  FirebaseUser currentUser;
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
 
   bool _isIos;
   bool _isLoading;
+  Image image;
+
 
   bool _validateAndSave() {
     final form = _formEditProfileKey.currentState;
@@ -99,6 +112,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     this.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
+          currentUser = user;
           _userID = user?.uid;
         }
       });
@@ -110,6 +124,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         .listen((data) => data.documents.forEach((doc) => [
               _docID = doc.documentID,
               _namaController.text = doc["nama"],
+              _photoUrlController.text = doc["photoURL"],
               _profesiController.text = doc["profesi"],
               _noHPController.text = doc["noHP"],
               _provinsiController.text = doc["provinsi"],
@@ -121,6 +136,19 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     super.initState();
   }
 
+  File imageFile;
+
+  Future<File> _pickImage(String action) async {
+    File selectedImage;
+
+    action == 'Gallery'
+        ? selectedImage =
+            await ImagePicker.pickImage(source: ImageSource.gallery)
+        : await ImagePicker.pickImage(source: ImageSource.camera);
+
+    return selectedImage;
+  }
+
   void _showUpdateSuccess() {
     showDialog(
       context: context,
@@ -128,8 +156,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Perubahan Profil"),
-          content:
-              new Text("Perubahan profil yang anda lakukan berhasil"),
+          content: new Text("Perubahan profil yang anda lakukan berhasil"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Tutup"),
@@ -170,6 +197,34 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 padding: new EdgeInsets.all(10.0),
                 child: new Column(
                   children: <Widget>[
+                    GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Container(
+                              width: 110.0,
+                              height: 110.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100.0),
+                                image: DecorationImage(
+                                    image: _photoUrlController.text.isEmpty
+                                        ? AssetImage('assets/no_user.jpg')
+                                        : NetworkImage(
+                                            _photoUrlController.text),
+                                    fit: BoxFit.cover),
+                              )),
+                        ),
+                        onTap: _showImageDialog),
+                    GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Text('Change Photo',
+                            style: TextStyle(
+                                color: Colors.blue[700],
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      onTap: _showImageDialog,
+                    ),
                     new TextFormField(
                       decoration: new InputDecoration(
                           hintText: "Nama Anda",
@@ -270,5 +325,107 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 )),
           ],
         ));
+  }
+
+  _showImageDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: ((context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text('Choose from Gallery'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage('Gallery').then((selectedImage) {
+                    setState(() {
+                      imageFile = selectedImage;
+                      _isLoading = true;
+                    });
+                    // compressImage();
+                    _repository.uploadImageToStorage(imageFile).then((url) {
+                      _repository.updatePhoto(url, currentUser.uid).then((v) {
+                        print("masuk");
+                        // setState(() {
+                        //   _isLoading = true;
+                        // });
+                        // print("keluar");
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        _showUploadDialog();
+                        Navigator.pop(context);
+
+                        // Navigator.of(context).pushNamed("/");
+                      });
+                    });
+                  });
+                },
+              ),
+              // SimpleDialogOption(
+              //   child: Text('Take Photo'),
+              //   onPressed: () {
+              //     _pickImage('Camera').then((selectedImage) {
+              //       setState(() {
+              //         imageFile = selectedImage;
+              //       });
+              //       // compressImage();
+              //       _repository.uploadImageToStorage(imageFile).then((url) {
+              //         _repository.updatePhoto(url, currentUser.uid).then((v) {
+              //           Navigator.pop(context);
+              //         });
+              //       });
+              //     });
+              //   },
+              // ),
+              SimpleDialogOption(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }));
+  }
+
+  // void compressImage() async {
+  //   print('starting compression');
+  //   Directory tempDir = await getTemporaryDirectory();
+  //   String path = tempDir.path;
+  //   int rand = Random().nextInt(10000);
+
+  //   Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
+  //   Im.copyResize(image);
+
+  //   var newim2 = new File('$path/img_$rand.jpg')
+  //     ..writeAsBytesSync(Im.encodeJpg(image, quality: 85));
+
+  //   setState(() {
+  //     imageFile = newim2;
+  //   });
+  //   print('done');
+  // }
+
+  void _showUploadDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Upload Berhasil"),
+          content: new Text("Upload foto berhasil dilakukan"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Tutup"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

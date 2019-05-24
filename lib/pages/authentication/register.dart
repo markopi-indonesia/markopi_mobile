@@ -47,7 +47,7 @@ class _RegisterState extends State<Register> {
         );
         var string = user.email;
         var nama = string.split("@");
-        ProfileController.addProfile(user.uid, nama[0], "", "Fasilitator", "", "", "", "", "", "", "");
+        ProfileController.addProfile(user.uid, nama[0], "https://firebasestorage.googleapis.com/v0/b/markopi.appspot.com/o/1558608508082?alt=media&token=7117934e-c055-4839-8e00-cac507de918b", "Fasilitator", "", "", "", "", "", "", "");
         user.sendEmailVerification();
         setState(() {
           _isLoading = false;
