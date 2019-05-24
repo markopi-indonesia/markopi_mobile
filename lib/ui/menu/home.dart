@@ -4,6 +4,7 @@ import 'package:markopi_mobile/ui/menu/submenu.dart';
 // Self import
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,27 +26,38 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                   new CardMenu(
                       name: 'Pola Tanam',
+                      documentID: '-Lf-IJCL0QmHf83DChgw',
                       image: Image.asset('assets/pola_tanam.jpeg',
                           fit: BoxFit.cover)),
                   new CardMenu(
                       name: 'Pohon Pelindung',
+                      documentID: '-Lf-ILm7heQeRarL3_xK',
                       image: Image.asset('assets/pohon_pelindung.jpeg',
                           fit: BoxFit.cover)),
                   new CardMenu(
                       name: 'Pemupukan',
+                      documentID: '-Lf-IP4g0fmcAsGdD-Jq',
                       image: Image.asset('assets/pemupukan_kopi.jpg',
                           fit: BoxFit.cover)),
                   new CardMenu(
                       name: 'Pemangkasan',
+                      documentID: '-Lf-IRsIeHX8E8SCo4xx',
                       image: Image.asset('assets/pemangkasan.jpeg',
                           fit: BoxFit.cover)),
                   new CardMenu(
                       name: 'Sanitasi Kebun',
+                      documentID: '-Lf-IWRvsCctVqZKDjkz',
                       image: Image.asset('assets/sanitasi.jpeg',
                           fit: BoxFit.cover)),
                   new CardMenu(
                       name: 'Hama dan Penyakit',
+                      documentID: '-Lf-IYZCDRmrigxLatxA',
                       image: Image.asset('assets/hama_penyakit.jpeg',
+                          fit: BoxFit.cover)),
+                  new CardMenu(
+                      name: 'Pembibitan',
+                      documentID: '-LfbN8xg2hXnvKcwGDCO',
+                      image: Image.asset('assets/pembibitan.jpg',
                           fit: BoxFit.cover)),
                 ],
               ),
@@ -74,10 +86,11 @@ class WelcomeText extends StatelessWidget {
 }
 
 class CardMenu extends StatelessWidget {
-  CardMenu({this.name, this.image});
+  CardMenu({this.name, this.image, this.documentID});
 
   final String name;
   final Image image;
+  final String documentID;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +100,7 @@ class CardMenu extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => SubMenu(
+                        documentID: documentID,
                         title: name,
                         image: image,
                       )));
