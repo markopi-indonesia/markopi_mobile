@@ -216,7 +216,7 @@ class _RegisterState extends State<Register> {
   Widget _showSecondaryButton() {
     return new FlatButton(
       child: new Text('Sudah punya akun? Masuk disini',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)), onPressed: () {},
     );
   }
 

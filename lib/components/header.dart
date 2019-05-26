@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markopi_mobile/components/search.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget{
    @override
@@ -9,7 +10,9 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
           IconButton(
             icon: Icon(Icons.search, semanticLabel: 'search'),
             onPressed: () {
-              print('Search button');
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SearchState()
+              ));
             },
           ),
         ],
