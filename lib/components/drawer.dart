@@ -127,7 +127,7 @@ class _DrawerPageState extends State<DrawerPage> {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed("/");
+                  Navigator.of(context).pushNamed("/home");
                 },
                 child: ListTile(
                   title: Text('Beranda'),
@@ -196,7 +196,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/");
+                    Navigator.of(context).pushNamed("/home");
                   },
                   child: ListTile(
                     title: Text('Beranda'),
@@ -238,7 +238,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     this._signOut();
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/");
+                    Navigator.of(context).pushNamed("/home");
                   },
                   child: ListTile(
                     title: Text('Logout'),

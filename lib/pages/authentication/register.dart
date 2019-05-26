@@ -73,7 +73,7 @@ class _RegisterState extends State<Register> {
             _isLoading = false;
           });
           Navigator.pop(context);
-          Navigator.of(context).pushNamed("/");
+          Navigator.of(context).pushNamed("/home");
           _showVerifyEmailSentDialog();
         }
       } catch (e) {

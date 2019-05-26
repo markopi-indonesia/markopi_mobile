@@ -6,6 +6,8 @@ import 'package:markopi_mobile/pages/authentication/login.dart';
 import 'package:markopi_mobile/pages/crud_kategori/index.dart';
 import 'package:markopi_mobile/pages/crud_informasi/index.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: _markopiTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => AnimatedSplashScreen(),
+        '/home': (context) => HomePage(),
         '/register': (context) => Register(),
         '/login': (context) => Login(),
         '/category': (context) => Category(),

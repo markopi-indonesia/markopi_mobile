@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
 
         if (user.uid.length > 0 && user.uid != null) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed("/");
+          Navigator.of(context).pushNamed("/home");
           print(user.email);
         }
       } catch (e) {
