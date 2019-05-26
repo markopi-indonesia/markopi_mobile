@@ -214,7 +214,7 @@ class _LoginState extends State<Login> {
   Widget _showSecondaryButton() {
     return new FlatButton(
       child: new Text('Buat akun baru',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)), onPressed: () {},
     );
   }
 
