@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 
 class EditProfileDialog extends StatefulWidget {
+  final String userID;
+  EditProfileDialog({this.userID});
   @override
   _EditProfileDialogState createState() => _EditProfileDialogState();
 }
@@ -117,9 +119,10 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         }
       });
     });
+
     Firestore.instance
         .collection('profile')
-        .where("userID", isEqualTo: _userID)
+        .where("userID", isEqualTo: widget.userID)
         .snapshots()
         .listen((data) => data.documents.forEach((doc) => [
               _docID = doc.documentID,
@@ -219,7 +222,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                         padding: const EdgeInsets.only(top: 12.0),
                         child: Text('Change Photo',
                             style: TextStyle(
-                                color: Colors.blue[700],
+                                color: Colors.green,
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -314,7 +317,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                             elevation: 5.0,
                             shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(5.0)),
-                            color: Colors.blue,
+                            color: Colors.green,
                             child: new Text('Ubah Profil',
                                 style: new TextStyle(
                                     fontSize: 20.0, color: Colors.white)),

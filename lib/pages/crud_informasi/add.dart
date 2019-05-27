@@ -230,13 +230,15 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                     padding: new EdgeInsets.all(10.0),
                     child: new Column(
                       children: <Widget>[
+                        new Center(child: Text("Form Tambah Informasi", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
                               hintText: "Judul",
                               labelText: "Judul",
                               border: new OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(20.0))),
+                                      new BorderRadius.circular(5.0))),
                           validator: (value) =>
                               value.isEmpty ? 'Judul tidak boleh kosong' : null,
                           onSaved: (value) => title = value,
@@ -247,7 +249,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                             padding: const EdgeInsets.only(top: 12.0),
                             child: Text('Tambah Cover',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -294,13 +296,13 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
-                          maxLines: 6,
+                          maxLines: 10,
                           decoration: new InputDecoration(
                               hintText: "Deskripsi",
                               labelText: "Deskripsi",
                               border: new OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(20.0))),
+                                      new BorderRadius.circular(5.0))),
                           validator: (value) => value.isEmpty
                               ? 'Deskripsi tidak boleh kosong'
                               : null,
@@ -311,7 +313,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                             padding: const EdgeInsets.only(top: 12.0),
                             child: Text('Tambah Gambar',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -323,7 +325,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                             padding: const EdgeInsets.only(top: 12.0),
                             child: Text('Tambah Video',
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    color: Colors.green,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -338,8 +340,8 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                                 elevation: 5.0,
                                 shape: new RoundedRectangleBorder(
                                     borderRadius:
-                                        new BorderRadius.circular(30.0)),
-                                color: Colors.blue,
+                                        new BorderRadius.circular(5.0)),
+                                color: Colors.green,
                                 child: new Text('Simpan',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
@@ -362,7 +364,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
           return SimpleDialog(
             children: <Widget>[
               SimpleDialogOption(
-                child: Text('Choose from Gallery'),
+                child: Text('Pilih dari Galeri'),
                 onPressed: () {
                   Navigator.pop(context);
                   _pickImage('Gallery').then((selectedImage) {
@@ -374,7 +376,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                 },
               ),
               SimpleDialogOption(
-                child: Text('Cancel'),
+                child: Text('Batal'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -392,7 +394,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
           return SimpleDialog(
             children: <Widget>[
               SimpleDialogOption(
-                child: Text('Choose from Gallery'),
+                child: Text('Pilih dari Galeri'),
                 onPressed: () {
                   Navigator.pop(context);
                   _pickVideo('Gallery').then((selectedVideo) {
@@ -404,7 +406,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                 },
               ),
               SimpleDialogOption(
-                child: Text('Cancel'),
+                child: Text('Batal'),
                 onPressed: () {
                   Navigator.pop(context);
                 },

@@ -99,6 +99,7 @@ class _InformasiState extends State<Informasi> {
 
   buildAddInformasiFab() {
     return FloatingActionButton(
+      backgroundColor: Colors.green,
       shape: CircleBorder(),
       onPressed: () {
         _navigateToAddInformasi();

@@ -81,7 +81,7 @@ class _SearchState extends State<SearchState> {
                   color: Colors.white,
                 ),
               ),
-              hintText: "Search article . . . ",
+              hintText: "Cari Informasi . . . ",
               hintStyle: TextStyle(color: Colors.black)),
         ),
       ),
@@ -128,7 +128,17 @@ class _SearchState extends State<SearchState> {
                         .listen((data) => data.documents
                             .forEach(
                               (doc) => Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => DetailMenu()
+                                builder: (context) => DetailInformasi(
+                                  categoryID: doc["categoryID"],
+                                  title: doc["title"],
+                                  cover: doc["cover"],
+                                  deskripsi: doc["deskripsi"],
+                                  documentID: doc.documentID,
+                                  images: doc["images"],
+                                  ownerRole: doc["ownerRole"],
+                                  userID: doc["userID"],
+                                  video: doc["video"],
+                                )
                               ))
                               )
                             );

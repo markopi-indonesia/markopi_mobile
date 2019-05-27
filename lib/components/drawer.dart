@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:markopi_mobile/pages/profile/edit.dart';
 
 //Self import
 import 'package:markopi_mobile/models/profile.dart';
@@ -49,7 +51,7 @@ class _DrawerPageState extends State<DrawerPage> {
           _userId = user?.uid;
           email = user.email;
           // print(_userId);
-          print(email);
+          print(_userId);
           // retrieveUserDetails();
           // print(_profile.nama);
         }
@@ -98,25 +100,34 @@ class _DrawerPageState extends State<DrawerPage> {
             children: <Widget>[
 //            header
               new UserAccountsDrawerHeader(
-                accountName: Text('Belum Masuk'),
-                accountEmail: Text('Belum Masuk'),
+                accountName: Text(
+                  "Markopi Indonesia",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                // accountEmail: Text(
+                //   email,
+                //   style: TextStyle(color: Colors.white),
+                // ),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
                     backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
+                    backgroundImage: AssetImage('assets/logo.png'),
                   ),
                 ),
-                decoration: new BoxDecoration(color: Colors.yellow.shade900),
+                decoration: new BoxDecoration(
+                  // borderRadius: BorderRadius.circular(100.0),
+                  image: DecorationImage(
+                      image: AssetImage('assets/sanitasi.jpeg'),
+                      fit: BoxFit.cover),
+                ),
               ),
 
 //            body
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed("/");
+                  Navigator.of(context).pushNamed("/home");
                 },
                 child: ListTile(
                   title: Text('Beranda'),
@@ -156,30 +167,36 @@ class _DrawerPageState extends State<DrawerPage> {
               children: <Widget>[
 //            header
                 new UserAccountsDrawerHeader(
-                  accountName: Text(nama),
-                  accountEmail: Text(email),
+                  accountName: Text(
+                    nama,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  accountEmail: Text(
+                    email,
+                    style: TextStyle(color: Colors.white),
+                  ),
                   currentAccountPicture: GestureDetector(
                     child: new CircleAvatar(
                       backgroundColor: Colors.grey,
-                      child: image.isEmpty
-                        ? Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          )
-                        : Icon(
-                            Icons.laptop,
-                            color: Colors.red,
-                          ),
+                      backgroundImage: image.isNotEmpty
+                          ? NetworkImage(image)
+                          : AssetImage('assets/no_user.jpg'),
                     ),
                   ),
-                  decoration: new BoxDecoration(color: Colors.yellow.shade900),
+                  decoration: new BoxDecoration(
+                    // borderRadius: BorderRadius.circular(100.0),
+                    image: DecorationImage(
+                        image: AssetImage('assets/sanitasi.jpeg'),
+                        fit: BoxFit.cover),
+                  ),
                 ),
 
 //            body
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/");
+                    Navigator.of(context).pushNamed("/home");
                   },
                   child: ListTile(
                     title: Text('Beranda'),
@@ -187,16 +204,16 @@ class _DrawerPageState extends State<DrawerPage> {
                   ),
                 ),
 
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/category");
-                  },
-                  child: ListTile(
-                    title: Text('Kategori'),
-                    leading: Icon(Icons.category),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pop(context);
+                //     Navigator.of(context).pushNamed("/category");
+                //   },
+                //   child: ListTile(
+                //     title: Text('Kategori'),
+                //     leading: Icon(Icons.category),
+                //   ),
+                // ),
 
                 InkWell(
                   onTap: () {
@@ -210,10 +227,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 ),
 
                 InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/profile");
-                  },
+                  onTap: () => _navigateToEditProfile(context, _userId),
                   child: ListTile(
                     title: Text('Ubah Profil'),
                     leading: Icon(Icons.settings),
@@ -224,7 +238,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   onTap: () {
                     this._signOut();
                     Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/");
+                    Navigator.of(context).pushNamed("/home");
                   },
                   child: ListTile(
                     title: Text('Logout'),
@@ -240,5 +254,19 @@ class _DrawerPageState extends State<DrawerPage> {
       default:
         return _buildWaitingScreen();
     }
+  }
+
+  void _navigateToEditProfile(BuildContext context, String userID) {
+    print("masuk");
+    print(userID);
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EditProfileDialog(
+          userID: userID,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }

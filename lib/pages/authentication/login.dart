@@ -3,6 +3,7 @@ import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:markopi_mobile/pages/authentication/register.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _LoginState extends State<Login> {
 
         if (user.uid.length > 0 && user.uid != null) {
           Navigator.pop(context);
-          Navigator.of(context).pushNamed("/");
+          Navigator.of(context).pushNamed("/home");
           print(user.email);
         }
       } catch (e) {
@@ -131,7 +132,7 @@ class _LoginState extends State<Login> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              // _showLogo(),
+              _showLogo(),
               _showEmailInput(),
               _showPasswordInput(),
               _showPrimaryButton(),
@@ -166,8 +167,8 @@ class _LoginState extends State<Login> {
         padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('assets/flutter-icon.png'),
+          radius: 70.0,
+          child: Image.asset('assets/logo.png'),
         ),
       ),
     );
@@ -175,7 +176,7 @@ class _LoginState extends State<Login> {
 
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -213,8 +214,9 @@ class _LoginState extends State<Login> {
 
   Widget _showSecondaryButton() {
     return new FlatButton(
-      child: new Text('Buat akun baru',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)), onPressed: () {},
+      child: new Text('Belum punya akun? Daftar disini',
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      onPressed: () => _navigateToRegister(),
     );
   }
 
@@ -226,12 +228,21 @@ class _LoginState extends State<Login> {
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
+                borderRadius: new BorderRadius.circular(5.0)),
+            color: Colors.green,
             child: new Text('Masuk',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));
+  }
+
+  _navigateToRegister() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Register(),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/controllers/profile_controller.dart';
+import 'package:markopi_mobile/pages/authentication/login.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _RegisterState extends State<Register> {
 
   String _email;
   String _password;
+  String _confirmPassword;
   String _errorMessage;
 
   // Initial form is login form
@@ -41,20 +43,39 @@ class _RegisterState extends State<Register> {
     });
     if (_validateAndSave()) {
       try {
-        FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: _email,
-          password: _password,
-        );
-        var string = user.email;
-        var nama = string.split("@");
-        ProfileController.addProfile(user.uid, nama[0], "https://firebasestorage.googleapis.com/v0/b/markopi.appspot.com/o/1558608508082?alt=media&token=7117934e-c055-4839-8e00-cac507de918b", "Fasilitator", "", "", "", "", "", "", "");
-        user.sendEmailVerification();
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.pop(context);
-        Navigator.of(context).pushNamed("/");
-        _showVerifyEmailSentDialog();
+        if (_password != _confirmPassword) {
+          _showUnconfirmed();
+          setState(() {
+            _isLoading = false;
+          });
+        } else {
+          FirebaseUser user =
+              await _firebaseAuth.createUserWithEmailAndPassword(
+            email: _email,
+            password: _password,
+          );
+          var string = user.email;
+          var nama = string.split("@");
+          ProfileController.addProfile(
+              user.uid,
+              nama[0],
+              "https://firebasestorage.googleapis.com/v0/b/markopi.appspot.com/o/1558608508082?alt=media&token=7117934e-c055-4839-8e00-cac507de918b",
+              "Fasilitator",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "");
+          user.sendEmailVerification();
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.pop(context);
+          Navigator.of(context).pushNamed("/home");
+          _showVerifyEmailSentDialog();
+        }
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -67,8 +88,8 @@ class _RegisterState extends State<Register> {
       }
     } else {
       setState(() {
-          _isLoading = false;
-        });
+        _isLoading = false;
+      });
     }
   }
 
@@ -110,8 +131,30 @@ class _RegisterState extends State<Register> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Verifikasi Akun Anda"),
-          content:
-              new Text("Anda sudah terdaftar dan sudah dapat masuk ke akun anda.\nLink untuk verifikasi akun sudah dikirim ke email anda.\nSilahkan verifikasi akun anda."),
+          content: new Text(
+              "Anda sudah terdaftar dan sudah dapat masuk ke akun anda.\nLink untuk verifikasi akun sudah dikirim ke email anda.\nSilahkan verifikasi akun anda."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Tutup"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showUnconfirmed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Konfirmasi kata sandi salah"),
+          content: new Text(
+              "Password dan Konfirmasi kata sandi tidak sesuai. Silahkan masukkan kata sandi yang sesuai"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Tutup"),
@@ -133,9 +176,10 @@ class _RegisterState extends State<Register> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              // _showLogo(),
+              _showLogo(),
               _showEmailInput(),
               _showPasswordInput(),
+              _showConfirmPasswordInput(),
               _showPrimaryButton(),
               _showSecondaryButton(),
               _showErrorMessage(),
@@ -165,11 +209,11 @@ class _RegisterState extends State<Register> {
     return new Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('assets/flutter-icon.png'),
+          radius: 70.0,
+          child: Image.asset('assets/logo.png'),
         ),
       ),
     );
@@ -177,7 +221,7 @@ class _RegisterState extends State<Register> {
 
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -207,8 +251,29 @@ class _RegisterState extends State<Register> {
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Kata sandi tidak boleh kosong' : null,
+        validator: (value) =>
+            value.isEmpty ? 'Kata sandi tidak boleh kosong' : null,
         onSaved: (value) => _password = value,
+      ),
+    );
+  }
+
+  Widget _showConfirmPasswordInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        maxLines: 1,
+        obscureText: true,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Konfirmasi Kata Sandi',
+            icon: new Icon(
+              Icons.lock,
+              color: Colors.grey,
+            )),
+        validator: (value) =>
+            value.isEmpty ? 'Konfirmasi kata sandi tidak boleh kosong' : null,
+        onSaved: (value) => _confirmPassword = value,
       ),
     );
   }
@@ -216,7 +281,8 @@ class _RegisterState extends State<Register> {
   Widget _showSecondaryButton() {
     return new FlatButton(
       child: new Text('Sudah punya akun? Masuk disini',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)), onPressed: () {},
+          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      onPressed: () => _navigateToLogin(),
     );
   }
 
@@ -228,12 +294,21 @@ class _RegisterState extends State<Register> {
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
+                borderRadius: new BorderRadius.circular(5.0)),
+            color: Colors.green,
             child: new Text('DAFTAR',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));
+  }
+
+  _navigateToLogin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Login(),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }
