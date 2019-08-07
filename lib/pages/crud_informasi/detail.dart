@@ -312,7 +312,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
       builder: (context) {
         return AlertDialog(
           title: Text('Hapus'),
-          content: Text('Apakah anda ingin menghapus artikel ini?'),
+          content: Text('Apakah anda ingin menghapus informasi ini?'),
           actions: <Widget>[
             FlatButton(
               child: Text('Tidak'),
