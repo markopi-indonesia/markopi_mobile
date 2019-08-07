@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 //Self import
 import 'package:markopi_mobile/models/profile.dart';
@@ -137,12 +138,138 @@ class _DrawerPageState extends State<DrawerPage> {
 
               InkWell(
                 onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-IJCL0QmHf83DChgw',
+                                title: 'Pola Tanam',
+                                image: Image.asset('assets/pola_tanam.jpeg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Pola Tanam'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-ILm7heQeRarL3_xK',
+                                title: 'Pohon Pelindung',
+                                image: Image.asset('assets/pohon_pelindung.jpeg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Pohon Pelindung'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-IP4g0fmcAsGdD-Jq',
+                                title: 'Pemupukan',
+                                image: Image.asset('assets/pemupukan_kopi.jpg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Pemupukan'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-IRsIeHX8E8SCo4xx',
+                                title: 'Pemangkasan',
+                                image: Image.asset('assets/pemangkasan.jpeg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Pemangkasan'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-IWRvsCctVqZKDjkz',
+                                title: 'Sanitasi Kebun',
+                                image: Image.asset('assets/sanitasi.jpeg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Sanitasi Kebun'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-Lf-IYZCDRmrigxLatxA',
+                                title: 'Hama dan Penyakit',
+                                image: Image.asset('assets/hama_penyakit.jpeg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Hama dan Penyakit'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubMenu(
+                                documentID: '-LfbN8xg2hXnvKcwGDCO',
+                                title: 'Pembibitan',
+                                image: Image.asset('assets/pembibitan.jpg',
+                                    fit: BoxFit.cover),
+                              )));
+                },
+                child: ListTile(
+                  title: Text('Pembibitan'),
+                  leading: Icon(Icons.label_important),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).pushNamed("/login");
                 },
                 child: ListTile(
                   title: Text('Masuk'),
-                  leading: Icon(Icons.dashboard),
+                  leading: Icon(Icons.person),
                 ),
               ),
 

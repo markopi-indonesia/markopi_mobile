@@ -121,8 +121,10 @@ class SubMenuState extends State<SubMenu> {
         child: new ListTile(
           leading: new CircleAvatar(
             radius: 30.0,
-            backgroundImage: NetworkImage(informasi.cover),
+            child: Icon(Icons.label),
+            backgroundColor: Colors.green,
           ),
+          // leading: Icon(Icons.label_important),
           title: new Text(informasi.title),
           onTap: () => _detail(
               context,

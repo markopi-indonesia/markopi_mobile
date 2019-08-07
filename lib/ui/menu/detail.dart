@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
 import 'package:markopi_mobile/models/informasi.dart';
@@ -49,8 +49,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
+        appBar: HeaderBack(),
+        // drawer: DrawerPage(),
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
             child: Column(children: <Widget>[
@@ -171,7 +171,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(widget.deskripsi),
-                  Divider(),
                 ],
               ),
             ),
@@ -193,32 +192,15 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                 fontSize: 22.0, fontWeight: FontWeight.w700)),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: widget.images.isNotEmpty? Column(
-                            children: <Widget>[
-                              for (var item in images) Image.network(item)
-                            ],
-                          ) : Text("Tidak ada gambar"),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: new Container(
-//                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width / 1.5,
-//                    color: Colors.greenAccent,
-                    child: Column(
-                      children: <Widget>[
-                        Text('Video Terkait',
-                            style: TextStyle(
-                                fontSize: 22.0, fontWeight: FontWeight.w700)),
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: widget.video.isNotEmpty
-                              ? Image.asset('assets/pola_tanam.jpeg')
-                              : Text("Tidak ada video"),
+                          child: widget.images.isNotEmpty
+                              ? Column(
+                                  children: <Widget>[
+                                    for (var item in images)
+                                      Image.network(item),
+                                    Divider()
+                                  ],
+                                )
+                              : Text("Tidak ada gambar"),
                         )
                       ],
                     ),
@@ -227,40 +209,38 @@ class _DetailInformasiState extends State<DetailInformasi> {
               ],
             ),
           ),
-          Divider(),
-          // new Padding(padding: new EdgeInsets.only(top: 30.0)),
-          // new Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: <Widget>[
-          //     new RaisedButton(
-          //       padding: const EdgeInsets.all(8.0),
-          //       textColor: Colors.white,
-          //       color: Colors.green,
-          //       onPressed: () => _update(
-          //           context,
-          //           widget.documentID,
-          //           widget.categoryID,
-          //           widget.cover,
-          //           widget.deskripsi,
-          //           widget.images,
-          //           widget.ownerRole,
-          //           widget.title,
-          //           widget.userID,
-          //           widget.video),
-          //       child: new Text("Ubah"),
-          //     ),
-          //     new RaisedButton(
-          //       onPressed: () =>
-          //           _buildConfirmationDialog(context, widget.documentID),
-          //       textColor: Colors.white,
-          //       color: Colors.lightGreen[800],
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: new Text(
-          //         "Hapus",
-          //       ),
-          //     ),
-          //   ],
-          // )
+          // Divider(),
+          Container(
+            margin: EdgeInsets.all(8),
+            child: widget.video.isNotEmpty
+                ? Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: new Container(
+//                    height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width / 1.5,
+//                    color: Colors.greenAccent,
+                          child: Column(
+                            children: <Widget>[
+                              Text('Video Terkait',
+                                  style: TextStyle(
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.w700)),
+                              Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: widget.video.isNotEmpty
+                                    ? Image.asset('assets/pola_tanam.jpeg')
+                                    : Text("Tidak ada video"),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Text(""),
+          ),
         ])));
   }
 
@@ -279,16 +259,16 @@ class _DetailInformasiState extends State<DetailInformasi> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EditInformasiDialog(
-              documentID: documentID,
-              categoryID: categoryID,
-              cover: cover,
-              deskripsi: deskripsi,
-              images: images,
-              ownerRole: ownerRole,
-              title: title,
-              userID: userID,
-              video: video,
-            ),
+          documentID: documentID,
+          categoryID: categoryID,
+          cover: cover,
+          deskripsi: deskripsi,
+          images: images,
+          ownerRole: ownerRole,
+          title: title,
+          userID: userID,
+          video: video,
+        ),
         fullscreenDialog: true,
       ),
     );
@@ -318,10 +298,10 @@ class _DetailInformasiState extends State<DetailInformasi> {
             FlatButton(
                 child: Text('Ya'),
                 onPressed: () => {
-                  InformasiController.removeInformasi(documentID),
-                  Navigator.pop(context),
-                  // Navigator.of(context).pushNamed("/informasi"),
-                }),
+                      InformasiController.removeInformasi(documentID),
+                      Navigator.pop(context),
+                      // Navigator.of(context).pushNamed("/informasi"),
+                    }),
           ],
         );
       },
