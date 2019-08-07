@@ -154,7 +154,7 @@ class _RegisterState extends State<Register> {
         return AlertDialog(
           title: new Text("Konfirmasi kata sandi salah"),
           content: new Text(
-              "Password dan Konfirmasi kata sandi tidak sesuai. Silahkan masukkan kata sandi yang sesuai"),
+              "Kata sandi dan Konfirmasi kata sandi tidak sesuai. Silahkan masukkan kata sandi yang sesuai"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Tutup"),
@@ -232,7 +232,13 @@ class _RegisterState extends State<Register> {
               Icons.mail,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Email tidak boleh kosong' : null,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Email tidak boleh kosong";
+          } else if (!value.contains("@") && !value.contains(".")) {
+            return "Format email salah";
+          }
+        },
         onSaved: (value) => _email = value,
       ),
     );
@@ -251,8 +257,13 @@ class _RegisterState extends State<Register> {
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) =>
-            value.isEmpty ? 'Kata sandi tidak boleh kosong' : null,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Kata sandi tidak boleh kosong";
+          } else if (value.length < 6) {
+            return "Kata sandi harus lebih dari 6 karakter";
+          }
+        },
         onSaved: (value) => _password = value,
       ),
     );
@@ -271,8 +282,13 @@ class _RegisterState extends State<Register> {
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) =>
-            value.isEmpty ? 'Konfirmasi kata sandi tidak boleh kosong' : null,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Konfirmasi kata sandi tidak boleh kosong";
+          } else if (value.length < 6) {
+            return "Konfirmasi kata sandi harus lebih dari 6 karakter";
+          }
+        },
         onSaved: (value) => _confirmPassword = value,
       ),
     );
@@ -280,8 +296,11 @@ class _RegisterState extends State<Register> {
 
   Widget _showSecondaryButton() {
     return new FlatButton(
-      child: new Text('Sudah punya akun? Masuk disini',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      child: new Text('Sudah punya akun? Masuk di sini',
+          style: new TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w300,
+              color: Colors.blueAccent)),
       onPressed: () => _navigateToLogin(),
     );
   }
@@ -295,7 +314,7 @@ class _RegisterState extends State<Register> {
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(5.0)),
-            color: Colors.green,
+            color: Colors.blueAccent,
             child: new Text('DAFTAR',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _validateAndSubmit,

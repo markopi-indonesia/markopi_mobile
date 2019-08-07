@@ -63,10 +63,10 @@ class _LoginState extends State<Login> {
             _errorMessage = e.message;
         });
       }
-    }else {
+    } else {
       setState(() {
-          _isLoading = false;
-        });
+        _isLoading = false;
+      });
     }
   }
 
@@ -101,7 +101,6 @@ class _LoginState extends State<Login> {
     );
   }
 
-
   void _showVerifyEmailSentDialog() {
     showDialog(
       context: context,
@@ -109,8 +108,8 @@ class _LoginState extends State<Login> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Verifikasi Akun Anda"),
-          content:
-              new Text("Link untuk verifikasi akun sudah dikirim ke email anda.\n Silahkan verifikasi akun anda."),
+          content: new Text(
+              "Link untuk verifikasi akun sudah dikirim ke email anda.\n Silahkan verifikasi akun anda."),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Tutup"),
@@ -187,7 +186,13 @@ class _LoginState extends State<Login> {
               Icons.mail,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Email tidak boleh kosong' : null,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Email tidak boleh kosong";
+          } else if (!value.contains("@") && !value.contains(".")) {
+            return "Format email salah";
+          }
+        },
         onSaved: (value) => _email = value,
       ),
     );
@@ -206,7 +211,13 @@ class _LoginState extends State<Login> {
               Icons.lock,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Kata sandi tidak boleh kosong' : null,
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Kata sandi tidak boleh kosong";
+          } else if (value.length < 6) {
+            return "Kata sandi harus lebih dari 6 karakter";
+          }
+        },
         onSaved: (value) => _password = value,
       ),
     );
@@ -214,8 +225,11 @@ class _LoginState extends State<Login> {
 
   Widget _showSecondaryButton() {
     return new FlatButton(
-      child: new Text('Belum punya akun? Daftar disini',
-          style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+      child: new Text('Belum punya akun? Daftar di sini',
+          style: new TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w300,
+              color: Colors.green)),
       onPressed: () => _navigateToRegister(),
     );
   }
