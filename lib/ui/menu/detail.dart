@@ -17,6 +17,7 @@ class DetailInformasi extends StatefulWidget {
   final String ownerRole;
   final String title;
   final String userID;
+  final String nama;
   final String video;
 
   DetailInformasi(
@@ -28,6 +29,7 @@ class DetailInformasi extends StatefulWidget {
       this.ownerRole,
       this.title,
       this.userID,
+      this.nama,
       this.video});
   @override
   State<StatefulWidget> createState() => new _DetailInformasiState();
@@ -121,7 +123,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: <Widget>[
-                                          new Text("by: " + widget.ownerRole,
+                                          new Text("by: " + widget.nama,
                                               style: TextStyle(
                                                   color: Colors.white)),
                                           Spacer(flex: 1),
@@ -171,6 +173,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(widget.deskripsi),
+                  Divider(),
                 ],
               ),
             ),

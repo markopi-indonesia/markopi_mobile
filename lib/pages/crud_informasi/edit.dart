@@ -294,17 +294,27 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Ganti Cover',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          // child: Padding(
+                          //   padding: const EdgeInsets.only(top: 12.0),
+                          //   child: Text('Perbaharui Cover',
+                          //       style: TextStyle(
+                          //           color: Colors.green,
+                          //           fontSize: 20.0,
+                          //           fontWeight: FontWeight.bold)),
+                          // ),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Perbaharui Cover',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showImageDialog,
                           ),
-                          onTap: _showImageDialog,
+                          // onTap: _showImageDialog,
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        new Padding(padding: new EdgeInsets.only(top: 10.0)),
                         new FormField<String>(
                           builder: (FormFieldState<String> state) {
                             return InputDecorator(
@@ -316,7 +326,7 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                               child: new DropdownButtonHideUnderline(
                                 child: new DropdownButton<String>(
                                   isDense: true,
-                                  hint: new Text("Ganti Kategori"),
+                                  hint: new Text("Perbharui Kategori"),
                                   value: _mySelection,
                                   onChanged: (String newValue) {
                                     state.didChange(newValue);
@@ -359,32 +369,36 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                               : null,
                           onSaved: (value) => deskripsi = value,
                         ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Perbaharui Gambar',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Perbaharui Gambar',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: loadAssets,
                           ),
-                          onTap: loadAssets,
+                          // onTap: loadAssets,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Perbaharui Video',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Perbaharui Video',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showVideoDialog,
                           ),
-                          onTap: _showVideoDialog,
+                          // onTap: _showVideoDialog,
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+                            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
                               height: 40.0,
                               child: new RaisedButton(

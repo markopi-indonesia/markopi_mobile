@@ -50,7 +50,7 @@ class _InformasiState extends State<Informasi> {
           .where("userID", isEqualTo: userID)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) return new Center(child: CircularProgressIndicator(),);
         return _buildList(context, snapshot.data.documents);
       },
     );
@@ -66,7 +66,14 @@ class _InformasiState extends State<Informasi> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final informasi = InformasiModel.fromSnapshot(data);
-
+    String nama;
+    Firestore.instance
+        .collection('profile')
+        .where("userID", isEqualTo: informasi.userID)
+        .snapshots()
+        .listen((data) => data.documents.forEach((doc) => [
+              nama = doc["nama"],
+            ]));
     return Padding(
       key: ValueKey(informasi.title),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -78,7 +85,8 @@ class _InformasiState extends State<Informasi> {
         child: new ListTile(
           leading: new CircleAvatar(
             radius: 30.0,
-            backgroundImage: NetworkImage(informasi.cover),
+            child: Icon(Icons.label),
+            backgroundColor: Colors.green,
           ),
           title: new Text(informasi.title),
           onTap: () => _detail(
@@ -91,6 +99,7 @@ class _InformasiState extends State<Informasi> {
               informasi.ownerRole,
               informasi.title,
               informasi.userID,
+              nama,
               informasi.video),
         ),
       ),
@@ -127,21 +136,23 @@ class _InformasiState extends State<Informasi> {
     String ownerRole,
     String title,
     String userID,
+    String nama,
     String video,
   ) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DetailInformasi(
-              documentID: documentID,
-              categoryID: categoryID,
-              cover: cover,
-              deskripsi: deskripsi,
-              images: images,
-              ownerRole: ownerRole,
-              title: title,
-              userID: userID,
-              video: video,
-            ),
+          documentID: documentID,
+          categoryID: categoryID,
+          cover: cover,
+          deskripsi: deskripsi,
+          images: images,
+          ownerRole: ownerRole,
+          title: title,
+          userID: userID,
+          nama: nama,
+          video: video,
+        ),
         fullscreenDialog: true,
       ),
     );

@@ -9,6 +9,7 @@ import 'package:markopi_mobile/models/informasi.dart';
 
 class SubMenu extends StatefulWidget {
   final String title;
+  // final String nama;
   final String documentID;
   final Image image;
 
@@ -16,6 +17,7 @@ class SubMenu extends StatefulWidget {
       {Key key,
       @required this.documentID,
       @required this.title,
+      // @required this.nama,
       @required this.image})
       : super(key: key);
   @override
@@ -29,55 +31,6 @@ class SubMenuState extends State<SubMenu> {
         appBar: Header(),
         drawer: DrawerPage(),
         body: _buildBody(context),
-
-//       body: Row(
-//         children: <Widget>[
-//           Flexible(
-//               flex: 3,
-//               child: Container(
-//                 child: Center(
-//                   child: new FractionallySizedBox(
-//                     widthFactor: 1.0,
-//                     heightFactor: 0.9,
-//                     child: new Container(
-//                       decoration: new BoxDecoration(
-//                         shape: BoxShape.rectangle,
-// //                        color: Colors.orange,
-//                       ),
-//                       child: Column(
-//                         children: <Widget>[
-//                           Text(widget.title,
-//                               style: TextStyle(
-//                                   color: Colors.black,
-//                                   fontSize: 22.0,
-//                                   fontWeight: FontWeight.w900)),
-//                           Padding(
-//                             padding: EdgeInsets.only(top: 20.0),
-//                             child: Column(
-//                               children: <Widget>[
-//                                 Container(
-//                                   height:
-//                                       MediaQuery.of(context).size.height / 3,
-//                                   child: widget.image,
-//                                 ),
-//                                 _buildBody(context)
-//                               ],
-//                             ),
-//                           )
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-// //              Center(
-// //                  child: Text(
-// //                    "Size ${media.width} * ${media.height}",
-// //                    style: Theme.of(context).textTheme.title,
-// //                  )
-// //              ),
-//               )),
-//         ],
-//       ),
         );
   }
 
@@ -90,7 +43,7 @@ class SubMenuState extends State<SubMenu> {
           .where("categoryID", isEqualTo: widget.documentID)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) return new Center(child: CircularProgressIndicator(),);
         return _buildList(context, snapshot.data.documents);
       },
     );
@@ -109,7 +62,14 @@ class SubMenuState extends State<SubMenu> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final informasi = InformasiModel.fromSnapshot(data);
-
+    String nama;
+    Firestore.instance
+        .collection('profile')
+        .where("userID", isEqualTo: informasi.userID)
+        .snapshots()
+        .listen((data) => data.documents.forEach((doc) => [
+              nama = doc["nama"],
+            ]));
     return Padding(
       key: ValueKey(informasi.title),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -136,6 +96,7 @@ class SubMenuState extends State<SubMenu> {
               informasi.ownerRole,
               informasi.title,
               informasi.userID,
+              nama,
               informasi.video),
         ),
       ),
@@ -152,6 +113,7 @@ class SubMenuState extends State<SubMenu> {
     String ownerRole,
     String title,
     String userID,
+    String nama,
     String video,
   ) {
     Navigator.of(context).push(
@@ -165,6 +127,7 @@ class SubMenuState extends State<SubMenu> {
               ownerRole: ownerRole,
               title: title,
               userID: userID,
+              nama: nama,
               video: video,
             ),
         fullscreenDialog: true,
@@ -172,42 +135,3 @@ class SubMenuState extends State<SubMenu> {
     );
   }
 }
-
-// class SubMenuImageAsset extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     AssetImage assetImage = AssetImage('assets/pola_tanam.jpeg');
-//     Image image = Image(image: assetImage);
-//     return image;
-//   }
-// }
-
-// class SubMenuButton extends StatelessWidget {
-//   SubMenuButton({this.name});
-
-//   final String name;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: <Widget>[
-//         Container(
-//             width: 300.0,
-//             height: 50.0,
-//             margin: EdgeInsets.only(top: 30.0),
-//             child: OutlineButton(
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(10.0)),
-//               borderSide: BorderSide(color: Colors.black),
-//               child: Text(this.name, style: TextStyle(color: Colors.redAccent)),
-//               color: Colors.white,
-//               splashColor: Colors.blueGrey,
-//               onPressed: () {
-//                 Navigator.push(context,
-//                     MaterialPageRoute(builder: (context) => DetailMenu()));
-//               },
-//             ))
-//       ],
-//     );
-//   }
-// }
