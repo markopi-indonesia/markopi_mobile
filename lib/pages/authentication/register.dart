@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   String _email;
+  String _nama;
   String _password;
   String _confirmPassword;
   String _errorMessage;
@@ -54,8 +55,8 @@ class _RegisterState extends State<Register> {
             email: _email,
             password: _password,
           );
-          var string = user.email;
-          var nama = string.split("@");
+          // var string = user.email;
+          var nama = _nama;
           ProfileController.addProfile(
               user.uid,
               nama[0],
@@ -178,6 +179,7 @@ class _RegisterState extends State<Register> {
             children: <Widget>[
               _showLogo(),
               _showEmailInput(),
+              _showNamaInput(),
               _showPasswordInput(),
               _showConfirmPasswordInput(),
               _showPrimaryButton(),
@@ -240,6 +242,29 @@ class _RegisterState extends State<Register> {
           }
         },
         onSaved: (value) => _email = value,
+      ),
+    );
+  }
+
+  Widget _showNamaInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+      child: new TextFormField(
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Nama',
+            icon: new Icon(
+              Icons.contacts,
+              color: Colors.grey,
+            )),
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Nama tidak boleh kosong";
+          }
+        },
+        onSaved: (value) => _nama = value,
       ),
     );
   }

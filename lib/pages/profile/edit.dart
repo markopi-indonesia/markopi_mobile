@@ -55,7 +55,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   bool _isLoading;
   Image image;
 
-
   bool _validateAndSave() {
     final form = _formEditProfileKey.currentState;
     if (form.validate()) {
@@ -219,14 +218,18 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                         onTap: _showImageDialog),
                     GestureDetector(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Text('Change Photo',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold)),
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 20),
+                        child: new RaisedButton(
+                          elevation: 5.0,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0)),
+                          color: Colors.green,
+                          child: new Text('Perbaharui Foto',
+                              style: new TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          onPressed: _showImageDialog,
+                        ),
                       ),
-                      onTap: _showImageDialog,
                     ),
                     new TextFormField(
                       decoration: new InputDecoration(
@@ -302,8 +305,8 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                     new TextFormField(
                       maxLines: 6,
                       decoration: new InputDecoration(
-                          hintText: "Bio",
-                          labelText: "Bio",
+                          hintText: "Biodata Diri",
+                          labelText: "Biodata Diri",
                           border: new OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(5.0))),
                       controller: _bioController,
@@ -338,7 +341,11 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
           return SimpleDialog(
             children: <Widget>[
               SimpleDialogOption(
-                child: Text('Choose from Gallery'),
+                child: Text(
+                  'Pilih dari galeri',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green, fontSize: 17),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   _pickImage('Gallery').then((selectedImage) {
@@ -383,7 +390,11 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
               //   },
               // ),
               SimpleDialogOption(
-                child: Text('Cancel'),
+                child: Text(
+                  'Batal',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.red),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },

@@ -6,12 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 
 class AddInformasiDialog extends StatefulWidget {
   @override
@@ -169,9 +169,9 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     });
     images.forEach((f) {
       _repository.saveImage(f).then((url) {
-        if(urls.isEmpty){
-          urls = url;  
-        }else{
+        if (urls.isEmpty) {
+          urls = url;
+        } else {
           urls = urls + ";" + url;
         }
         print(urls);
@@ -207,8 +207,8 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
+        appBar: HeaderBack(),
+        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -230,7 +230,13 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                     padding: new EdgeInsets.all(10.0),
                     child: new Column(
                       children: <Widget>[
-                        new Center(child: Text("Form Tambah Informasi", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),),
+                        new Center(
+                          child: Text(
+                            "Form Tambah Informasi",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20.0),
+                          ),
+                        ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
@@ -245,17 +251,19 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Cover',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Tambah Cover',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showImageDialog,
                           ),
-                          onTap: _showImageDialog,
+                          // onTap: _showImageDialog,
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        new Padding(padding: new EdgeInsets.only(top: 10.0)),
                         new FormField<String>(
                           builder: (FormFieldState<String> state) {
                             return InputDecorator(
@@ -308,32 +316,36 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                               : null,
                           onSaved: (value) => deskripsi = value,
                         ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Gambar',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Tambah Gambar',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: loadAssets,
                           ),
-                          onTap: loadAssets,
+                          // onTap: loadAssets,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Text('Tambah Video',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold)),
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Tambah Video',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showVideoDialog,
                           ),
-                          onTap: _showVideoDialog,
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+                            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
                               height: 40.0,
                               child: new RaisedButton(
@@ -342,7 +354,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
                                 color: Colors.green,
-                                child: new Text('Simpan',
+                                child: new Text('Simpan Informasi',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
                                 onPressed: _validateAndSubmit,

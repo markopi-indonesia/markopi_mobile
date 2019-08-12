@@ -17,6 +17,7 @@ class DetailInformasi extends StatefulWidget {
   final String ownerRole;
   final String title;
   final String userID;
+  final String nama;
   final String video;
 
   DetailInformasi(
@@ -28,6 +29,7 @@ class DetailInformasi extends StatefulWidget {
       this.ownerRole,
       this.title,
       this.userID,
+      this.nama,
       this.video});
 
   @override
@@ -123,7 +125,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: <Widget>[
-                                          new Text("by: " + widget.ownerRole,
+                                          new Text("by: " + widget.nama,
                                               style: TextStyle(
                                                   color: Colors.white)),
                                           Spacer(flex: 1),
@@ -198,7 +200,9 @@ class _DetailInformasiState extends State<DetailInformasi> {
                           child: widget.images.isNotEmpty
                               ? Column(
                                   children: <Widget>[
-                                    for (var item in images) Image.network(item)
+                                    for (var item in images)
+                                      Image.network(item),
+                                    Divider()
                                   ],
                                 )
                               : Text("Tidak ada gambar"),
@@ -207,31 +211,41 @@ class _DetailInformasiState extends State<DetailInformasi> {
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: new Container(
-//                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width / 1.5,
-//                    color: Colors.greenAccent,
-                    child: Column(
-                      children: <Widget>[
-                        Text('Video Terkait',
-                            style: TextStyle(
-                                fontSize: 22.0, fontWeight: FontWeight.w700)),
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: widget.video.isNotEmpty
-                              ? Image.asset('assets/pola_tanam.jpeg')
-                              : Text("Tidak ada video"),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
-          Divider(),
+          // Divider(),
+          Container(
+            margin: EdgeInsets.all(8),
+            child: widget.video.isNotEmpty
+                ? Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: new Container(
+//                    height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width / 1.5,
+//                    color: Colors.greenAccent,
+                          child: Column(
+                            children: <Widget>[
+                              Text('Video Terkait',
+                                  style: TextStyle(
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.w700)),
+                              Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: widget.video.isNotEmpty
+                                    ? Image.asset('assets/pola_tanam.jpeg')
+                                    : Text("Tidak ada video"),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Text(""),
+          ),
           new Padding(padding: new EdgeInsets.only(top: 30.0)),
           new Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -282,16 +296,16 @@ class _DetailInformasiState extends State<DetailInformasi> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EditInformasiDialog(
-              documentID: documentID,
-              categoryID: categoryID,
-              cover: cover,
-              deskripsi: deskripsi,
-              images: images,
-              ownerRole: ownerRole,
-              title: title,
-              userID: userID,
-              video: video,
-            ),
+          documentID: documentID,
+          categoryID: categoryID,
+          cover: cover,
+          deskripsi: deskripsi,
+          images: images,
+          ownerRole: ownerRole,
+          title: title,
+          userID: userID,
+          video: video,
+        ),
         fullscreenDialog: true,
       ),
     );
