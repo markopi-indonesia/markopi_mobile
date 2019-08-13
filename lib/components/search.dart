@@ -99,7 +99,7 @@ class _SearchState extends State<SearchState> {
               if (deskripsi.contains(filter)) {
                 resultArticle.add(Article.fromSnapshot(f));
               } else {
-                resultArticle = [];
+                // resultArticle = [];
                 _error = 'Data tidak ditemukan';
               }
             });
