@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/components/header_back.dart';
@@ -7,6 +6,7 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
 import 'package:markopi_mobile/models/informasi.dart';
 import 'package:markopi_mobile/controllers/informasi_controller.dart';
+import 'package:pinch_zoom_image/pinch_zoom_image.dart';
 
 class DetailInformasi extends StatefulWidget {
   final String documentID;
@@ -198,9 +198,20 @@ class _DetailInformasiState extends State<DetailInformasi> {
                           child: widget.images.isNotEmpty
                               ? Column(
                                   children: <Widget>[
-                                    for (var item in images)
-                                      Image.network(item),
-                                    Divider()
+                                    for (var img in images)
+                                      PinchZoomImage(
+                                        image: Image.network(img),
+                                        zoomedBackgroundColor:
+                                            Color.fromRGBO(240, 240, 240, 1.0),
+                                        hideStatusBarWhileZooming: true,
+                                        onZoomStart: () {
+                                          print('Zoom started');
+                                        },
+                                        onZoomEnd: () {
+                                          print('Zoom finished');
+                                        },
+                                      ),
+                                    Divider(),
                                   ],
                                 )
                               : Text("Tidak ada gambar"),
