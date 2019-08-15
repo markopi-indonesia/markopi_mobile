@@ -4,8 +4,10 @@ import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
 import 'package:markopi_mobile/pages/authentication/login.dart';
 import 'package:markopi_mobile/pages/crud_kategori/index.dart';
+import 'package:markopi_mobile/pages/crud_menu/index.dart';
 import 'package:markopi_mobile/pages/crud_informasi/index.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/pages/video.dart';
 import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/register': (context) => Register(),
         '/login': (context) => Login(),
-        '/category': (context) => Category(),
+        '/video': (context) => AddVideoDialog(),
+        '/menu': (context) => Menu(),
         '/informasi': (context) => Informasi(),
         '/profile': (context) => EditProfileDialog(),
       },
