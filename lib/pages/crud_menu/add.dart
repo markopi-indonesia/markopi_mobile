@@ -138,17 +138,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                         ),
 
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new TextFormField(
-                        //   decoration: new InputDecoration(
-                        //       hintText: "Warna Menu",
-                        //       labelText: "Pilih warna",
-                        //       border: new OutlineInputBorder(
-                        //           borderRadius:
-                        //               new BorderRadius.circular(5.0))),
-                        //   validator: (value) =>
-                        //       value.isEmpty ? 'Warna tidak boleh kosong' : null,
-                        //   onSaved: (value) => _color = value,
-                        // ),
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -170,7 +159,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 },
                               );
                             },
-                            child: const Text('Pilih warna'),
+                            child: const Text('Pilih warna menu'),
                             color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
@@ -178,17 +167,33 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                           ),
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        new TextFormField(
-                          decoration: new InputDecoration(
-                              hintText: "Gambar",
-                              labelText: "Gambar",
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(5.0))),
-                          validator: (value) => value.isEmpty
-                              ? 'Nama Gambar tidak boleh kosong'
-                              : null,
-                          onSaved: (value) => _image = value,
+                        Center(
+                          child: RaisedButton(
+                            elevation: 3.0,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    titlePadding: const EdgeInsets.all(0.0),
+                                    contentPadding: const EdgeInsets.all(0.0),
+                                    content: SingleChildScrollView(
+                                      child: MaterialPicker(
+                                        pickerColor: currentColor,
+                                        onColorChanged: changeColor,
+                                        enableLabel: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text('Pilih ikon menu'),
+                            color: currentColor,
+                            textColor: useWhiteForeground(currentColor)
+                                ? const Color(0xffffffff)
+                                : const Color(0xff000000),
+                          ),
                         ),
                         // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
