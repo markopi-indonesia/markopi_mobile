@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:markopi_mobile/models/menu.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
@@ -134,130 +135,62 @@ class _DrawerPageState extends State<DrawerPage> {
                 ),
               ),
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IJCL0QmHf83DChgw',
-                                title: 'Pola Tanam',
-                                image: Image.asset('assets/pola_tanam.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pola Tanam'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
+              Center(
+                child: new AspectRatio(
+                  aspectRatio: 80 / 100,
+                  child: new Container(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance.collection('menu').snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData)
+                          return CircularProgressIndicator();
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-ILm7heQeRarL3_xK',
-                                title: 'Pohon Pelindung',
-                                image: Image.asset(
-                                    'assets/pohon_pelindung.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pohon Pelindung'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
+                        List<Menu> menuList = [];
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IP4g0fmcAsGdD-Jq',
-                                title: 'Pemupukan',
-                                image: Image.asset('assets/pemupukan_kopi.jpg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pemupukan'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
+                        snapshot.data.documents.forEach((data) {
+                          menuList.add(Menu.fromSnapshot(data));
+                        });
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IRsIeHX8E8SCo4xx',
-                                title: 'Pemangkasan',
-                                image: Image.asset('assets/pemangkasan.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pemangkasan'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
+                        if (!menuList.isEmpty) {
+                          print("menuList not empty");
+                        }
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IWRvsCctVqZKDjkz',
-                                title: 'Sanitasi Kebun',
-                                image: Image.asset('assets/sanitasi.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Sanitasi Kebun'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IYZCDRmrigxLatxA',
-                                title: 'Hama dan Penyakit',
-                                image: Image.asset('assets/hama_penyakit.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Hama dan Penyakit'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-LfbN8xg2hXnvKcwGDCO',
-                                title: 'Pembibitan',
-                                image: Image.asset('assets/pembibitan.jpg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pembibitan'),
-                  leading: Icon(Icons.label_important),
+                        return ListView.builder(
+                            itemExtent: 60.0,
+                            itemCount: menuList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {
+                                  Firestore.instance
+                                      .collection('menu')
+                                      .snapshots()
+                                      .listen((data) => data.documents
+                                          .forEach((doc) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => SubMenu(
+                                                        documentID:
+                                                            doc.documentID,
+                                                        title: doc['name'],
+                                                        image: Image.asset(
+                                                            'assets/pola_tanam.jpeg',
+                                                            fit: BoxFit.cover),
+                                                      )))));
+                                },
+                                child: ListTile(
+                                  title: RichText(
+                                    text: TextSpan(
+                                        text: menuList[index].name,
+                                        style: TextStyle(color: Colors.black)),
+                                  ),
+                                  leading: Icon(Icons.label_important),
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                  ),
                 ),
               ),
 
@@ -353,133 +286,66 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IJCL0QmHf83DChgw',
-                                    title: 'Pola Tanam',
-                                    image: Image.asset('assets/pola_tanam.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pola Tanam'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                  Center(
+                    child: new AspectRatio(
+                      aspectRatio: 80 / 100,
+                      child: new Container(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream:
+                              Firestore.instance.collection('menu').snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData)
+                              return CircularProgressIndicator();
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-ILm7heQeRarL3_xK',
-                                    title: 'Pohon Pelindung',
-                                    image: Image.asset(
-                                        'assets/pohon_pelindung.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pohon Pelindung'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            List<Menu> menuList = [];
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IP4g0fmcAsGdD-Jq',
-                                    title: 'Pemupukan',
-                                    image: Image.asset(
-                                        'assets/pemupukan_kopi.jpg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pemupukan'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            snapshot.data.documents.forEach((data) {
+                              menuList.add(Menu.fromSnapshot(data));
+                            });
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IRsIeHX8E8SCo4xx',
-                                    title: 'Pemangkasan',
-                                    image: Image.asset(
-                                        'assets/pemangkasan.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pemangkasan'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            if (!menuList.isEmpty) {
+                              print("menuList not empty");
+                            }
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IWRvsCctVqZKDjkz',
-                                    title: 'Sanitasi Kebun',
-                                    image: Image.asset('assets/sanitasi.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Sanitasi Kebun'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IYZCDRmrigxLatxA',
-                                    title: 'Hama dan Penyakit',
-                                    image: Image.asset(
-                                        'assets/hama_penyakit.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Hama dan Penyakit'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-LfbN8xg2hXnvKcwGDCO',
-                                    title: 'Pembibitan',
-                                    image: Image.asset('assets/pembibitan.jpg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pembibitan'),
-                      leading: Icon(Icons.label_important),
+                            return ListView.builder(
+                                itemExtent: 60.0,
+                                itemCount: menuList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Firestore.instance
+                                          .collection('menu')
+                                          .snapshots()
+                                          .listen((data) => data.documents
+                                              .forEach((doc) => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SubMenu(
+                                                            documentID:
+                                                                doc.documentID,
+                                                            title: doc['name'],
+                                                            image: Image.asset(
+                                                                'assets/pola_tanam.jpeg',
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          )))));
+                                    },
+                                    child: ListTile(
+                                      title: RichText(
+                                        text: TextSpan(
+                                            text: menuList[index].name,
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ),
+                                      leading: Icon(Icons.label_important),
+                                    ),
+                                  );
+                                });
+                          },
+                        ),
+                      ),
                     ),
                   ),
 
@@ -570,133 +436,66 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   ),
                   // ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IJCL0QmHf83DChgw',
-                                    title: 'Pola Tanam',
-                                    image: Image.asset('assets/pola_tanam.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pola Tanam'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                  Center(
+                    child: new AspectRatio(
+                      aspectRatio: 80 / 100,
+                      child: new Container(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream:
+                              Firestore.instance.collection('menu').snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData)
+                              return CircularProgressIndicator();
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-ILm7heQeRarL3_xK',
-                                    title: 'Pohon Pelindung',
-                                    image: Image.asset(
-                                        'assets/pohon_pelindung.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pohon Pelindung'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            List<Menu> menuList = [];
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IP4g0fmcAsGdD-Jq',
-                                    title: 'Pemupukan',
-                                    image: Image.asset(
-                                        'assets/pemupukan_kopi.jpg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pemupukan'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            snapshot.data.documents.forEach((data) {
+                              menuList.add(Menu.fromSnapshot(data));
+                            });
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IRsIeHX8E8SCo4xx',
-                                    title: 'Pemangkasan',
-                                    image: Image.asset(
-                                        'assets/pemangkasan.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pemangkasan'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
+                            if (!menuList.isEmpty) {
+                              print("menuList not empty");
+                            }
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IWRvsCctVqZKDjkz',
-                                    title: 'Sanitasi Kebun',
-                                    image: Image.asset('assets/sanitasi.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Sanitasi Kebun'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-Lf-IYZCDRmrigxLatxA',
-                                    title: 'Hama dan Penyakit',
-                                    image: Image.asset(
-                                        'assets/hama_penyakit.jpeg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Hama dan Penyakit'),
-                      leading: Icon(Icons.label_important),
-                    ),
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SubMenu(
-                                    documentID: '-LfbN8xg2hXnvKcwGDCO',
-                                    title: 'Pembibitan',
-                                    image: Image.asset('assets/pembibitan.jpg',
-                                        fit: BoxFit.cover),
-                                  )));
-                    },
-                    child: ListTile(
-                      title: Text('Pembibitan'),
-                      leading: Icon(Icons.label_important),
+                            return ListView.builder(
+                                itemExtent: 60.0,
+                                itemCount: menuList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Firestore.instance
+                                          .collection('menu')
+                                          .snapshots()
+                                          .listen((data) => data.documents
+                                              .forEach((doc) => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SubMenu(
+                                                            documentID:
+                                                                doc.documentID,
+                                                            title: doc['name'],
+                                                            image: Image.asset(
+                                                                'assets/pola_tanam.jpeg',
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          )))));
+                                    },
+                                    child: ListTile(
+                                      title: RichText(
+                                        text: TextSpan(
+                                            text: menuList[index].name,
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ),
+                                      leading: Icon(Icons.label_important),
+                                    ),
+                                  );
+                                });
+                          },
+                        ),
+                      ),
                     ),
                   ),
 
