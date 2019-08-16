@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Article {
   String userId;
-  String title;
+  String  title;
   String deskripsi;
   String coverImage;
   String ownerRole;
@@ -52,5 +52,5 @@ class Article {
   }
 
   @override
-  String toString() => "Post<$title:$deskripsi>";
+  String toString() => "Article<$title:$deskripsi>";
 }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => Register(),
         '/login': (context) => Login(),
         '/video': (context) => AddVideoDialog(),
-        '/menu': (context) => Menu(),
+        '/menu': (context) => ManageMenu(),
         '/informasi': (context) => Informasi(),
         '/profile': (context) => EditProfileDialog(),
       },

@@ -10,12 +10,12 @@ import 'package:markopi_mobile/pages/crud_menu/add.dart';
 import 'package:markopi_mobile/pages/crud_menu/edit.dart';
 import 'package:markopi_mobile/pages/crud_submenu/index.dart';
 
-class Menu extends StatefulWidget {
+class ManageMenu extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _MenuState();
 }
 
-class _MenuState extends State<Menu> {
+class _MenuState extends State<ManageMenu> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -54,7 +54,7 @@ class _MenuState extends State<Menu> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final menu = MenuModel.fromSnapshot(data);
+    final menu = Menu.fromSnapshot(data);
 
     return Padding(
       key: ValueKey(menu.name),
