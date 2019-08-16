@@ -6,7 +6,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) { 
     return AppBar(
         iconTheme: new IconThemeData(color: Colors.white),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xff105882),
         title: Center(child:Text('markopi', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
         actions: <Widget>[
           IconButton(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';

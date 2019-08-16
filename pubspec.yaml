@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -85,6 +85,12 @@ flutter:
     - assets/no_user.jpg
     - assets/logo.png
     - assets/splashscreen.png
+    - assets/bag-2.png
+    - assets/coffee-plant-2.png
+    - assets/food-4.png
+    - assets/maps-and-location-2.png
+    - assets/mug-copy.png
+    - assets/plant-3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
