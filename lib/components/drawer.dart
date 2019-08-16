@@ -158,6 +158,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
                         return ListView.builder(
                             // itemExtent: 62.0,
+                            physics: ScrollPhysics(),
                             itemCount: menuList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
@@ -182,7 +183,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                   title: RichText(
                                     text: TextSpan(
                                         text: menuList[index].name,
-                                        style: TextStyle(color: Colors.black)),
+                                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
                                   ),
                                   leading: Icon(Icons.label_important),
                                 ),
@@ -288,7 +289,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
                   Center(
                     child: new AspectRatio(
-                      aspectRatio: 80 / 100,
+                      aspectRatio: 90 / 100,
                       child: new Container(
                         child: StreamBuilder<QuerySnapshot>(
                           stream:
@@ -309,7 +310,9 @@ class _DrawerPageState extends State<DrawerPage> {
                             }
 
                             return ListView.builder(
-                                itemExtent: 60.0,
+                                // itemExtent: 60.0,
+                                // shrinkWrap: true,
+                                physics: ScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
@@ -336,8 +339,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                       title: RichText(
                                         text: TextSpan(
                                             text: menuList[index].name,
-                                            style:
-                                                TextStyle(color: Colors.black)),
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
                                       ),
                                       leading: Icon(Icons.label_important),
                                     ),
@@ -438,7 +440,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
                   Center(
                     child: new AspectRatio(
-                      aspectRatio: 80 / 100,
+                      aspectRatio: 90 / 100,
                       child: new Container(
                         child: StreamBuilder<QuerySnapshot>(
                           stream:
@@ -459,7 +461,8 @@ class _DrawerPageState extends State<DrawerPage> {
                             }
 
                             return ListView.builder(
-                                itemExtent: 60.0,
+                                // itemExtent: 60.0,
+                                physics: ScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
@@ -486,8 +489,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                       title: RichText(
                                         text: TextSpan(
                                             text: menuList[index].name,
-                                            style:
-                                                TextStyle(color: Colors.black)),
+                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
                                       ),
                                       leading: Icon(Icons.label_important),
                                     ),
