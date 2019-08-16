@@ -160,7 +160,8 @@ class _DrawerPageState extends State<DrawerPage> {
                           builder: (context) => SubMenu(
                                 documentID: '-Lf-ILm7heQeRarL3_xK',
                                 title: 'Pohon Pelindung',
-                                image: Image.asset('assets/pohon_pelindung.jpeg',
+                                image: Image.asset(
+                                    'assets/pohon_pelindung.jpeg',
                                     fit: BoxFit.cover),
                               )));
                 },
@@ -287,219 +288,452 @@ class _DrawerPageState extends State<DrawerPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return Drawer(
-            child: new ListView(
-              children: <Widget>[
+          if (_userId == "nAXShDzUG8UyJliQ4qim6xmrfXn2") {
+            return Drawer(
+              child: new ListView(
+                children: <Widget>[
 //            header
-                new UserAccountsDrawerHeader(
-                  accountName: Text(
-                    nama,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  accountEmail: Text(
-                    email,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  currentAccountPicture: GestureDetector(
-                    child: new CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      backgroundImage: image.isNotEmpty
-                          ? NetworkImage(image)
-                          : AssetImage('assets/no_user.jpg'),
+                  new UserAccountsDrawerHeader(
+                    accountName: Text(
+                      nama,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    accountEmail: Text(
+                      email,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    currentAccountPicture: GestureDetector(
+                      child: new CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        backgroundImage: image.isNotEmpty
+                            ? NetworkImage(image)
+                            : AssetImage('assets/no_user.jpg'),
+                      ),
+                    ),
+                    decoration: new BoxDecoration(
+                      // borderRadius: BorderRadius.circular(100.0),
+                      image: DecorationImage(
+                          image: AssetImage('assets/sanitasi.jpeg'),
+                          fit: BoxFit.cover),
                     ),
                   ),
-                  decoration: new BoxDecoration(
-                    // borderRadius: BorderRadius.circular(100.0),
-                    image: DecorationImage(
-                        image: AssetImage('assets/sanitasi.jpeg'),
-                        fit: BoxFit.cover),
-                  ),
-                ),
 
 //            body
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/home");
-                  },
-                  child: ListTile(
-                    title: Text('Beranda'),
-                    leading: Icon(Icons.home),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/home");
+                    },
+                    child: ListTile(
+                      title: Text('Beranda'),
+                      leading: Icon(Icons.home),
+                    ),
                   ),
-                ),
 
-                // InkWell(
-                //   onTap: () {
-                //     Navigator.pop(context);
-                //     Navigator.of(context).pushNamed("/category");
-                //   },
-                //   child: ListTile(
-                //     title: Text('Kategori'),
-                //     leading: Icon(Icons.category),
-                //   ),
-                // ),
-
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IJCL0QmHf83DChgw',
-                                title: 'Pola Tanam',
-                                image: Image.asset('assets/pola_tanam.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pola Tanam'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-ILm7heQeRarL3_xK',
-                                title: 'Pohon Pelindung',
-                                image: Image.asset('assets/pohon_pelindung.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pohon Pelindung'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IP4g0fmcAsGdD-Jq',
-                                title: 'Pemupukan',
-                                image: Image.asset('assets/pemupukan_kopi.jpg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pemupukan'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IRsIeHX8E8SCo4xx',
-                                title: 'Pemangkasan',
-                                image: Image.asset('assets/pemangkasan.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pemangkasan'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IWRvsCctVqZKDjkz',
-                                title: 'Sanitasi Kebun',
-                                image: Image.asset('assets/sanitasi.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Sanitasi Kebun'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-Lf-IYZCDRmrigxLatxA',
-                                title: 'Hama dan Penyakit',
-                                image: Image.asset('assets/hama_penyakit.jpeg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Hama dan Penyakit'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SubMenu(
-                                documentID: '-LfbN8xg2hXnvKcwGDCO',
-                                title: 'Pembibitan',
-                                image: Image.asset('assets/pembibitan.jpg',
-                                    fit: BoxFit.cover),
-                              )));
-                },
-                child: ListTile(
-                  title: Text('Pembibitan'),
-                  leading: Icon(Icons.label_important),
-                ),
-              ),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/informasi");
-                  },
-                  child: ListTile(
-                    title: Text('Informasiku'),
-                    leading: Icon(Icons.info),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/video");
+                    },
+                    child: ListTile(
+                      title: Text('Tambah Video'),
+                      leading: Icon(Icons.videocam),
+                    ),
                   ),
-                ),
 
-                InkWell(
-                  onTap: () => _navigateToEditProfile(context, _userId),
-                  child: ListTile(
-                    title: Text('Ubah Profil'),
-                    leading: Icon(Icons.settings),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/menu");
+                    },
+                    child: ListTile(
+                      title: Text('Menu'),
+                      leading: Icon(Icons.more),
+                    ),
                   ),
-                ),
 
-                InkWell(
-                  onTap: () {
-                    this._signOut();
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed("/home");
-                  },
-                  child: ListTile(
-                    title: Text('Logout'),
-                    leading: Icon(Icons.exit_to_app),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IJCL0QmHf83DChgw',
+                                    title: 'Pola Tanam',
+                                    image: Image.asset('assets/pola_tanam.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pola Tanam'),
+                      leading: Icon(Icons.label_important),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-ILm7heQeRarL3_xK',
+                                    title: 'Pohon Pelindung',
+                                    image: Image.asset(
+                                        'assets/pohon_pelindung.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pohon Pelindung'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IP4g0fmcAsGdD-Jq',
+                                    title: 'Pemupukan',
+                                    image: Image.asset(
+                                        'assets/pemupukan_kopi.jpg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pemupukan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IRsIeHX8E8SCo4xx',
+                                    title: 'Pemangkasan',
+                                    image: Image.asset(
+                                        'assets/pemangkasan.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pemangkasan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IWRvsCctVqZKDjkz',
+                                    title: 'Sanitasi Kebun',
+                                    image: Image.asset('assets/sanitasi.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Sanitasi Kebun'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IYZCDRmrigxLatxA',
+                                    title: 'Hama dan Penyakit',
+                                    image: Image.asset(
+                                        'assets/hama_penyakit.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Hama dan Penyakit'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-LfbN8xg2hXnvKcwGDCO',
+                                    title: 'Pembibitan',
+                                    image: Image.asset('assets/pembibitan.jpg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pembibitan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/informasi");
+                    },
+                    child: ListTile(
+                      title: Text('Informasiku'),
+                      leading: Icon(Icons.info),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () => _navigateToEditProfile(context, _userId),
+                    child: ListTile(
+                      title: Text('Ubah Profil'),
+                      leading: Icon(Icons.settings),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      this._signOut();
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/home");
+                    },
+                    child: ListTile(
+                      title: Text('Logout'),
+                      leading: Icon(Icons.exit_to_app),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Drawer(
+              child: new ListView(
+                children: <Widget>[
+//            header
+                  new UserAccountsDrawerHeader(
+                    accountName: Text(
+                      nama,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    accountEmail: Text(
+                      email,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    currentAccountPicture: GestureDetector(
+                      child: new CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        backgroundImage: image.isNotEmpty
+                            ? NetworkImage(image)
+                            : AssetImage('assets/no_user.jpg'),
+                      ),
+                    ),
+                    decoration: new BoxDecoration(
+                      // borderRadius: BorderRadius.circular(100.0),
+                      image: DecorationImage(
+                          image: AssetImage('assets/sanitasi.jpeg'),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+
+//            body
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/home");
+                    },
+                    child: ListTile(
+                      title: Text('Beranda'),
+                      leading: Icon(Icons.home),
+                    ),
+                  ),
+
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/category");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Kategori'),
+                  //     leading: Icon(Icons.category),
+                  //   ),
+                  // ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IJCL0QmHf83DChgw',
+                                    title: 'Pola Tanam',
+                                    image: Image.asset('assets/pola_tanam.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pola Tanam'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-ILm7heQeRarL3_xK',
+                                    title: 'Pohon Pelindung',
+                                    image: Image.asset(
+                                        'assets/pohon_pelindung.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pohon Pelindung'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IP4g0fmcAsGdD-Jq',
+                                    title: 'Pemupukan',
+                                    image: Image.asset(
+                                        'assets/pemupukan_kopi.jpg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pemupukan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IRsIeHX8E8SCo4xx',
+                                    title: 'Pemangkasan',
+                                    image: Image.asset(
+                                        'assets/pemangkasan.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pemangkasan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IWRvsCctVqZKDjkz',
+                                    title: 'Sanitasi Kebun',
+                                    image: Image.asset('assets/sanitasi.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Sanitasi Kebun'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-Lf-IYZCDRmrigxLatxA',
+                                    title: 'Hama dan Penyakit',
+                                    image: Image.asset(
+                                        'assets/hama_penyakit.jpeg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Hama dan Penyakit'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubMenu(
+                                    documentID: '-LfbN8xg2hXnvKcwGDCO',
+                                    title: 'Pembibitan',
+                                    image: Image.asset('assets/pembibitan.jpg',
+                                        fit: BoxFit.cover),
+                                  )));
+                    },
+                    child: ListTile(
+                      title: Text('Pembibitan'),
+                      leading: Icon(Icons.label_important),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/informasi");
+                    },
+                    child: ListTile(
+                      title: Text('Informasiku'),
+                      leading: Icon(Icons.info),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () => _navigateToEditProfile(context, _userId),
+                    child: ListTile(
+                      title: Text('Ubah Profil'),
+                      leading: Icon(Icons.settings),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      this._signOut();
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/home");
+                    },
+                    child: ListTile(
+                      title: Text('Logout'),
+                      leading: Icon(Icons.exit_to_app),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         } else
           return _buildWaitingScreen();
         break;
