@@ -137,7 +137,7 @@ class _DrawerPageState extends State<DrawerPage> {
 
               Center(
                 child: new AspectRatio(
-                  aspectRatio: 80 / 100,
+                  aspectRatio: 90 / 100,
                   child: new Container(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance.collection('menu').snapshots(),
@@ -157,7 +157,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         }
 
                         return ListView.builder(
-                            itemExtent: 60.0,
+                            // itemExtent: 62.0,
                             itemCount: menuList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(

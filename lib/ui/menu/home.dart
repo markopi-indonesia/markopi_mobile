@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/components/main_drawer.dart';
+import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/models/menu.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
         appBar: Header(),
-        drawer: MainDrawer(),
+        drawer: DrawerPage(),
         body: Container(
           child: StreamBuilder<QuerySnapshot>(
             stream: Firestore.instance.collection('menu').snapshots(),
