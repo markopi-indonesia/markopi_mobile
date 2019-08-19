@@ -175,7 +175,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                                             doc.documentID,
                                                         title: doc['name'],
                                                         image: Image.asset(
-                                                            'assets/pola_tanam.jpeg',
+                                                            doc['image'],
                                                             fit: BoxFit.cover),
                                                       )))));
                                 },
@@ -330,7 +330,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                                                 doc.documentID,
                                                             title: doc['name'],
                                                             image: Image.asset(
-                                                                'assets/pola_tanam.jpeg',
+                                                                doc['image'],
                                                                 fit: BoxFit
                                                                     .cover),
                                                           )))));
@@ -480,7 +480,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                                                 doc.documentID,
                                                             title: doc['name'],
                                                             image: Image.asset(
-                                                                'assets/pola_tanam.jpeg',
+                                                                doc['image'],
                                                                 fit: BoxFit
                                                                     .cover),
                                                           )))));
