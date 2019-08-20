@@ -172,6 +172,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.54.0"
+  googleapis_auth:
+    dependency: "direct main"
+    description:
+      name: googleapis_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.10"
   http:
     dependency: transitive
     description:

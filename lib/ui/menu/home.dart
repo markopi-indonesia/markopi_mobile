@@ -38,19 +38,7 @@ class HomePage extends StatelessWidget {
                     crossAxisCount: 2),
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
-                    onTap: () {
-                      Firestore.instance.collection('menu').snapshots().listen(
-                          (data) =>
-                              data.documents.forEach((doc) => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SubMenu(
-                                            documentID: doc.documentID,
-                                            title: doc['name'],
-                                            image: Image.asset(doc['image'],
-                                                fit: BoxFit.cover),
-                                          )))));
-                    },
+                    onTap: () => _navigateSubMenu(context, listMenu[index].reference.documentID, listMenu[index].color),
                     child: CardMenu(
                         name: listMenu[index].name,
                         image: Image.asset(listMenu[index].image),
@@ -61,6 +49,19 @@ class HomePage extends StatelessWidget {
             },
           ),
         ));
+  }
+
+  void _navigateSubMenu(
+      BuildContext context, String documentID, String _color) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SubMenu(
+          menuId: documentID,
+          color: _color,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }
 
