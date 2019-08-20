@@ -1,11 +1,12 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:markopi_mobile/components/header_back.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 
 class AddMenuDialog extends StatefulWidget {
   @override
@@ -81,6 +82,19 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
       "image": _image
     });
     print(docRef.documentID);
+  }
+
+  Future<List<IconMenu>> loadIconsBuilder() async {
+    return await rootBundle
+        .loadString('icon.json')
+        .then((String data) => json.decode(data) as List)
+        .then((List value) {
+      List<IconMenu> listIcons = [];
+
+      value.forEach((index) => listIcons.add(IconMenu.getJsonParser(index)));
+
+      return listIcons;
+    });
   }
 
   @override
@@ -166,25 +180,38 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
                             onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    titlePadding: const EdgeInsets.all(0.0),
-                                    contentPadding: const EdgeInsets.all(0.0),
-                                    content: SingleChildScrollView(
-                                      child: MaterialPicker(
-                                        pickerColor: currentColor,
-                                        onColorChanged: changeColor,
-                                        enableLabel: true,
-                                      ),
-                                    ),
-                                  );
+                              new FutureBuilder(
+                                future: loadIconsBuilder(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<IconMenu>> snapshot) {
+                                  if (snapshot.hasError)
+                                    return new Text('Error ${snapshot.error}');
+
+                                  GridView.builder(
+                                      itemCount: snapshot.data.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return InkWell(
+                                          onTap: () {},
+                                          child: Card(
+                                            elevation: 8.0,
+                                            margin: EdgeInsets.all(14.0),
+                                            clipBehavior: Clip.antiAlias,
+                                            color: Color(0xffE3EFFF),
+                                            child: Container(
+                                              child: Image.asset(snapshot.data[index].name),
+                                            ),
+                                          ),
+                                        );
+                                      });
                                 },
                               );
                             },
@@ -218,5 +245,17 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
             );
           }),
     );
+  }
+}
+
+class IconMenu {
+  String name;
+
+  IconMenu(this.name);
+
+  static IconMenu getJsonParser(dynamic json) {
+    String name = json['name'];
+
+    return new IconMenu(name);
   }
 }

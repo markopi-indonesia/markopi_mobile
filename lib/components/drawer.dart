@@ -152,7 +152,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           menuList.add(Menu.fromSnapshot(data));
                         });
 
-                        if (!menuList.isEmpty) {
+                        if (menuList.isNotEmpty) {
                           print("menuList not empty");
                         }
 
@@ -305,7 +305,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               menuList.add(Menu.fromSnapshot(data));
                             });
 
-                            if (!menuList.isEmpty) {
+                            if (menuList.isNotEmpty) {
                               print("menuList not empty");
                             }
 
