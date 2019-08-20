@@ -195,6 +195,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         key: _formEditProfileKey,
         child: ListView(
           children: <Widget>[
+            
             new Container(
                 padding: new EdgeInsets.all(10.0),
                 child: new Column(
