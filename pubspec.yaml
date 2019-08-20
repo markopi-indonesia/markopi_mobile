@@ -87,12 +87,12 @@ flutter:
     - assets/no_user.jpg
     - assets/logo.png
     - assets/splashscreen.png
-    - assets/bag-2.png
-    - assets/coffee-plant-2.png
-    - assets/food-4.png
-    - assets/maps-and-location-2.png
-    - assets/mug-copy.png
-    - assets/plant-3.png
+    - assets/menu_icon/bag-2.png
+    - assets/menu_icon/coffee-plant-2.png
+    - assets/menu_icon/food-4.png
+    - assets/menu_icon/maps-and-location-2.png
+    - assets/menu_icon/mug-copy.png
+    - assets/menu_icon/plant-3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
