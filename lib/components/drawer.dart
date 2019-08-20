@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 //Self import
@@ -516,7 +517,7 @@ class _DrawerPageState extends State<DrawerPage> {
     Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EditProfileDialog(
+        builder: (context) => IndexProfileDialog(
           userID: userID,
         ),
         fullscreenDialog: true,

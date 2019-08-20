@@ -5,7 +5,7 @@ import 'package:markopi_mobile/pages/authentication/register.dart';
 import 'package:markopi_mobile/pages/authentication/login.dart';
 import 'package:markopi_mobile/pages/crud_kategori/index.dart';
 import 'package:markopi_mobile/pages/crud_informasi/index.dart';
-import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/category': (context) => Category(),
         '/informasi': (context) => Informasi(),
-        '/profile': (context) => EditProfileDialog(),
+        '/profile': (context) => IndexProfileDialog(),
       },
     );
   }
@@ -65,8 +65,11 @@ TextTheme _buildShrineTextTheme(TextTheme base) {
     ),
   ).apply(
     fontFamily: 'Rubik',
+
     displayColor: kShrineAltBlack,
     bodyColor: kShrineAltBlack,
   );
+
+  
 }
 
