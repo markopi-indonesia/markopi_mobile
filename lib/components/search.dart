@@ -7,7 +7,6 @@ import 'package:markopi_mobile/models/article_model.dart';
 import 'package:markopi_mobile/ui/menu/detail.dart';
 
 class SearchState extends StatefulWidget {
-
   final String documentID;
 
   const SearchState({Key key, this.documentID}) : super(key: key);
@@ -121,27 +120,40 @@ class _SearchState extends State<SearchState> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   onTap: () {
+                    String nama;
                     Firestore.instance
                         .collection('informasi')
                         .where("title", isEqualTo: resultArticle[index].title)
                         .snapshots()
-                        .listen((data) => data.documents
-                            .forEach(
-                              (doc) => Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => DetailInformasi(
-                                  categoryID: doc["categoryID"],
-                                  title: doc["title"],
-                                  cover: doc["cover"],
-                                  deskripsi: doc["deskripsi"],
-                                  documentID: doc.documentID,
-                                  images: doc["images"],
-                                  ownerRole: doc["ownerRole"],
-                                  userID: doc["userID"],
-                                  video: doc["video"],
-                                )
-                              ))
-                              )
-                            );
+                        .listen((data) => data.documents.forEach((doc) =>
+                            Firestore.instance
+                                .collection('profile')
+                                .where("userID", isEqualTo: doc["userID"])
+                                .snapshots()
+                                .listen(
+                                    (data) => data.documents.forEach((coba) => [
+                                          nama = coba["nama"],
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailInformasi(
+                                                        categoryID:
+                                                            doc["categoryID"],
+                                                        title: doc["title"],
+                                                        cover: doc["cover"],
+                                                        deskripsi:
+                                                            doc["deskripsi"],
+                                                        documentID:
+                                                            doc.documentID,
+                                                        images: doc["images"],
+                                                        ownerRole:
+                                                            doc["ownerRole"],
+                                                        userID: doc["userID"],
+                                                        nama: nama,
+                                                        video: doc["video"],
+                                                      )))
+                                        ]))));
                   },
                   leading: new CircleAvatar(
                       child: Icon(Icons.library_books),

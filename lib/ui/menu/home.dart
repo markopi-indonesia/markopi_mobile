@@ -1,69 +1,65 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:markopi_mobile/components/drawer.dart';
+import 'package:markopi_mobile/models/menu.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 // Self import
 import 'package:markopi_mobile/components/header.dart';
-import 'package:markopi_mobile/components/drawer.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: Header(),
-      drawer: DrawerPage(),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            WelcomeText(),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                padding: EdgeInsets.only(top: 22.0),
-                childAspectRatio: 8.0 / 10.0, //size card
-                children: <Widget>[
-                  new CardMenu(
-                      name: 'Pola Tanam',
-                      documentID: '-Lf-IJCL0QmHf83DChgw',
-                      image: Image.asset('assets/pola_tanam.jpeg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Pohon Pelindung',
-                      documentID: '-Lf-ILm7heQeRarL3_xK',
-                      image: Image.asset('assets/pohon_pelindung.jpeg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Pemupukan',
-                      documentID: '-Lf-IP4g0fmcAsGdD-Jq',
-                      image: Image.asset('assets/pemupukan_kopi.jpg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Pemangkasan',
-                      documentID: '-Lf-IRsIeHX8E8SCo4xx',
-                      image: Image.asset('assets/pemangkasan.jpeg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Sanitasi Kebun',
-                      documentID: '-Lf-IWRvsCctVqZKDjkz',
-                      image: Image.asset('assets/sanitasi.jpeg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Hama dan Penyakit',
-                      documentID: '-Lf-IYZCDRmrigxLatxA',
-                      image: Image.asset('assets/hama_penyakit.jpeg',
-                          fit: BoxFit.cover)),
-                  new CardMenu(
-                      name: 'Pembibitan',
-                      documentID: '-LfbN8xg2hXnvKcwGDCO',
-                      image: Image.asset('assets/pembibitan.jpg',
-                          fit: BoxFit.cover)),
-                ],
-              ),
-            ),
-          ],
+        appBar: Header(),
+        drawer: DrawerPage(),
+        body: Container(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: Firestore.instance.collection('menu').snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) return CircularProgressIndicator();
+
+              List<Menu> listMenu = [];
+
+              snapshot.data.documents
+                  .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
+
+              if (listMenu.isEmpty) {
+                print('menu is empty');
+              }
+
+              return GridView.builder(
+                padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 20.0),
+                shrinkWrap: true,
+                itemCount: listMenu.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () => _navigateSubMenu(context, listMenu[index].reference.documentID, listMenu[index].color),
+                    child: CardMenu(
+                        name: listMenu[index].name,
+                        image: Image.asset(listMenu[index].image),
+                        documentID: listMenu[index].reference.documentID),
+                  );
+                },
+              );
+            },
+          ),
+        ));
+  }
+
+  void _navigateSubMenu(
+      BuildContext context, String documentID, String _color) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SubMenu(
+          menuId: documentID,
+          color: _color,
         ),
+        fullscreenDialog: true,
       ),
     );
   }
@@ -94,35 +90,26 @@ class CardMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SubMenu(
-                        documentID: documentID,
-                        title: name,
-                        image: image,
-                      )));
-//        print(image.toString());
-        },
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              AspectRatio(
-                aspectRatio: 12.0 / 11.0,
-                child: this.image,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 8.0),
-                child: Text(this.name,
-                    style:
-                        TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-              ),
-            ],
+    var card = new Card(
+      elevation: 8.0,
+      margin: EdgeInsets.all(14.0),
+      clipBehavior: Clip.antiAlias,
+      color: Color(0xffE3EFFF),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 40.0),
+            child: this.image,
           ),
-        ));
+          Padding(
+            padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 10.0),
+            child: Text(this.name,
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+          ),
+        ],
+      ),
+    );
+    return card;
   }
 }

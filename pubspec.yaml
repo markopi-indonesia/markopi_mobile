@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -38,7 +38,10 @@ dependencies:
   multi_image_picker: ^4.3.2
   video_player: ^0.10.1
   chewie: ^0.9.7
-  photo_view: ^0.4.2
+  flutter_colorpicker: ^0.2.6
+  googleapis: ^0.54.0
+  googleapis_auth: ^0.2.10
+  pinch_zoom_image: "^0.2.5"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -85,6 +88,12 @@ flutter:
     - assets/no_user.jpg
     - assets/logo.png
     - assets/splashscreen.png
+    - assets/menu_icon/bag-2.png
+    - assets/menu_icon/coffee-plant-2.png
+    - assets/menu_icon/food-4.png
+    - assets/menu_icon/maps-and-location-2.png
+    - assets/menu_icon/mug-copy.png
+    - assets/menu_icon/plant-3.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
