@@ -76,7 +76,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                       child: new Container(
                         height: MediaQuery.of(context).size.height / 4,
                         decoration: new BoxDecoration(
-                          color: Color(0xFF1C8134),
+                          color: Color(0xFFF0F6FE),
                           shape: BoxShape.rectangle,
                           borderRadius: new BorderRadius.circular(8.0),
                           boxShadow: <BoxShadow>[

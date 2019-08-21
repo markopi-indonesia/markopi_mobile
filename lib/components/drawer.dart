@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/models/menu.dart';
-import 'package:markopi_mobile/pages/profile/edit.dart';
 import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
