@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
               }
 
               return GridView.builder(
-                padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 20.0),
+                padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 60.0),
                 shrinkWrap: true,
                 itemCount: listMenu.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

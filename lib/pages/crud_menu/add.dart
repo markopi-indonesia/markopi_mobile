@@ -23,9 +23,15 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
   bool _isIos;
   bool _isLoading;
 
+  List<AssetImage> listIcons = [];
+
   Color currentColor = Colors.amber;
 
+  String currentAsset = "";
+
   void changeColor(Color color) => setState(() => currentColor = color);
+
+  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
 
   bool _validateAndSave() {
     final form = _formAddMenuKey.currentState;
@@ -77,23 +83,21 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   void addMenu() async {
     final docRef = await Firestore.instance.collection('menu').add({
-      'name': _name,
-      'color': currentColor.value.toString(),
-      "image": _image
+      'name'  : _name,
+      'color' : currentColor.value.toString(),
+      "image" : currentAsset
     });
     print(docRef.documentID);
   }
 
-  Future<List<IconMenu>> loadIconsBuilder() async {
-    return await rootBundle
-        .loadString('icon.json')
-        .then((String data) => json.decode(data) as List)
-        .then((List value) {
-      List<IconMenu> listIcons = [];
-
-      value.forEach((index) => listIcons.add(IconMenu.getJsonParser(index)));
-
-      return listIcons;
+  void _loadIconAsset() {
+    setState(() {
+      listIcons.add(AssetImage('assets/menu_icon/bag-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/coffee-plant-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/food-4.png'));
+      listIcons.add(AssetImage('assets/menu_icon/maps-and-location-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/mug-copy.png'));
+      listIcons.add(AssetImage('assets/menu_icon/plant-3.png'));
     });
   }
 
@@ -101,6 +105,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
   void initState() {
     _errorMessage = "";
     _isLoading = false;
+    _loadIconAsset();
     super.initState();
   }
 
@@ -185,35 +190,54 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                           child: RaisedButton(
                             elevation: 3.0,
                             onPressed: () {
-                              new FutureBuilder(
-                                future: loadIconsBuilder(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<List<IconMenu>> snapshot) {
-                                  if (snapshot.hasError)
-                                    return new Text('Error ${snapshot.error}');
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titlePadding: const EdgeInsets.all(0.0),
+                                      contentPadding: const EdgeInsets.all(0.0),
+                                      content: AspectRatio(
+                                        aspectRatio: 12 / 20,
+                                        child: GridView.builder(
+                                            padding: EdgeInsets.fromLTRB(
+                                                8.0, 20.0, 8.0, 20.0),
+                                            itemCount: listIcons.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  _setIconMenu(listIcons[index]
+                                                      .assetName.toString());
 
-                                  GridView.builder(
-                                      itemCount: snapshot.data.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          onTap: () {},
-                                          child: Card(
-                                            elevation: 8.0,
-                                            margin: EdgeInsets.all(14.0),
-                                            clipBehavior: Clip.antiAlias,
-                                            color: Color(0xffE3EFFF),
-                                            child: Container(
-                                              child: Image.asset(snapshot.data[index].name),
-                                            ),
-                                          ),
-                                        );
-                                      });
-                                },
-                              );
+                                                  print("=== ${currentAsset}");
+                                                },
+                                                child: Card(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  color: Color(0xffE3EFFF),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 8.0),
+                                                          child: Image(
+                                                            image: listIcons[index],
+                                                          ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    );
+                                  });
                             },
                             child: const Text('Pilih ikon menu'),
                             color: currentColor,
