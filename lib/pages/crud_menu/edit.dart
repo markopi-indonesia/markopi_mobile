@@ -26,7 +26,7 @@ class EditMenuDialog extends StatefulWidget {
 }
 
 class _EditMenuDialogState extends State<EditMenuDialog> {
-  final _formAddMenuKey = GlobalKey<FormState>();
+  final _formEditMenuKey = GlobalKey<FormState>();
   String _name;
   String _docId;
   String _color;
@@ -36,12 +36,17 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   bool _isIos;
   bool _isLoading;
 
-  Color currentColor = Colors.amber;
+  List<AssetImage> listIcons = [];
+  String currentAsset = "";
+
+  Color currentColor;
+
+  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
 
   void changeColor(Color color) => setState(() => currentColor = color);
 
   bool _validateAndSave() {
-    final form = _formAddMenuKey.currentState;
+    final form = _formEditMenuKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -89,18 +94,41 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   }
 
   void addMenu() async {
-    final docRef = await Firestore.instance.collection('menu').add({
+    print("#### ${_name}");
+    final docRef = await Firestore.instance
+        .collection('menu')
+        .document(widget.docId)
+        .updateData({
       'name': _name,
       'color': currentColor.value.toString(),
-      "image": _image
+      "image": currentAsset
     });
-    print(docRef.documentID);
+  }
+
+  void _loadIconAsset() {
+    setState(() {
+      listIcons.add(AssetImage('assets/menu_icon/bag-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/coffee-plant-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/food-4.png'));
+      listIcons.add(AssetImage('assets/menu_icon/maps-and-location-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/mug-copy.png'));
+      listIcons.add(AssetImage('assets/menu_icon/plant-3.png'));
+    });
   }
 
   @override
   void initState() {
     _errorMessage = "";
     _isLoading = false;
+    setState(() {
+      _docId = widget.docId;
+      _name = widget.name;
+      _color = widget.color;
+      _image = widget.image;
+      currentAsset = widget.image;
+      currentColor = Color(int.parse(widget.color));
+    });
+    _loadIconAsset();
     super.initState();
   }
 
@@ -119,7 +147,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
 
   Widget _showForm() {
     return new Form(
-      key: _formAddMenuKey,
+      key: _formEditMenuKey,
       autovalidate: false,
       child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection('menu').snapshots(),
@@ -132,7 +160,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                       children: <Widget>[
                         new Center(
                           child: Text(
-                            "Form Tambah Menu",
+                            "Form Edit Menu",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
@@ -140,29 +168,19 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
-                              hintText: "Nama Menu",
+                              hintText: "Nama Baru Menu",
                               labelText: "Nama Menu",
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(5.0))),
-                          validator: (value) => value.isEmpty
-                              ? 'Nama menu tidak boleh kosong'
-                              : null,
+                          initialValue: widget.name,
+                          validator: (value) =>
+                              value.isEmpty ? 'Judul tidak boleh kosong' : null,
                           onSaved: (value) => _name = value,
                         ),
 
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new TextFormField(
-                        //   decoration: new InputDecoration(
-                        //       hintText: "Warna Menu",
-                        //       labelText: "Pilih warna",
-                        //       border: new OutlineInputBorder(
-                        //           borderRadius:
-                        //               new BorderRadius.circular(5.0))),
-                        //   validator: (value) =>
-                        //       value.isEmpty ? 'Warna tidak boleh kosong' : null,
-                        //   onSaved: (value) => _color = value,
-                        // ),
+
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -191,45 +209,71 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
+
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
                             onPressed: () {
                               showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Pilih warna'),
-                                    content: SingleChildScrollView(
-                                      child: BlockPicker(
-                                        pickerColor: currentColor,
-                                        onColorChanged: changeColor,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titlePadding: const EdgeInsets.all(0.0),
+                                      contentPadding: const EdgeInsets.all(0.0),
+                                      content: AspectRatio(
+                                        aspectRatio: 12 / 20,
+                                        child: GridView.builder(
+                                            padding: EdgeInsets.fromLTRB(
+                                                8.0, 20.0, 8.0, 20.0),
+                                            itemCount: listIcons.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  _setIconMenu(listIcons[index]
+                                                      .assetName
+                                                      .toString());
+
+                                                  print("=== ${currentAsset}");
+                                                },
+                                                child: Card(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  color: Color(0xffE3EFFF),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 8.0),
+                                                        child: Image(
+                                                          image:
+                                                              listIcons[index],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    );
+                                  });
                             },
-                            child: const Text('Pilih warna'),
+                            child: const Text('Pilih ikon menu'),
                             color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
                                 : const Color(0xff000000),
                           ),
                         ),
+
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        new TextFormField(
-                          decoration: new InputDecoration(
-                              hintText: "Gambar",
-                              labelText: "Gambar",
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(5.0))),
-                          validator: (value) => value.isEmpty
-                              ? 'Nama Gambar tidak boleh kosong'
-                              : null,
-                          onSaved: (value) => _image = value,
-                        ),
                         // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),

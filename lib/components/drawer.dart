@@ -152,7 +152,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           menuList.add(Menu.fromSnapshot(data));
                         });
 
-                        if (!menuList.isEmpty) {
+                        if (menuList.isNotEmpty) {
                           print("menuList not empty");
                         }
 
@@ -294,14 +294,14 @@ class _DrawerPageState extends State<DrawerPage> {
                               menuList.add(Menu.fromSnapshot(data));
                             });
 
-                            if (!menuList.isEmpty) {
+                            if (menuList.isNotEmpty) {
                               print("menuList not empty");
                             }
 
                             return ListView.builder(
                                 // itemExtent: 60.0,
                                 // shrinkWrap: true,
-                                physics: ScrollPhysics(),
+                                // physics: AlwaysScrollableScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
