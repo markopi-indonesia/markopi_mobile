@@ -403,6 +403,17 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/pengajuan_fasilitator");
+                    },
+                    child: ListTile(
+                      title: Text('Pengajuan Fasilitator'),
+                      leading: Icon(Icons.record_voice_over),
+                    ),
+                  ),
+
                   // InkWell(
                   //   onTap: () {
                   //     Navigator.pop(context);
