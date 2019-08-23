@@ -312,7 +312,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             return ListView.builder(
                                 // itemExtent: 60.0,
                                 // shrinkWrap: true,
-                                physics: ScrollPhysics(),
+                                // physics: AlwaysScrollableScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
