@@ -10,7 +10,7 @@ class HeaderBack extends StatelessWidget implements PreferredSizeWidget{
           onPressed:() => Navigator.pop(context, false),
         ),
         iconTheme: new IconThemeData(color: Colors.white),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF2696D6),
         title: Center(child:Text('markopi', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
         actions: <Widget>[
           IconButton(

@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/models/menu.dart';
-import 'package:markopi_mobile/pages/profile/edit.dart';
+import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 //Self import
@@ -162,28 +162,17 @@ class _DrawerPageState extends State<DrawerPage> {
                             itemCount: menuList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () {
-                                  Firestore.instance
-                                      .collection('menu')
-                                      .snapshots()
-                                      .listen((data) => data.documents
-                                          .forEach((doc) => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => SubMenu(
-                                                        documentID:
-                                                            doc.documentID,
-                                                        title: doc['name'],
-                                                        image: Image.asset(
-                                                            doc['image'],
-                                                            fit: BoxFit.cover),
-                                                      )))));
-                                },
+                                onTap: () => _navigateSubMenu(
+                                    context,
+                                    menuList[index].reference.documentID,
+                                    menuList[index].color),
                                 child: ListTile(
                                   title: RichText(
                                     text: TextSpan(
                                         text: menuList[index].name,
-                                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500)),
                                   ),
                                   leading: Icon(Icons.label_important),
                                 ),
@@ -316,30 +305,17 @@ class _DrawerPageState extends State<DrawerPage> {
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
-                                    onTap: () {
-                                      Firestore.instance
-                                          .collection('menu')
-                                          .snapshots()
-                                          .listen((data) => data.documents
-                                              .forEach((doc) => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SubMenu(
-                                                            documentID:
-                                                                doc.documentID,
-                                                            title: doc['name'],
-                                                            image: Image.asset(
-                                                                doc['image'],
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          )))));
-                                    },
+                                    onTap: () => _navigateSubMenu(
+                                        context,
+                                        menuList[index].reference.documentID,
+                                        menuList[index].color),
                                     child: ListTile(
                                       title: RichText(
                                         text: TextSpan(
                                             text: menuList[index].name,
-                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500)),
                                       ),
                                       leading: Icon(Icons.label_important),
                                     ),
@@ -466,30 +442,17 @@ class _DrawerPageState extends State<DrawerPage> {
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
-                                    onTap: () {
-                                      Firestore.instance
-                                          .collection('menu')
-                                          .snapshots()
-                                          .listen((data) => data.documents
-                                              .forEach((doc) => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SubMenu(
-                                                            documentID:
-                                                                doc.documentID,
-                                                            title: doc['name'],
-                                                            image: Image.asset(
-                                                                doc['image'],
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          )))));
-                                    },
+                                    onTap: () => _navigateSubMenu(
+                                        context,
+                                        menuList[index].reference.documentID,
+                                        menuList[index].color),
                                     child: ListTile(
                                       title: RichText(
                                         text: TextSpan(
                                             text: menuList[index].name,
-                                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500)),
                                       ),
                                       leading: Icon(Icons.label_important),
                                     ),
@@ -543,13 +506,26 @@ class _DrawerPageState extends State<DrawerPage> {
     }
   }
 
+  void _navigateSubMenu(
+      BuildContext context, String documentID, String _color) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SubMenu(
+          menuId: documentID,
+          color: _color,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
   void _navigateToEditProfile(BuildContext context, String userID) {
     print("masuk");
     print(userID);
     Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EditProfileDialog(
+        builder: (context) => IndexProfileDialog(
           userID: userID,
         ),
         fullscreenDialog: true,

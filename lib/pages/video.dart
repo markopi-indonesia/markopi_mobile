@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' show Client;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +9,8 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-import 'package:googleapis/youtube/v3.dart';
+import 'package:googleapis/youtube/v3.dart' as youtube;
+import 'package:googleapis_auth/auth_io.dart' as auth;
 
 class AddVideoDialog extends StatefulWidget {
   @override
@@ -20,12 +20,16 @@ class AddVideoDialog extends StatefulWidget {
 class _AddVideoDialogState extends State<AddVideoDialog> {
   var _repository = Repository();
   final _formAddCategoryKey = GlobalKey<FormState>();
+  final identifier = new auth.ClientId(
+      "60427625294-97uc05vnnr4ttebf9foil3kq9v8hp7a1.apps.googleusercontent.com",
+      "60427625294-97uc05vnnr4ttebf9foil3kq9v8hp7a1");
   String title;
   String _videoUrl;
   String _error;
 
   bool _isIos;
   bool _isLoading;
+  final scopes = [youtube.YoutubeApi.YoutubeScope];
 
   bool _validateAndSave() {
     final form = _formAddCategoryKey.currentState;
@@ -77,6 +81,7 @@ class _AddVideoDialogState extends State<AddVideoDialog> {
         // setState(() {
         //   _isLoading = false;
         // });
+        uploadFile();
         Navigator.pop(context);
       } catch (e) {
         print('Error: $e');
@@ -122,6 +127,39 @@ class _AddVideoDialogState extends State<AddVideoDialog> {
   //     _repository.addVideo(url, docRef.documentID).then((v) {});
   //   });
   // }
+
+  Future uploadFile() {
+    auth.clientViaUserConsent(identifier, scopes, userPrompt).then((client) {
+      var api = new youtube.YoutubeApi(client);
+      var media =
+          new youtube.Media(videoFile.openRead(), videoFile.lengthSync());
+      var youtubeFile = new youtube.YoutubeApi(client);
+      var test = youtube.Video();
+      test.snippet.title = "test";
+      test.snippet.description = "test";
+      // var driveFile = new drive.File()..title = name;
+      return api.videos
+          .insert(test, "public", uploadMedia: media)
+          .then((youtube.Video f) {
+        print('Uploaded Id: ${f.id}');
+      });
+      // return api.files.insert(driveFile, uploadMedia: media).then((drive.File f) {
+      //   print('Uploaded $file. Id: ${f.id}');
+      // });
+    }).catchError((error) {
+      if (error is auth.UserConsentException) {
+        print("You did not grant access :(");
+      } else {
+        print("An unknown error occured: $error");
+      }
+    });
+  }
+
+  void userPrompt(String url) {
+    print("Please go to the following URL and grant access:");
+    print("  => $url");
+    print("");
+  }
 
   @override
   void initState() {
