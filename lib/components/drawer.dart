@@ -287,6 +287,17 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/manage-user");
+                    },
+                    child: ListTile(
+                      title: Text('Manage User'),
+                      leading: Icon(Icons.supervised_user_circle),
+                    ),
+                  ),
+
                   Center(
                     child: new AspectRatio(
                       aspectRatio: 90 / 100,

@@ -13,33 +13,9 @@ class ProfileModel {
   String alamat;
   String bio;
 
-  ProfileModel(
-      {this.userID,
-      this.nama,
-      this.role,
-      this.photoUrl,
-      this.profesi,
-      this.noHP,
-      this.provinsi,
-      this.kabupaten,
-      this.kecamatan,
-      this.alamat,
-      this.bio});
+  final DocumentReference reference;
 
-  // final DocumentReference reference;
-
-  // ProfileModel.fromMap(Map<String, dynamic> map, {this.reference})
-  //     : assert(map['userID'] != null && map['nama'] != null && map['role'] != null && map['profesi'] != null
-  //     && map['noHP'] != null && map['provinsi'] != null && map['kabupaten'] != null && map['alamat'] != null
-  //     && map['photoUrl'] != null && map['bio'] != null),
-  //       userID = map['userID'], nama = map['nama'], role = map['role'], noHP = map['noHP'], profesi = map['profesi'], provinsi = map['provinsi'],
-  //       kabupaten = map['kabupaten'], kecamatan = map['kecamatan'], alamat = map['alamat'], photoUrl = map['photoUrl'],
-  //       bio = map['bio'];
-
-  // ProfileModel.fromSnapshot(DocumentSnapshot snapshot)
-  //     : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  ProfileModel.fromMap(Map<String, dynamic> map) {
+  ProfileModel.fromMap(Map<String, dynamic> map, {this.reference}) {
     this.userID = map['userID'];
     this.nama = map['nama'];
     this.role = map['role'];
@@ -52,6 +28,9 @@ class ProfileModel {
     this.photoUrl = map['photoURL'];
     this.bio = map['bio'];
   }
+
+  ProfileModel.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
   String toString() =>
