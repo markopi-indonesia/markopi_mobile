@@ -8,6 +8,8 @@ import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
 import 'package:markopi_mobile/pages/manage_informasi/edit.dart';
 import 'package:markopi_mobile/ui/menu/detail.dart';
 
+enum ConfirmAction{ACCEPT, CANCEL}
+
 class ManageInformasi extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _ManageInformasiState();
@@ -96,8 +98,35 @@ class _ManageInformasiState extends State<ManageInformasi> {
                             caption: 'Delete',
                             color: Colors.red,
                             icon: Icons.delete_outline,
-                            onTap: () => deleteArticle(
-                                listInformasi[index].reference.documentID),
+                            onTap: () => showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Hapus Artikel'),
+                                        content: const Text(
+                                            'Anda yakin akan menghapus artikel ini?'),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: const Text('Tidak'),
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(ConfirmAction.CANCEL);
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: const Text('Ya'),
+                                            onPressed: () {
+                                              deleteArticle(listInformasi[index]
+                                                  .reference
+                                                  .documentID);
+                                              Navigator.of(context)
+                                                  .pop(ConfirmAction.ACCEPT);
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    }),
                           )
                         ],
                         child: ListTile(
