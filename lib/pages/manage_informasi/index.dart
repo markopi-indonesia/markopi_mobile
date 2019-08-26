@@ -24,85 +24,94 @@ class _ManageInformasiState extends State<ManageInformasi> {
     return Scaffold(
       appBar: Header(),
       drawer: DrawerPage(),
-      body: Container(child: _buildBody(context)),
-    );
-  }
+      body: Container(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('informasi').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
 
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('informasi').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+            List<InformasiModel> listInformasi = [];
 
-        return _buildList(context, snapshot.data.documents);
-      },
-    );
-  }
+            snapshot.data.documents.forEach(
+                (data) => listInformasi.add(InformasiModel.fromSnapshot(data)));
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
-  }
+            if (listInformasi.isEmpty) {
+              print('informasi is empty');
+            }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final informasi = InformasiModel.fromSnapshot(data);
-    String nama;
-    Firestore.instance
-        .collection('profile')
-        .where("userID", isEqualTo: informasi.userID)
-        .snapshots()
-        .listen((data) => data.documents.forEach((doc) => [
-              nama = doc["nama"],
-            ]));
-    return Padding(
-      key: ValueKey(informasi.title),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: GestureDetector(
-        onTap: () => _detail(
-            context,
-            data.documentID,
-            informasi.categoryID,
-            informasi.cover,
-            informasi.deskripsi,
-            informasi.images,
-            informasi.ownerRole,
-            informasi.title,
-            informasi.userID,
-            nama,
-            informasi.video),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Slidable(
-            key: ValueKey(informasi.title),
-            actionPane: SlidableStrechActionPane(),
-            secondaryActions: <Widget>[
-              IconSlideAction(
-                  caption: 'Edit',
-                  color: Colors.blue,
-                  icon: Icons.edit,
-                  onTap: () => _update(
-                      context,
-                      data.documentID,
-                      informasi.categoryID,
-                      informasi.cover,
-                      informasi.deskripsi,
-                      informasi.images,
-                      informasi.ownerRole,
-                      informasi.title,
-                      informasi.userID,
-                      informasi.video)),
-            ],
-            child: ListTile(
-              title: Text(
-                informasi.title,
-              ),
-            ),
-          ),
+            return ListView.builder(
+              itemCount: listInformasi.length,
+              itemBuilder: (BuildContext context, int index) {
+                String nama;
+                Firestore.instance
+                    .collection('profile')
+                    .where("userID", isEqualTo: listInformasi[index].userID)
+                    .snapshots()
+                    .listen((data) => data.documents.forEach((doc) => [
+                          nama = doc["nama"],
+                        ]));
+                return Padding(
+                  key: ValueKey(listInformasi[index].title),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: GestureDetector(
+                    onTap: () => _detail(
+                        context,
+                        listInformasi[index].reference.documentID,
+                        listInformasi[index].categoryID,
+                        listInformasi[index].cover,
+                        listInformasi[index].deskripsi,
+                        listInformasi[index].images,
+                        listInformasi[index].ownerRole,
+                        listInformasi[index].title,
+                        listInformasi[index].userID,
+                        nama,
+                        listInformasi[index].video),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Slidable(
+                        key: ValueKey(listInformasi[index].title),
+                        actionPane: SlidableStrechActionPane(),
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                              caption: 'Edit',
+                              color: Colors.blue,
+                              icon: Icons.edit,
+                              onTap: () => _update(
+                                  context,
+                                  listInformasi[index].reference.documentID,
+                                  listInformasi[index].categoryID,
+                                  listInformasi[index].cover,
+                                  listInformasi[index].deskripsi,
+                                  listInformasi[index].images,
+                                  listInformasi[index].ownerRole,
+                                  listInformasi[index].title,
+                                  listInformasi[index].userID,
+                                  listInformasi[index].video)),
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete_outline,
+                            onTap: () => deleteArticle(
+                                listInformasi[index].reference.documentID),
+                          )
+                        ],
+                        child: ListTile(
+                          title: Text(
+                            listInformasi[index].title,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
@@ -168,5 +177,9 @@ class _ManageInformasiState extends State<ManageInformasi> {
         fullscreenDialog: true,
       ),
     );
+  }
+
+  void deleteArticle(String docId) {
+    Firestore.instance.collection('informasi').document(docId).delete();
   }
 }
