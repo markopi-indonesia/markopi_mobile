@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/models/profile.dart';
+import 'package:markopi_mobile/pages/manage_user/detail.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
@@ -72,7 +73,7 @@ class _ManageUserState extends State<ManageUser> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
                     child: GestureDetector(
-                      onTap: () => print('tap!'),
+                      onTap: () => _navigateToEditProfile(context, listProfile[index].userID),
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
@@ -136,3 +137,17 @@ class _ManageUserState extends State<ManageUser> {
 void deleteUser(String docId) {
   Firestore.instance.collection('profile').document(docId).delete();
 }
+
+void _navigateToEditProfile(BuildContext context, String userID) {
+    print("masuk");
+    print(userID);
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => IndexProfileAdmin(
+          userID: userID,
+        ),
+        fullscreenDialog: true,
+      ),
+    );
+  }
