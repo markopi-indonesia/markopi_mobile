@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:markopi_mobile/pages/manage_informasi/index.dart';
 import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/video': (context) => AddVideoDialog(),
         '/menu': (context) => ManageMenu(),
+        '/manage-informasi': (context) => ManageInformasi(),
         '/informasi': (context) => Informasi(),
         '/profile': (context) => IndexProfileDialog(),
         '/pengajuan_fasilitator': (context) => PengajuanFasilitator(),

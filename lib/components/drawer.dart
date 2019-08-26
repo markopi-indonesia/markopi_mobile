@@ -276,6 +276,17 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/manage-informasi");
+                    },
+                    child: ListTile(
+                      title: Text('Manage Informasi'),
+                      leading: Icon(Icons.library_books),
+                    ),
+                  ),
+
                   Center(
                     child: new AspectRatio(
                       aspectRatio: 90 / 100,
