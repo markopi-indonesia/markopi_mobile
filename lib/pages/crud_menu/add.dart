@@ -29,7 +29,11 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   String currentAsset = "";
 
-  void changeColor(Color color) => setState(() => currentColor = color);
+  void changeColor(Color color) => setState((){
+    currentColor = color;
+
+    Navigator.of(context).pop(color);
+  });
 
   void _setIconMenu(String asset) => setState(() => currentAsset = asset);
 
@@ -192,6 +196,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                             onPressed: () {
                               showDialog(
                                   context: context,
+                                  barrierDismissible: false,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       titlePadding: const EdgeInsets.all(0.0),
@@ -213,6 +218,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                                       .assetName.toString());
 
                                                   print("=== ${currentAsset}");
+                                                  Navigator.of(context).pop(currentAsset);
                                                 },
                                                 child: Card(
                                                   clipBehavior: Clip.antiAlias,
@@ -240,7 +246,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                   });
                             },
                             child: const Text('Pilih ikon menu'),
-                            color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
                                 : const Color(0xff000000),

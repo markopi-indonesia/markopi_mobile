@@ -58,8 +58,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
             child: Column(children: <Widget>[
           Stack(children: <Widget>[
             new Container(
-              height: MediaQuery.of(context).size.height / 4,
-              margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+              height: MediaQuery.of(context).size.height / 4.2,
+              margin: const EdgeInsets.only(top: 0.1, bottom: 3.0),
               child: new Container(
 //                padding: EdgeInsets.only(top: 20.0),
                 child: new Stack(
@@ -69,23 +69,23 @@ class _DetailInformasiState extends State<DetailInformasi> {
                     new Center(
                         child: new Container(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 15),
-                      width: MediaQuery.of(context).size.width * 0.8,
+                          top: MediaQuery.of(context).size.height / 14),
+                      width: MediaQuery.of(context).size.width * 0.90,
                       child: new Container(
                         height: MediaQuery.of(context).size.height / 4,
                         decoration: new BoxDecoration(
-                          color: Color(0xFF1C8134),
+                          color: Color(0xFFF0F6FE),
                           shape: BoxShape.rectangle,
-                          borderRadius: new BorderRadius.circular(8.0),
+                          borderRadius: new BorderRadius.circular(2.0),
                           boxShadow: <BoxShadow>[
                             new BoxShadow(
-                                color: Colors.black,
+                                color: Colors.white,
                                 blurRadius: 0.0,
                                 offset: new Offset(0.0, 0.0))
                           ],
                         ),
                         child: new Container(
-                            margin: const EdgeInsets.all(10.0),
+                            margin: const EdgeInsets.all(5.0),
                             constraints: new BoxConstraints.expand(),
                             child: Stack(
                               children: <Widget>[
@@ -96,7 +96,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
 //                      width: 190.0,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.09,
+                                              0.08,
                                       child: new Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -106,8 +106,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                           new Text(
                                             widget.title,
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.0),
+                                                color: Colors.black,
+                                                fontSize: 22.0),
                                           )
                                         ],
                                       ),
@@ -125,7 +125,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                         children: <Widget>[
                                           new Text("by: " + widget.nama,
                                               style: TextStyle(
-                                                  color: Colors.white)),
+                                                  color: Colors.black)),
                                           Spacer(flex: 1),
                                           // new Text("date: 23 April 2019",
                                           //     style: TextStyle(
@@ -179,7 +179,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
             ),
           )),
           Container(
-            margin: EdgeInsets.all(8),
+            margin: EdgeInsets.all(2),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -192,7 +192,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                       children: <Widget>[
                         Text('Gambar Terkait',
                             style: TextStyle(
-                                fontSize: 22.0, fontWeight: FontWeight.w700)),
+                                fontSize: 17.0, fontWeight: FontWeight.w700)),
                         Container(
                           margin: EdgeInsets.all(10.0),
                           child: widget.images.isNotEmpty
