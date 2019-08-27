@@ -105,10 +105,6 @@ class _DrawerPageState extends State<DrawerPage> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                // accountEmail: Text(
-                //   email,
-                //   style: TextStyle(color: Colors.white),
-                // ),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
                     backgroundColor: Colors.grey,
@@ -120,7 +116,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   image: DecorationImage(
                       image: AssetImage('assets/sanitasi.jpeg'),
                       fit: BoxFit.cover),
-                ),
+                ), accountEmail: null,
               ),
 
 //            body
@@ -254,32 +250,43 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/video");
-                    },
-                    child: ListTile(
-                      title: Text('Tambah Video'),
-                      leading: Icon(Icons.videocam),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/video");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Tambah Video'),
+                  //     leading: Icon(Icons.videocam),
+                  //   ),
+                  // ),
+
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/menu");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Menu'),
+                  //     leading: Icon(Icons.more),
+                  //   ),
+                  // ),
+
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/manage-informasi");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Manage Informasi'),
+                  //     leading: Icon(Icons.library_books),
+                  //   ),
+                  // ),
 
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/menu");
-                    },
-                    child: ListTile(
-                      title: Text('Menu'),
-                      leading: Icon(Icons.more),
-                    ),
-                  ),
-
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/manage-informasi");
+                      Navigator.of(context).pushNamed("/manage-user");
                     },
                     child: ListTile(
                       title: Text('Mengelola Informasi'),
@@ -290,7 +297,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/manage-user");
+                      Navigator.of(context).pushNamed("/pengajuan_fasilitator_admin");
                     },
                     child: ListTile(
                       title: Text('Mengelola User'),

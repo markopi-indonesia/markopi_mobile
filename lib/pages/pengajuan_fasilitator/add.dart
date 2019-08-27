@@ -1,12 +1,21 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:markopi_mobile/components/drawer.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:markopi_mobile/components/header_back.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:markopi_mobile/resources/repository.dart';
 
 class AddPengajuanDialog extends StatefulWidget {
   @override
@@ -15,23 +24,60 @@ class AddPengajuanDialog extends StatefulWidget {
 
 class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
   final _formAddPengajuanKey = GlobalKey<FormState>();
-  String _name;
-  String _color;
-  String _image;
+  var _repository = Repository();
+  String _fileName;
+  String _path;
+  Map<String, String> _paths;
+  String _extension;
+  File ktp;
+  File selfie;
+  String pengalaman;
+  String sertifikat;
+  String status;
+  String pesan;
+  DateTime dateTime;
   String _errorMessage;
+  String urls = "";
 //  Future<File> _imageFile;
   bool _isIos;
   bool _isLoading;
+  FirebaseUser currentUser;
 
-  List<AssetImage> listIcons = [];
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
+  String userID = "";
+  String ownerRole = "";
+  StorageReference _storageReference;
+  TextEditingController _controller = new TextEditingController();
 
-  Color currentColor = Colors.amber;
+  void _openFileExplorer() async {
+    try {
+      _path = null;
+      _paths = await FilePicker.getMultiFilePath();
+      print("test");
+      print(_extension);
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+    if (!mounted) return;
 
-  String currentAsset = "";
+    setState(() {
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null ? _paths.keys.toString() : '...';
+    });
+  }
 
-  void changeColor(Color color) => setState(() => currentColor = color);
+  Future<File> _pickImage(String action) async {
+    File selectedImage;
 
-  void _setIconPengajuan(String asset) => setState(() => currentAsset = asset);
+    action == 'Gallery'
+        ? selectedImage =
+            await ImagePicker.pickImage(source: ImageSource.gallery)
+        : await ImagePicker.pickImage(source: ImageSource.camera);
+
+    return selectedImage;
+  }
 
   bool _validateAndSave() {
     final form = _formAddPengajuanKey.currentState;
@@ -57,9 +103,12 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
       _errorMessage = "";
       _isLoading = true;
     });
+    print("A");
     if (_validateAndSave()) {
       try {
+        print("B");
         addPengajuan();
+        print("C");
         setState(() {
           _isLoading = false;
         });
@@ -82,31 +131,72 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
   }
 
   void addPengajuan() async {
-    final docRef = await Firestore.instance.collection('Pengajuan').add({
-      'name'  : _name,
-      'color' : currentColor.value.toString(),
-      "image" : currentAsset
+    print("D");
+    final docRef =
+        await Firestore.instance.collection('pengajuan').add({
+      'userID': userID,
+      'ktp': '',
+      "selfie": '',
+      'pengalaman': pengalaman,
+      'sertifikat': '',
+      'status': 'Menunggu',
+      'pesan': '',
+      'dateTime': DateTime.now(),
     });
+    
     print(docRef.documentID);
+    _repository.uploadImageToStorage(ktp).then((url) {
+      _repository.addKTP(url, docRef.documentID).then((v) {});
+    });
+    _repository.uploadImageToStorage(selfie).then((url) {
+      _repository.addSelfie(url, docRef.documentID).then((v) {});
+    });
+    uploadToFirebase(docRef.documentID);
   }
 
-  void _loadIconAsset() {
-    setState(() {
-      listIcons.add(AssetImage('assets/Pengajuan_icon/bag-2.png'));
-      listIcons.add(AssetImage('assets/Pengajuan_icon/coffee-plant-2.png'));
-      listIcons.add(AssetImage('assets/Pengajuan_icon/food-4.png'));
-      listIcons.add(AssetImage('assets/Pengajuan_icon/maps-and-location-2.png'));
-      listIcons.add(AssetImage('assets/Pengajuan_icon/mug-copy.png'));
-      listIcons.add(AssetImage('assets/Pengajuan_icon/plant-3.png'));
-    });
+  uploadToFirebase(String docID) async{
+    _paths.forEach((fileName, filePath) => {upload(fileName, filePath, docID)});
+  }
+
+  upload(fileName, filePath, docID) async {
+    _extension = fileName.toString().split('.').last;
+    StorageReference storageRef =
+        FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = storageRef.putFile(
+      File(filePath),
+      StorageMetadata(
+        contentType: '$FileType.ANY/$_extension',
+      ),
+    );
+    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
+    if (urls.isEmpty) {
+      urls = url;
+    } else {
+      urls = urls + ";" + url;
+    }
+    print(urls);
+    _repository.addSertifikat(urls, docID);
   }
 
   @override
   void initState() {
     _errorMessage = "";
     _isLoading = false;
-    _loadIconAsset();
+    this.getCurrentUser().then((user) {
+      setState(() {
+        if (user != null) {
+          currentUser = user;
+          userID = user?.uid;
+        }
+      });
+    });
     super.initState();
+    _controller.addListener(() => _extension = _controller.text);
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user;
   }
 
   @override
@@ -117,6 +207,7 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
         body: Stack(
           children: <Widget>[
             _showForm(),
+            // _builder(),
             _showCircularProgress(),
           ],
         ));
@@ -143,110 +234,61 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                           ),
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        GestureDetector(
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Unggah Gambar KTP',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showKTPDialog,
+                          ),
+                          // onTap: loadAssets,
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        GestureDetector(
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Unggah Gambar Selfie',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: _showSelfieDialog,
+                          ),
+                          // onTap: loadAssets,
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
+                          maxLines: 10,
                           decoration: new InputDecoration(
-                              hintText: "Nama Pengajuan",
-                              labelText: "Nama Pengajuan",
+                              hintText: "Pengalaman",
+                              labelText: "Pengalaman",
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(5.0))),
                           validator: (value) => value.isEmpty
-                              ? 'Nama Pengajuan tidak boleh kosong'
+                              ? 'Pengalaman Pengajuan tidak boleh kosong'
                               : null,
-                          onSaved: (value) => _name = value,
+                          onSaved: (value) => pengalaman = value,
                         ),
-
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        Center(
-                          child: RaisedButton(
-                            elevation: 3.0,
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    titlePadding: const EdgeInsets.all(0.0),
-                                    contentPadding: const EdgeInsets.all(0.0),
-                                    content: SingleChildScrollView(
-                                      child: MaterialPicker(
-                                        pickerColor: currentColor,
-                                        onColorChanged: changeColor,
-                                        enableLabel: true,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: const Text('Pilih warna Pengajuan'),
-                            color: currentColor,
-                            textColor: useWhiteForeground(currentColor)
-                                ? const Color(0xffffffff)
-                                : const Color(0xff000000),
+                        GestureDetector(
+                          child: new RaisedButton(
+                            elevation: 5.0,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.lightGreen,
+                            child: new Text('Unggah Sertifikat',
+                                style: new TextStyle(
+                                    fontSize: 20.0, color: Colors.white)),
+                            onPressed: () => _openFileExplorer(),
                           ),
+                          // onTap: loadAssets,
                         ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        Center(
-                          child: RaisedButton(
-                            elevation: 3.0,
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      titlePadding: const EdgeInsets.all(0.0),
-                                      contentPadding: const EdgeInsets.all(0.0),
-                                      content: AspectRatio(
-                                        aspectRatio: 12 / 20,
-                                        child: GridView.builder(
-                                            padding: EdgeInsets.fromLTRB(
-                                                8.0, 20.0, 8.0, 20.0),
-                                            itemCount: listIcons.length,
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 3),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  _setIconPengajuan(listIcons[index]
-                                                      .assetName.toString());
-
-                                                  print("=== ${currentAsset}");
-                                                },
-                                                child: Card(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  color: Color(0xffE3EFFF),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      Container(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 8.0),
-                                                          child: Image(
-                                                            image: listIcons[index],
-                                                          ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: const Text('Pilih ikon Pengajuan'),
-                            color: currentColor,
-                            textColor: useWhiteForeground(currentColor)
-                                ? const Color(0xffffffff)
-                                : const Color(0xff000000),
-                          ),
-                        ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
@@ -260,7 +302,7 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                                 child: new Text('Simpan Pengajuan',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
-                                onPressed: _validateAndSubmit,
+                                onPressed: () =>  _validateAndSubmit(),
                               ),
                             ))
                       ],
@@ -270,16 +312,143 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
           }),
     );
   }
-}
 
-class IconPengajuan {
-  String name;
+  Widget _builder() {
+    return new Builder(
+      builder: (BuildContext context) => _path != null || _paths != null
+          ? new Container(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              height: MediaQuery.of(context).size.height * 0.50,
+              child: new Scrollbar(
+                  child: new ListView.separated(
+                itemCount:
+                    _paths != null && _paths.isNotEmpty ? _paths.length : 1,
+                itemBuilder: (BuildContext context, int index) {
+                  final bool isMultiPath = _paths != null && _paths.isNotEmpty;
+                  final String name = 'File $index: ' +
+                      (isMultiPath
+                          ? _paths.keys.toList()[index]
+                          : _fileName ?? '...');
+                  final path = isMultiPath
+                      ? _paths.values.toList()[index].toString()
+                      : _path;
 
-  IconPengajuan(this.name);
+                  return new ListTile(
+                    title: new Text(
+                      name,
+                    ),
+                    subtitle: new Text(path),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    new Divider(),
+              )),
+            )
+          : new Container(),
+    );
+  }
 
-  static IconPengajuan getJsonParser(dynamic json) {
-    String name = json['name'];
+  _showKTPDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: ((context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text(
+                  'Pilih dari Galeri',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green, fontSize: 17),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage('Gallery').then((selectedImage) {
+                    setState(() {
+                      ktp = selectedImage;
+                      // _isLoading = true;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Ambil dari Kamera',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green, fontSize: 17),
+                ),
+                onPressed: () {
+                  _pickImage('Camera').then((selectedImage) {
+                    setState(() {
+                      ktp = selectedImage;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Batal',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }));
+  }
 
-    return new IconPengajuan(name);
+  _showSelfieDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: ((context) {
+          return SimpleDialog(
+            children: <Widget>[
+              SimpleDialogOption(
+                child: Text(
+                  'Pilih dari Galeri',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green, fontSize: 17),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage('Gallery').then((selectedImage) {
+                    setState(() {
+                      selfie = selectedImage;
+                      // _isLoading = true;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Ambil dari Kamera',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green, fontSize: 17),
+                ),
+                onPressed: () {
+                  _pickImage('Camera').then((selectedImage) {
+                    setState(() {
+                      selfie = selectedImage;
+                    });
+                  });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Batal',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }));
   }
 }
