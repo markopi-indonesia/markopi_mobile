@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/models/menu.dart';
+import 'package:markopi_mobile/pages/crud_menu/add.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
 
 // Self import
@@ -10,45 +11,60 @@ import 'package:markopi_mobile/components/header.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
-        body: Container(
-          child: StreamBuilder<QuerySnapshot>(
-            stream: Firestore.instance.collection('menu').snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) return CircularProgressIndicator();
+      appBar: Header(),
+      drawer: DrawerPage(),
+      body: Container(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('menu').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
 
-              List<Menu> listMenu = [];
+            List<Menu> listMenu = [];
 
-              snapshot.data.documents
-                  .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
+            snapshot.data.documents
+                .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
 
-              if (listMenu.isEmpty) {
-                print('menu is empty');
-              }
-
-              return GridView.builder(
-                padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 20.0),
-                shrinkWrap: true,
-                itemCount: listMenu.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () => _navigateSubMenu(context, listMenu[index].reference.documentID, listMenu[index].color),
-                    child: CardMenu(
-                        name: listMenu[index].name,
-                        image: Image.asset(listMenu[index].image),
-                        documentID: listMenu[index].reference.documentID),
-                  );
-                },
-              );
-            },
-          ),
-        ));
+            if (listMenu.isEmpty) {
+              print('menu is empty');
+            }
+                
+            return GridView.builder(
+              padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 60.0),
+              shrinkWrap: true,
+              itemCount: listMenu.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () => _navigateSubMenu(
+                      context,
+                      listMenu[index].reference.documentID,
+                      listMenu[index].color),
+                  child: CardMenu(
+                      name: listMenu[index].name,
+                      image: Image.asset(listMenu[index].image),
+                      documentID: listMenu[index].reference.documentID),
+                );
+              },
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddMenuDialog(),
+              fullscreenDialog: true,
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      ),
+    );
   }
 
   void _navigateSubMenu(
