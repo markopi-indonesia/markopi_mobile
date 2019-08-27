@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
               }
 
               return GridView.builder(
-                padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 20.0),
+                padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 20.0),
                 shrinkWrap: true,
                 itemCount: listMenu.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -92,18 +92,18 @@ class CardMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     var card = new Card(
       elevation: 8.0,
-      margin: EdgeInsets.all(14.0),
+      margin: EdgeInsets.all(9.0),
       clipBehavior: Clip.antiAlias,
-      color: Color(0xffE3EFFF),
+      color: Color(0xFFF0F6FE),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 40.0),
+            padding: EdgeInsets.only(top: 20.0),
             child: this.image,
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 10.0),
+            padding: EdgeInsets.fromLTRB(8.0, 10.0, 16.0, 20.0),
             child: Text(this.name,
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
           ),

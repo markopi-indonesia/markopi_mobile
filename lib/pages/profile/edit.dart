@@ -224,7 +224,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                           elevation: 5.0,
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
-                          color: Colors.green,
+                          color: Color(0xFF2696D6),
                           child: new Text('Perbaharui Foto',
                               style: new TextStyle(
                                   fontSize: 20.0, color: Colors.white)),
