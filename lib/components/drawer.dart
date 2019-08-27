@@ -186,7 +186,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   Navigator.of(context).pushNamed("/login");
                 },
                 child: ListTile(
-                  title: Text('Masuk'),
+                  title: Text('Login'),
                   leading: Icon(Icons.person),
                 ),
               ),
@@ -197,7 +197,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   Navigator.of(context).pushNamed("/register");
                 },
                 child: ListTile(
-                  title: Text('Daftar'),
+                  title: Text('Register'),
                   leading: Icon(Icons.person_add),
                 ),
               ),
@@ -289,8 +289,8 @@ class _DrawerPageState extends State<DrawerPage> {
                       Navigator.of(context).pushNamed("/manage-user");
                     },
                     child: ListTile(
-                      title: Text('Manage User'),
-                      leading: Icon(Icons.supervised_user_circle),
+                      title: Text('Mengelola Informasi'),
+                      leading: Icon(Icons.library_books),
                     ),
                   ),
 
@@ -300,8 +300,8 @@ class _DrawerPageState extends State<DrawerPage> {
                       Navigator.of(context).pushNamed("/pengajuan_fasilitator_admin");
                     },
                     child: ListTile(
-                      title: Text('Pengajuan Fasilitator'),
-                      leading: Icon(Icons.record_voice_over),
+                      title: Text('Mengelola User'),
+                      leading: Icon(Icons.supervised_user_circle),
                     ),
                   ),
 
@@ -370,7 +370,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(
-                      title: Text('Ubah Profil'),
+                      title: Text('Profile'),
                       leading: Icon(Icons.settings),
                     ),
                   ),
@@ -518,7 +518,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(
-                      title: Text('Ubah Profil'),
+                      title: Text('Profile'),
                       leading: Icon(Icons.settings),
                     ),
                   ),
