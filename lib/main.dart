@@ -9,6 +9,7 @@ import 'package:markopi_mobile/pages/crud_informasi/index.dart';
 import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/pages/video.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/index_fasilitator.dart';
+import 'package:markopi_mobile/pages/pengajuan_fasilitator/index_admin.dart';
 import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/informasi': (context) => Informasi(),
         '/profile': (context) => IndexProfileDialog(),
         '/pengajuan_fasilitator': (context) => PengajuanFasilitator(),
+        '/pengajuan_fasilitator_admin': (context) => PengajuanFasilitatorAdmin(),
       },
     );
   }

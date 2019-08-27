@@ -105,10 +105,6 @@ class _DrawerPageState extends State<DrawerPage> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                // accountEmail: Text(
-                //   email,
-                //   style: TextStyle(color: Colors.white),
-                // ),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
                     backgroundColor: Colors.grey,
@@ -120,7 +116,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   image: DecorationImage(
                       image: AssetImage('assets/sanitasi.jpeg'),
                       fit: BoxFit.cover),
-                ),
+                ), accountEmail: null,
               ),
 
 //            body
@@ -273,6 +269,17 @@ class _DrawerPageState extends State<DrawerPage> {
                     child: ListTile(
                       title: Text('Menu'),
                       leading: Icon(Icons.more),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/pengajuan_fasilitator_admin");
+                    },
+                    child: ListTile(
+                      title: Text('Pengajuan Fasilitator'),
+                      leading: Icon(Icons.record_voice_over),
                     ),
                   ),
 
