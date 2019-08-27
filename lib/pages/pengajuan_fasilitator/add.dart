@@ -1,34 +1,21 @@
-import 'package:flutter/cupertino.dart';
-import 'package:markopi_mobile/controllers/menu_controller.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:markopi_mobile/components/header_back.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
-import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 
-class EditMenuDialog extends StatefulWidget {
-  final String docId;
-  final String name;
-  final String color;
-  final String image;
-
-  EditMenuDialog({
-    this.docId,
-    this.name,
-    this.color,
-    this.image,
-  });
+class AddPengajuanDialog extends StatefulWidget {
   @override
-  _EditMenuDialogState createState() => _EditMenuDialogState();
+  _AddPengajuanDialogState createState() => _AddPengajuanDialogState();
 }
 
-class _EditMenuDialogState extends State<EditMenuDialog> {
-  final _formEditMenuKey = GlobalKey<FormState>();
+class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
+  final _formAddPengajuanKey = GlobalKey<FormState>();
   String _name;
-  String _docId;
   String _color;
   String _image;
   String _errorMessage;
@@ -37,16 +24,17 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   bool _isLoading;
 
   List<AssetImage> listIcons = [];
+
+  Color currentColor = Colors.amber;
+
   String currentAsset = "";
-
-  Color currentColor;
-
-  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
 
   void changeColor(Color color) => setState(() => currentColor = color);
 
+  void _setIconPengajuan(String asset) => setState(() => currentAsset = asset);
+
   bool _validateAndSave() {
-    final form = _formEditMenuKey.currentState;
+    final form = _formAddPengajuanKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -71,7 +59,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
     });
     if (_validateAndSave()) {
       try {
-        addMenu();
+        addPengajuan();
         setState(() {
           _isLoading = false;
         });
@@ -93,26 +81,23 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
     }
   }
 
-  void addMenu() async {
-    print("#### ${_name}");
-    final docRef = await Firestore.instance
-        .collection('menu')
-        .document(widget.docId)
-        .updateData({
-      'name': _name,
-      'color': currentColor.value.toString(),
-      "image": currentAsset
+  void addPengajuan() async {
+    final docRef = await Firestore.instance.collection('Pengajuan').add({
+      'name'  : _name,
+      'color' : currentColor.value.toString(),
+      "image" : currentAsset
     });
+    print(docRef.documentID);
   }
 
   void _loadIconAsset() {
     setState(() {
-      listIcons.add(AssetImage('assets/menu_icon/bag-2.png'));
-      listIcons.add(AssetImage('assets/menu_icon/coffee-plant-2.png'));
-      listIcons.add(AssetImage('assets/menu_icon/food-4.png'));
-      listIcons.add(AssetImage('assets/menu_icon/maps-and-location-2.png'));
-      listIcons.add(AssetImage('assets/menu_icon/mug-copy.png'));
-      listIcons.add(AssetImage('assets/menu_icon/plant-3.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/bag-2.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/coffee-plant-2.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/food-4.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/maps-and-location-2.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/mug-copy.png'));
+      listIcons.add(AssetImage('assets/Pengajuan_icon/plant-3.png'));
     });
   }
 
@@ -120,14 +105,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   void initState() {
     _errorMessage = "";
     _isLoading = false;
-    setState(() {
-      _docId = widget.docId;
-      _name = widget.name;
-      _color = widget.color;
-      _image = widget.image;
-      currentAsset = widget.image;
-      currentColor = Color(int.parse(widget.color));
-    });
     _loadIconAsset();
     super.initState();
   }
@@ -147,10 +124,10 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
 
   Widget _showForm() {
     return new Form(
-      key: _formEditMenuKey,
+      key: _formAddPengajuanKey,
       autovalidate: false,
       child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('menu').snapshots(),
+          stream: Firestore.instance.collection('Pengajuan').snapshots(),
           builder: (context, snapshot) {
             return new ListView(
               children: <Widget>[
@@ -160,7 +137,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                       children: <Widget>[
                         new Center(
                           child: Text(
-                            "Form Edit Menu",
+                            "Form Tambah Pengajuan",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
@@ -168,19 +145,18 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
-                              hintText: "Nama Baru Menu",
-                              labelText: "Nama Menu",
+                              hintText: "Nama Pengajuan",
+                              labelText: "Nama Pengajuan",
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(5.0))),
-                          initialValue: widget.name,
-                          validator: (value) =>
-                              value.isEmpty ? 'Judul tidak boleh kosong' : null,
+                          validator: (value) => value.isEmpty
+                              ? 'Nama Pengajuan tidak boleh kosong'
+                              : null,
                           onSaved: (value) => _name = value,
                         ),
 
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -202,14 +178,14 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                 },
                               );
                             },
-                            child: const Text('Pilih warna'),
+                            child: const Text('Pilih warna Pengajuan'),
                             color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
                                 : const Color(0xff000000),
                           ),
                         ),
-
+                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -233,9 +209,8 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                                 int index) {
                                               return GestureDetector(
                                                 onTap: () {
-                                                  _setIconMenu(listIcons[index]
-                                                      .assetName
-                                                      .toString());
+                                                  _setIconPengajuan(listIcons[index]
+                                                      .assetName.toString());
 
                                                   print("=== ${currentAsset}");
                                                 },
@@ -248,13 +223,12 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                                             .center,
                                                     children: <Widget>[
                                                       Container(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 8.0),
-                                                        child: Image(
-                                                          image:
-                                                              listIcons[index],
-                                                        ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 8.0),
+                                                          child: Image(
+                                                            image: listIcons[index],
+                                                          ),
                                                       )
                                                     ],
                                                   ),
@@ -265,15 +239,13 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                     );
                                   });
                             },
-                            child: const Text('Pilih ikon menu'),
+                            child: const Text('Pilih ikon Pengajuan'),
                             color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
                                 : const Color(0xff000000),
                           ),
                         ),
-
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
@@ -285,7 +257,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
                                 color: Colors.green,
-                                child: new Text('Simpan Menu',
+                                child: new Text('Simpan Pengajuan',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
                                 onPressed: _validateAndSubmit,
@@ -297,5 +269,17 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
             );
           }),
     );
+  }
+}
+
+class IconPengajuan {
+  String name;
+
+  IconPengajuan(this.name);
+
+  static IconPengajuan getJsonParser(dynamic json) {
+    String name = json['name'];
+
+    return new IconPengajuan(name);
   }
 }

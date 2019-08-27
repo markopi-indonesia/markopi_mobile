@@ -1,11 +1,12 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:markopi_mobile/components/header_back.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 
 class AddMenuDialog extends StatefulWidget {
   @override
@@ -22,9 +23,15 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
   bool _isIos;
   bool _isLoading;
 
+  List<AssetImage> listIcons = [];
+
   Color currentColor = Colors.amber;
 
+  String currentAsset = "";
+
   void changeColor(Color color) => setState(() => currentColor = color);
+
+  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
 
   bool _validateAndSave() {
     final form = _formAddMenuKey.currentState;
@@ -76,17 +83,29 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   void addMenu() async {
     final docRef = await Firestore.instance.collection('menu').add({
-      'name': _name,
-      'color': currentColor.value.toString(),
-      "image": _image
+      'name'  : _name,
+      'color' : currentColor.value.toString(),
+      "image" : currentAsset
     });
     print(docRef.documentID);
+  }
+
+  void _loadIconAsset() {
+    setState(() {
+      listIcons.add(AssetImage('assets/menu_icon/bag-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/coffee-plant-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/food-4.png'));
+      listIcons.add(AssetImage('assets/menu_icon/maps-and-location-2.png'));
+      listIcons.add(AssetImage('assets/menu_icon/mug-copy.png'));
+      listIcons.add(AssetImage('assets/menu_icon/plant-3.png'));
+    });
   }
 
   @override
   void initState() {
     _errorMessage = "";
     _isLoading = false;
+    _loadIconAsset();
     super.initState();
   }
 
@@ -166,27 +185,59 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
                             onPressed: () {
                               showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    titlePadding: const EdgeInsets.all(0.0),
-                                    contentPadding: const EdgeInsets.all(0.0),
-                                    content: SingleChildScrollView(
-                                      child: MaterialPicker(
-                                        pickerColor: currentColor,
-                                        onColorChanged: changeColor,
-                                        enableLabel: true,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titlePadding: const EdgeInsets.all(0.0),
+                                      contentPadding: const EdgeInsets.all(0.0),
+                                      content: AspectRatio(
+                                        aspectRatio: 12 / 20,
+                                        child: GridView.builder(
+                                            padding: EdgeInsets.fromLTRB(
+                                                8.0, 20.0, 8.0, 20.0),
+                                            itemCount: listIcons.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  _setIconMenu(listIcons[index]
+                                                      .assetName.toString());
+
+                                                  print("=== ${currentAsset}");
+                                                },
+                                                child: Card(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  color: Color(0xffE3EFFF),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 8.0),
+                                                          child: Image(
+                                                            image: listIcons[index],
+                                                          ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    );
+                                  });
                             },
                             child: const Text('Pilih ikon menu'),
                             color: currentColor,
@@ -218,5 +269,17 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
             );
           }),
     );
+  }
+}
+
+class IconMenu {
+  String name;
+
+  IconMenu(this.name);
+
+  static IconMenu getJsonParser(dynamic json) {
+    String name = json['name'];
+
+    return new IconMenu(name);
   }
 }

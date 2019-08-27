@@ -13,7 +13,7 @@ import 'package:markopi_mobile/resources/repository.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:flutter/services.dart';
 
-class EditInformasiDialog extends StatefulWidget {
+class EditInformasiAdmin extends StatefulWidget {
   final String documentID;
   final String categoryID;
   final String cover;
@@ -24,7 +24,7 @@ class EditInformasiDialog extends StatefulWidget {
   final String userID;
   final String video;
 
-  EditInformasiDialog(
+  EditInformasiAdmin(
       {this.documentID,
       this.categoryID,
       this.cover,
@@ -38,7 +38,7 @@ class EditInformasiDialog extends StatefulWidget {
   _EditInformasiDialogState createState() => _EditInformasiDialogState();
 }
 
-class _EditInformasiDialogState extends State<EditInformasiDialog> {
+class _EditInformasiDialogState extends State<EditInformasiAdmin> {
   var _repository = Repository();
   final _formAddCategoryKey = GlobalKey<FormState>();
   String categoryID;

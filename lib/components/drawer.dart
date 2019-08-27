@@ -152,7 +152,7 @@ class _DrawerPageState extends State<DrawerPage> {
                           menuList.add(Menu.fromSnapshot(data));
                         });
 
-                        if (!menuList.isEmpty) {
+                        if (menuList.isNotEmpty) {
                           print("menuList not empty");
                         }
 
@@ -276,6 +276,28 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/manage-informasi");
+                    },
+                    child: ListTile(
+                      title: Text('Manage Informasi'),
+                      leading: Icon(Icons.library_books),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/manage-user");
+                    },
+                    child: ListTile(
+                      title: Text('Manage User'),
+                      leading: Icon(Icons.supervised_user_circle),
+                    ),
+                  ),
+
                   Center(
                     child: new AspectRatio(
                       aspectRatio: 90 / 100,
@@ -294,14 +316,14 @@ class _DrawerPageState extends State<DrawerPage> {
                               menuList.add(Menu.fromSnapshot(data));
                             });
 
-                            if (!menuList.isEmpty) {
+                            if (menuList.isNotEmpty) {
                               print("menuList not empty");
                             }
 
                             return ListView.builder(
                                 // itemExtent: 60.0,
                                 // shrinkWrap: true,
-                                physics: ScrollPhysics(),
+                                // physics: AlwaysScrollableScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
@@ -400,6 +422,17 @@ class _DrawerPageState extends State<DrawerPage> {
                     child: ListTile(
                       title: Text('Beranda'),
                       leading: Icon(Icons.home),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/pengajuan_fasilitator");
+                    },
+                    child: ListTile(
+                      title: Text('Pengajuan Fasilitator'),
+                      leading: Icon(Icons.record_voice_over),
                     ),
                   ),
 
