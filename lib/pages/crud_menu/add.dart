@@ -102,6 +102,8 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
       listIcons.add(AssetImage('assets/menu_icon/maps-and-location-2.png'));
       listIcons.add(AssetImage('assets/menu_icon/mug-copy.png'));
       listIcons.add(AssetImage('assets/menu_icon/plant-3.png'));
+      listIcons.add(AssetImage('assets/menu_icon/coffee.png'));
+      listIcons.add(AssetImage('assets/menu_icon/bag.png'));
     });
   }
 

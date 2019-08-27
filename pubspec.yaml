@@ -88,8 +88,10 @@ flutter:
     - assets/no_user.jpg
     - assets/logo.png
     - assets/splashscreen.png
+    - assets/menu_icon/bag.png
     - assets/menu_icon/bag-2.png
     - assets/menu_icon/coffee-plant-2.png
+    - assets/menu_icon/coffee.png
     - assets/menu_icon/food-4.png
     - assets/menu_icon/maps-and-location-2.png
     - assets/menu_icon/mug-copy.png
