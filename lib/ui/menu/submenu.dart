@@ -17,18 +17,48 @@ class SubMenu extends StatefulWidget {
   State<StatefulWidget> createState() => new _SubMenuState();
 }
 
+
 class _SubMenuState extends State<SubMenu> {
   int x = 2;
   int color_num;
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return new Scaffold (
         appBar: HeaderBack(),
-        body: _buildBody(context),
-    );
+        body: Stack(
+          children: <Widget>[
+          _header(),
+          _buildBody(context),
+          ],
+    ));
   }
 
 
+
+Widget _header() {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+        child: Container(
+  
+    constraints: new BoxConstraints(
+    minHeight: 50.0,
+    minWidth: 320.0,
+    maxHeight: 50.0,
+    maxWidth: 1000.0,
+  ),
+
+        decoration: BoxDecoration(
+          color: Color(0xFFF0F6FE),
+        ),
+        
+        child:  Text(
+          'Test1',
+        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color(0xFF142B44)),
+        ),
+      ));
+    
+  }
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('submenu').where("menuId", isEqualTo: widget.menuId).snapshots(),
@@ -42,7 +72,7 @@ class _SubMenuState extends State<SubMenu> {
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
       // shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 80.0),
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }

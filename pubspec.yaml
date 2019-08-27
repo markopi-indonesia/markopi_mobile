@@ -112,6 +112,10 @@ flutter:
          - asset: fonts/Montserrat-Light.ttf
          - asset: fonts/Montserrat-LightItalic.ttf
            style: italic
+      # - family: Sanfransisco
+      #  fonts:
+      #    - asset: fonts/SFProText-Heavy.ttf
+      #      weight: 500
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

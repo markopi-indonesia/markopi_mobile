@@ -94,7 +94,7 @@ class CardMenu extends StatelessWidget {
       elevation: 8.0,
       margin: EdgeInsets.all(9.0),
       clipBehavior: Clip.antiAlias,
-      color: Color(0xFFF0F6FE),
+      color: Color(0xFFD4ECFF),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

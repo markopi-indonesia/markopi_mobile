@@ -212,7 +212,7 @@ Widget _header() {
         child:Align(
         alignment: Alignment.center,
     child: new Text(
-      'Daftar',
+      'Register',
           style: new TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.w300,
@@ -415,7 +415,7 @@ Widget _showFacebookButton() {
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(5.0)),
             color: Color(0xFF2696D6),
-            child: new Text('DAFTAR',
+            child: new Text('REGISTER',
                 style: new TextStyle(fontSize: 13.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
