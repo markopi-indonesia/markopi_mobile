@@ -59,7 +59,7 @@ class _RegisterState extends State<Register> {
           var nama = _nama;
           ProfileController.addProfile(
               user.uid,
-              nama[0],
+              nama,
               "https://firebasestorage.googleapis.com/v0/b/markopi.appspot.com/o/1558608508082?alt=media&token=7117934e-c055-4839-8e00-cac507de918b",
               "Petani",
               "",

@@ -8,7 +8,7 @@ class PengajuanFasilitatorModel {
   final String sertifikat;
   final String status;
   final String pesan;
-  final DateTime dateTime;
+  final Timestamp dateTime;
 
   final DocumentReference reference;
 

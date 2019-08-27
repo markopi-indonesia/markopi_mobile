@@ -56,7 +56,6 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
   bool _isLoading;
   Image image;
 
-
   Widget _showCircularProgress() {
     if (_isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -66,7 +65,6 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
       width: 0.0,
     );
   }
-
 
   @override
   void initState() {
@@ -86,17 +84,17 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
         .where("userID", isEqualTo: widget.userID)
         .snapshots()
         .listen((data) => data.documents.forEach((doc) => [
-      _docID = doc.documentID,
-      _namaController.text = doc["nama"],
-      _photoUrlController.text = doc["photoURL"],
-      _profesiController.text = doc["profesi"],
-      _noHPController.text = doc["noHP"],
-      _provinsiController.text = doc["provinsi"],
-      _kabupatenController.text = doc["kabupaten"],
-      _kecamatanController.text = doc["kecamatan"],
-      _alamatController.text = doc["alamat"],
-      _bioController.text = doc["bio"]
-    ]));
+              _docID = doc.documentID,
+              _namaController.text = doc["nama"],
+              _photoUrlController.text = doc["photoURL"],
+              _profesiController.text = doc["profesi"],
+              _noHPController.text = doc["noHP"],
+              _provinsiController.text = doc["provinsi"],
+              _kabupatenController.text = doc["kabupaten"],
+              _kecamatanController.text = doc["kecamatan"],
+              _alamatController.text = doc["alamat"],
+              _bioController.text = doc["bio"]
+            ]));
     super.initState();
   }
 
@@ -107,7 +105,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
 
     action == 'Gallery'
         ? selectedImage =
-    await ImagePicker.pickImage(source: ImageSource.gallery)
+            await ImagePicker.pickImage(source: ImageSource.gallery)
         : await ImagePicker.pickImage(source: ImageSource.camera);
 
     return selectedImage;
@@ -146,7 +144,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
         drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
-            _build( context),
+            _build(context),
             _showCircularProgress(),
           ],
         ));
@@ -164,121 +162,106 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
             Positioned(
               width: 350.0,
               top: MediaQuery.of(context).size.height / 9,
-                child: new Column(
-                  children: <Widget>[
-                    GestureDetector(
-                        child: Padding(
-                          
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: Container(
-                              width: 140.0,
-                              height: 150.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                                image: DecorationImage(
-                                    image: _photoUrlController.text.isEmpty
-                                        ? AssetImage('assets/no_user.jpg')
-                                        : NetworkImage(
-                                        _photoUrlController.text),
-                                    fit: BoxFit.cover),
-                                    boxShadow: [
+              child: new Column(children: <Widget>[
+                GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Container(
+                        width: 140.0,
+                        height: 150.0,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(75.0)),
+                            image: DecorationImage(
+                                image: _photoUrlController.text.isEmpty
+                                    ? AssetImage('assets/no_user.jpg')
+                                    : NetworkImage(_photoUrlController.text),
+                                fit: BoxFit.cover),
+                            boxShadow: [
                               BoxShadow(blurRadius: 7.0, color: Colors.white)
-                            ])),   
-                        ),
-                       ),
-                        // new Padding(padding: new EdgeInsets.only(top: 10.0)),
-                        
-                        SizedBox(height: 10.0),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      // children: <Widget>[
-                     Text(
-                        _namaController.text,
-                        style: TextStyle(
-                          fontSize:25.0,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'Montserrat'
-                        ),
-                    ),
-                    Text(
-                      _profesiController.text,
-                      style: TextStyle(
-                          fontSize:12.0,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
-                    
-                    // new Padding(padding: new EdgeInsets.only(top: 10.0)),
-                    Text(
-                      _noHPController.text,
-                      style: TextStyle(
-                          fontSize:12.0,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
-               
+                            ])),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  _namaController.text,
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.normal,
+                      fontFamily: 'Montserrat'),
+                ),
+                Text(
+                  _profesiController.text,
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: 'Montserrat'),
+                ),
 
-            SizedBox(height: 30.0,),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            
-              children: <Widget>[
-                Column(children: <Widget>[
-                   
-                    //  / new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                Text(
+                  _noHPController.text,
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: 'Montserrat'),
+                ),
+
+                SizedBox(
+                  height: 30.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
                         Text(
-                     "Provinsi:  " ,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
-                      Text(
-                     _provinsiController.text,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
-                          )
+                          "Provinsi:  ",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Montserrat'),
                         ),
+                        Text(_provinsiController.text,
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Montserrat')),
                       ],
-                        ),
-                      
-                     Column(
-                       children: <Widget>[
-                        Text(
-                     "Kabupaten:  " ,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
-                          ),
                     ),
+                    Column(children: <Widget>[
                       Text(
-                     _kabupatenController.text,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
-                    ]
-                    ),
-                     Column(
-                       children: <Widget>[
-                        Text(
-                     "Kecamatan:  " ,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
+                        "Kabupaten:  ",
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Montserrat'),
+                      ),
                       Text(
+                        _kabupatenController.text,
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: 'Montserrat'),
+                      ),
+                    ]),
+                    Column(children: <Widget>[
+                      Text(
+                        "Kecamatan:  ",
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Montserrat'),
+                      ),
+                      Text(
+                        _kecamatanController.text,
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: 'Montserrat'),
+                      ),
+                    ]),
+                  ],
                      _kecamatanController.text,
                      style: TextStyle(
                           fontSize:14.0,
@@ -322,16 +305,35 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                     ),
                      ]
                 ),
-        ),
-            
+                Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+                    child: SizedBox(
+                      height: 40.0,
+                      child: new RaisedButton(
+                          elevation: 5.0,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0)),
+                          color: Colors.green,
+                          child: new Text('Ubah Profile',
+                              style: new TextStyle(
+                                  fontSize: 20.0, color: Colors.white)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditProfileDialog()),
+                            );
+                          }),
+                      // )
+                    )
+                    // ]
+                    ),
+              ]),
+            ),
           ],
-              
         ));
-    
   }
 }
-  
- 
 
 class getClipper extends CustomClipper<Path> {
   @override

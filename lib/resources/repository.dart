@@ -24,4 +24,10 @@ class Repository {
 
   Future<String> saveImage(Asset asset) => _firebaseProvider.saveImage(asset);
 
+  Future<void> addKTP(String photoUrl, String id) => _firebaseProvider.addKTP(photoUrl, id);
+
+  Future<void> addSelfie(String photoUrl, String id) => _firebaseProvider.addSelfie(photoUrl, id);
+
+  Future<void> addSertifikat(String photoUrl, String id) => _firebaseProvider.addSertifikat(photoUrl, id);
+
 }
