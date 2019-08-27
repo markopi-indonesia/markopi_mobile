@@ -5,13 +5,12 @@ import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
 import 'package:markopi_mobile/pages/authentication/login.dart';
-import 'package:markopi_mobile/pages/crud_kategori/index.dart';
 import 'package:markopi_mobile/pages/crud_menu/index.dart';
-import 'package:markopi_mobile/pages/crud_informasi/index.dart';
 import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/pages/video.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/index_fasilitator.dart';
 import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
+import 'package:markopi_mobile/ui/menu/informasi.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
@@ -30,11 +29,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/register': (context) => Register(),
         '/login': (context) => Login(),
-        '/video': (context) => AddVideoDialog(),
-        '/menu': (context) => ManageMenu(),
-        '/manage-informasi': (context) => ManageInformasi(),
         '/manage-user': (context) => ManageUser(),
-        '/informasi': (context) => Informasi(),
         '/profile': (context) => IndexProfileDialog(),
         '/pengajuan_fasilitator': (context) => PengajuanFasilitator(),
       },

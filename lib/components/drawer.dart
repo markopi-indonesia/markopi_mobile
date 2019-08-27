@@ -254,38 +254,38 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/video");
-                    },
-                    child: ListTile(
-                      title: Text('Tambah Video'),
-                      leading: Icon(Icons.videocam),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/video");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Tambah Video'),
+                  //     leading: Icon(Icons.videocam),
+                  //   ),
+                  // ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/menu");
-                    },
-                    child: ListTile(
-                      title: Text('Menu'),
-                      leading: Icon(Icons.more),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/menu");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Menu'),
+                  //     leading: Icon(Icons.more),
+                  //   ),
+                  // ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/manage-informasi");
-                    },
-                    child: ListTile(
-                      title: Text('Manage Informasi'),
-                      leading: Icon(Icons.library_books),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/manage-informasi");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Manage Informasi'),
+                  //     leading: Icon(Icons.library_books),
+                  //   ),
+                  // ),
 
                   InkWell(
                     onTap: () {

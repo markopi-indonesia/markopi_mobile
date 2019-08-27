@@ -7,12 +7,12 @@ import 'package:markopi_mobile/pages/crud_informasi/add.dart';
 import 'package:markopi_mobile/models/informasi.dart';
 import 'package:markopi_mobile/pages/crud_informasi/detail.dart';
 
-class Informasi extends StatefulWidget {
+class InformasiAdmin extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _InformasiState();
 }
 
-class _InformasiState extends State<Informasi> {
+class _InformasiState extends State<InformasiAdmin> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
