@@ -69,4 +69,23 @@ class FirebaseProvider {
     map['video'] = videoUrl;
     return _firestore.collection("informasi").document(id).updateData(map);
   }
+
+  Future<void> addKTP(String photoUrl, String id) async {
+    Map<String, dynamic> map = Map();
+    map['ktp'] = photoUrl;
+    return _firestore.collection("pengajuan").document(id).updateData(map);
+  }
+
+  Future<void> addSelfie(String photoUrl, String id) async {
+    Map<String, dynamic> map = Map();
+    map['selfie'] = photoUrl;
+    return _firestore.collection("pengajuan").document(id).updateData(map);
+  }
+
+  Future<void> addSertifikat(String photoUrl, String id) async {
+    Map<String, dynamic> map = Map();
+    map['sertifikat'] = photoUrl;
+    return _firestore.collection("pengajuan").document(id).updateData(map);
+  }
+  
 }

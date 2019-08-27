@@ -5,14 +5,14 @@ import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/add.dart';
 import 'package:markopi_mobile/models/pengajuan_fasilitator.dart';
-import 'package:markopi_mobile/pages/pengajuan_fasilitator/detail_fasilitator.dart';
+import 'package:markopi_mobile/pages/pengajuan_fasilitator/detail_admin.dart';
 
-class PengajuanFasilitator extends StatefulWidget {
+class PengajuanFasilitatorAdmin extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _PengajuanFasilitatorState();
+  State<StatefulWidget> createState() => new _PengajuanFasilitatorAdminState();
 }
 
-class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
+class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
@@ -37,18 +37,15 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
-        body: Stack(children: <Widget>[_buildBody(context)]),
-        floatingActionButton: buildAddPengajuanFab());
+      appBar: Header(),
+      drawer: DrawerPage(),
+      body: Stack(children: <Widget>[_buildBody(context)]),
+    );
   }
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
-          .collection('pengajuan')
-          .where("userID", isEqualTo: userID)
-          .snapshots(),
+      stream: Firestore.instance.collection('pengajuan').orderBy('status').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return new Center(
@@ -87,13 +84,6 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
           color: status,
         ),
         child: new ListTile(
-          // title: new Text(informasi.status +
-          //     " - " +
-          //     informasi.dateTime.day.toString() +
-          //     "/" +
-          //     informasi.dateTime.month.toString() +
-          //     "/" +
-          //     informasi.dateTime.year.toString()),
           title: new Text(informasi.status +
               " - " +
               informasi.dateTime.toDate().toString()),
