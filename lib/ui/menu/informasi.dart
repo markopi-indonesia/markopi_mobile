@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:markopi_mobile/components/drawer.dart';
+import 'package:markopi_mobile/models/profile.dart';
 import 'package:markopi_mobile/pages/crud_informasi/add.dart';
 import 'package:markopi_mobile/ui/menu/detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,13 +28,47 @@ class Informasi extends StatefulWidget {
 }
 
 class InformasiState extends State<Informasi> {
+  var _isVisible = false;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final Firestore _firestore = Firestore.instance;
+  AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
+
+  @override
+  void initState() {
+    this.getCurrentUser().then((user) {
+      if (user != null) {
+        this.retrieveUserDetails(user).then((profile) {
+          if (profile.role == "Admin" || profile.role == "Fasilitator") {
+              setState(() {
+                _isVisible = true;
+              });
+            }
+        });
+      }
+    });
+
+    super.initState();
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user;
+  }
+
+  Future<ProfileModel> retrieveUserDetails(FirebaseUser user) async {
+    DocumentSnapshot _documentSnapshot =
+        await _firestore.collection("profile").document(user.uid).get();
+    ProfileModel profile = ProfileModel.fromMap(_documentSnapshot.data);
+    return profile;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderBack(),
       body: _buildBody(context),
       floatingActionButton: new Visibility(
-        visible: true,
+        visible: _isVisible,
         child: new FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(
