@@ -13,8 +13,22 @@ class InformasiModel {
   final DocumentReference reference;
 
   InformasiModel.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['title'] != null && map['categoryID'] != null && map['deskripsi'] != null && map['ownerRole'] != null && map['cover'] != null && map['images'] != null&& map['video'] != null&& map['userID'] != null),
-        title = map['title'], categoryID = map['categoryID'], deskripsi = map['deskripsi'], ownerRole = map['ownerRole'], cover = map['cover'], images = map['images'], video = map['video'], userID = map['userID'];
+      : assert(map['title'] != null &&
+            map['categoryID'] != null &&
+            map['deskripsi'] != null &&
+            map['ownerRole'] != null &&
+            map['cover'] != null &&
+            map['images'] != null &&
+            map['video'] != null &&
+            map['userID'] != null),
+        title = map['title'],
+        categoryID = map['categoryID'],
+        deskripsi = map['deskripsi'],
+        ownerRole = map['ownerRole'],
+        cover = map['cover'],
+        images = map['images'],
+        video = map['video'],
+        userID = map['userID'];
 
   InformasiModel.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

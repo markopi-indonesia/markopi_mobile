@@ -177,19 +177,49 @@ class _RegisterState extends State<Register> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              _showLogo(),
+              // _showLogo(),
+              _header(),
+              _showText(),
               _showEmailInput(),
               _showNamaInput(),
               _showPasswordInput(),
               _showConfirmPasswordInput(),
               _showPrimaryButton(),
-              _showSecondaryButton(),
+              _showText2(),
+              _showFacebookButton(),
+              // _showSecondaryButton(),
               _showErrorMessage(),
             ],
           ),
         ));
   }
 
+Widget _header() {
+    // return new Padding(
+    //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+    return Container(
+        constraints: new BoxConstraints(
+    minHeight: 50.0,
+    minWidth: 5.0,
+    maxHeight: 50.0,
+    maxWidth: 30.0,
+  ),
+        decoration: BoxDecoration(
+          color: Color(0xFFF0F6FE),
+          // border: Border.all(),
+        ),
+
+        child:Align(
+        alignment: Alignment.center,
+    child: new Text(
+      'Daftar',
+          style: new TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.w300,
+              color: Colors.black)),
+    )
+      );
+  }
   Widget _showErrorMessage() {
     if (_errorMessage.length > 0 && _errorMessage != null) {
       return new Text(
@@ -207,19 +237,64 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  Widget _showLogo() {
-    return new Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-        child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 70.0,
-          child: Image.asset('assets/logo.png'),
-        ),
-      ),
+Widget _showFacebookButton() {
+  return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: SizedBox(
+          height: 47.0,
+     child: RaisedButton(
+       
+       child: new Text(
+      'LOG IN DENGAN FACEBOOK',
+      style: new TextStyle(fontSize: 13.0, color: Colors.white),),
+       
+       color: Color(0xFF3B5998),
+       onPressed: (){
+       }
+      )
+        ));    
+  }
+
+  Widget _showText() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+    child: new Text(
+      'Jika belum punya akun daftarkan diri Anda dengan mengisi form di bawah ini.',
+          style: new TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.w300,
+              color: Colors.black)),
     );
   }
+
+  Widget _showText2() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+      child:Align(
+        alignment: Alignment.center,
+    child: new Text(
+      'ATAU',
+          style: new TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w300,
+              color: Colors.black)),
+    ));
+  }
+
+  
+  // Widget _showLogo() {
+  //   return new Hero(
+  //     tag: 'hero',
+  //     child: Padding(
+  //       padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+  //       child: CircleAvatar(
+  //         backgroundColor: Colors.transparent,
+  //         radius: 70.0,
+  //         child: Image.asset('assets/logo.png'),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _showEmailInput() {
     return Padding(
@@ -334,14 +409,14 @@ class _RegisterState extends State<Register> {
     return new Padding(
         padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
         child: SizedBox(
-          height: 40.0,
+          height: 47.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(5.0)),
-            color: Colors.blueAccent,
+            color: Color(0xFF2696D6),
             child: new Text('DAFTAR',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 13.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));

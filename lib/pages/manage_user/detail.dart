@@ -14,14 +14,14 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 
-class IndexProfileDialog extends StatefulWidget {
+class IndexProfileAdmin extends StatefulWidget {
   final String userID;
-  IndexProfileDialog({this.userID});
+  IndexProfileAdmin({this.userID});
   @override
-  _IndexProfileDialogState createState() => _IndexProfileDialogState();
+  _IndexProfileAdminState createState() => _IndexProfileAdminState();
 }
 
-class _IndexProfileDialogState extends State<IndexProfileDialog> {
+class _IndexProfileAdminState extends State<IndexProfileAdmin> {
   var _repository = Repository();
   final _ProfileKeyPage = GlobalKey<ScaffoldState>();
   String _userID;
@@ -182,6 +182,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                             ])),
                   ),
                 ),
+
                 SizedBox(height: 10.0),
                 Text(
                   _namaController.text,
@@ -215,6 +216,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
+                        //  / new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Text(
                           "Provinsi:  ",
                           style: TextStyle(
@@ -262,72 +264,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                       ),
                     ]),
                   ],
-                     _kecamatanController.text,
-                     style: TextStyle(
-                          fontSize:14.0,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
-                          ),
-                    ),
-                    ]
-                    ),
-                ],
-        ),
-          
-              
-            // Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     
-                    // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                     
-                   Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-                        child: SizedBox(
-                          height: 40.0,
-                          child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0)),
-                            color: Color(0xFF2696D6),
-                            child: new Text('Ubah Profile',
-                                style: new TextStyle(
-                                    fontSize: 20.0, color: Colors.white)),
-                            onPressed:(){
-                              Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditProfileDialog()),
-            );
-                            }
-                          ),
-                        // )
-                        )
-                      // ]
-                    ),
-                     ]
                 ),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-                    child: SizedBox(
-                      height: 40.0,
-                      child: new RaisedButton(
-                          elevation: 5.0,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0)),
-                          color: Colors.green,
-                          child: new Text('Ubah Profile',
-                              style: new TextStyle(
-                                  fontSize: 20.0, color: Colors.white)),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfileDialog()),
-                            );
-                          }),
-                      // )
-                    )
-                    // ]
-                    ),
               ]),
             ),
           ],
