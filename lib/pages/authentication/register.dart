@@ -194,32 +194,30 @@ class _RegisterState extends State<Register> {
         ));
   }
 
-Widget _header() {
+  Widget _header() {
     // return new Padding(
     //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
     return Container(
         constraints: new BoxConstraints(
-    minHeight: 50.0,
-    minWidth: 5.0,
-    maxHeight: 50.0,
-    maxWidth: 30.0,
-  ),
+          minHeight: 50.0,
+          minWidth: 5.0,
+          maxHeight: 50.0,
+          maxWidth: 30.0,
+        ),
         decoration: BoxDecoration(
           color: Color(0xFFF0F6FE),
           // border: Border.all(),
         ),
-
-        child:Align(
-        alignment: Alignment.center,
-    child: new Text(
-      'Register',
-          style: new TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.black)),
-    )
-      );
+        child: Align(
+          alignment: Alignment.center,
+          child: new Text('Register',
+              style: new TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black)),
+        ));
   }
+
   Widget _showErrorMessage() {
     if (_errorMessage.length > 0 && _errorMessage != null) {
       return new Text(
@@ -237,29 +235,34 @@ Widget _header() {
     }
   }
 
-Widget _showFacebookButton() {
-  return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      child: SizedBox(
-          height: 47.0,
-     child: RaisedButton(
-       
-       child: new Text(
-      'LOG IN DENGAN FACEBOOK',
-      style: new TextStyle(fontSize: 13.0, color: Colors.white),),
-       
-       color: Color(0xFF3B5998),
-       onPressed: (){
-       }
-      )
-        ));    
+  Widget _showFacebookButton() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
+        child: SizedBox(
+            height: 47.0,
+            child: RaisedButton(
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(10.0),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      'LOG IN DENGAN FACEBOOK',
+                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
+                    )
+                  ],
+                ),
+                color: Color(0xFF1d508d),
+                onPressed: () {})));
   }
 
   Widget _showText() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-    child: new Text(
-      'Jika belum punya akun daftarkan diri Anda dengan mengisi form di bawah ini.',
+      child: new Text(
+          'Jika belum punya akun daftarkan diri Anda dengan mengisi form di bawah ini.',
           style: new TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.w300,
@@ -269,19 +272,17 @@ Widget _showFacebookButton() {
 
   Widget _showText2() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-      child:Align(
-        alignment: Alignment.center,
-    child: new Text(
-      'ATAU',
-          style: new TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.black)),
-    ));
+        padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+        child: Align(
+          alignment: Alignment.center,
+          child: new Text('ATAU',
+              style: new TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black)),
+        ));
   }
 
-  
   // Widget _showLogo() {
   //   return new Hero(
   //     tag: 'hero',
@@ -298,17 +299,23 @@ Widget _showFacebookButton() {
 
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Email',
-            icon: new Icon(
-              Icons.mail,
-              color: Colors.grey,
-            )),
+          labelText: 'Email',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: 'markopi@gmail.com',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Email tidak boleh kosong";
@@ -323,17 +330,23 @@ Widget _showFacebookButton() {
 
   Widget _showNamaInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.text,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Nama',
-            icon: new Icon(
-              Icons.contacts,
-              color: Colors.grey,
-            )),
+          labelText: 'Nama',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: 'Markopi Nusantara',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Nama tidak boleh kosong";
@@ -346,17 +359,23 @@ Widget _showFacebookButton() {
 
   Widget _showPasswordInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Kata Sandi',
-            icon: new Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
+          labelText: 'Password',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: '*******',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Kata sandi tidak boleh kosong";
@@ -371,17 +390,23 @@ Widget _showFacebookButton() {
 
   Widget _showConfirmPasswordInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Konfirmasi Kata Sandi',
-            icon: new Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
+          labelText: 'Konfirmasi Password',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: '*******',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Konfirmasi kata sandi tidak boleh kosong";
@@ -407,13 +432,13 @@ Widget _showFacebookButton() {
 
   Widget _showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(20.0, 45.0, 20.0, 0.0),
         child: SizedBox(
           height: 47.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(5.0)),
+                borderRadius: new BorderRadius.circular(10.0)),
             color: Color(0xFF2696D6),
             child: new Text('REGISTER',
                 style: new TextStyle(fontSize: 13.0, color: Colors.white)),

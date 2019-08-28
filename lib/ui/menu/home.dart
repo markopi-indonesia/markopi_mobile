@@ -173,7 +173,7 @@ class CardMenu extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(8.0, 10.0, 16.0, 20.0),
             child: Text(this.name,
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Color(0xff3b444f))),
           ),
         ],
       ),

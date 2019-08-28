@@ -110,7 +110,7 @@ class _SubMenuState extends State<SubMenu> {
               context, submenu.reference.documentID, color_num.toString()),
           title: Text(
             submenu.name,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xff3b444f)),
           ),
         ),
       ),
