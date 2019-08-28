@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
                     _navigateSubMenu(
                       context,
                       listMenu[index].reference.documentID,
+                      listMenu[index].name,
                       listMenu[index].color);
                     
                     print("#### subMenu ${listMenu[index].reference.documentID}");
@@ -119,11 +120,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateSubMenu(
-      BuildContext context, String documentID, String _color) {
+      BuildContext context, String documentID, String nameMenu, String _color) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SubMenu(
           menuId: documentID,
+          menuName: nameMenu,
           color: _color,
           role: role,
         ),
@@ -173,7 +175,7 @@ class CardMenu extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(8.0, 10.0, 16.0, 20.0),
             child: Text(this.name,
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Color(0xff3b444f))),
           ),
         ],
       ),

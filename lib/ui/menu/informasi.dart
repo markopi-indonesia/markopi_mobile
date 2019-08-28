@@ -39,10 +39,10 @@ class InformasiState extends State<Informasi> {
       if (user != null) {
         this.retrieveUserDetails(user).then((profile) {
           if (profile.role == "Admin" || profile.role == "Fasilitator") {
-              setState(() {
-                _isVisible = true;
-              });
-            }
+            setState(() {
+              _isVisible = true;
+            });
+          }
         });
       }
     });
@@ -96,7 +96,51 @@ class InformasiState extends State<Informasi> {
           return new Center(
             child: CircularProgressIndicator(),
           );
-        return _buildList(context, snapshot.data.documents);
+        // return _buildList(context, snapshot.data.documents);
+        List<InformasiModel> listInformasi = [];
+
+        snapshot.data.documents.forEach(
+            (data) => listInformasi.add(InformasiModel.fromSnapshot(data)));
+
+        if (listInformasi.isEmpty) {
+          print('informasi is empty');
+        }
+
+        return ListView.separated(
+            itemCount: listInformasi.length,
+            itemBuilder: (BuildContext context, int index) {
+              String nama;
+              Firestore.instance
+                  .collection('profile')
+                  .where("userID", isEqualTo: listInformasi[index].userID)
+                  .snapshots()
+                  .listen((data) => data.documents.forEach((doc) => [
+                        nama = doc["nama"],
+                      ]));
+
+              return Padding(
+                  key: ValueKey(listInformasi[index].title),
+                  padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+                  child: GestureDetector(
+                    onTap: () => _detail(
+                        context,
+                        listInformasi[index].reference.documentID,
+                        listInformasi[index].categoryID,
+                        listInformasi[index].cover,
+                        listInformasi[index].deskripsi,
+                        listInformasi[index].images,
+                        listInformasi[index].ownerRole,
+                        listInformasi[index].title,
+                        listInformasi[index].userID,
+                        nama,
+                        listInformasi[index].video),
+                      child: Container(
+                          margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                          child:  Text(listInformasi[index].title, style: TextStyle(fontSize: 18, color: Color(0xff3b444f)),)
+                      ),
+                  ));
+                  
+            }, separatorBuilder: (BuildContext context, int index) => Divider(color: Colors.black));
       },
     );
   }
