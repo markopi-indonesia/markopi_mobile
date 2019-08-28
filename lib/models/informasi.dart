@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InformasiModel {
   final String title;
-  final String categoryID;
+  final String menuID;
+  final String subMenuID;
   final String deskripsi;
-  final String ownerRole;
   final String cover;
   final String images;
   final String video;
@@ -14,17 +14,17 @@ class InformasiModel {
 
   InformasiModel.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null &&
-            map['categoryID'] != null &&
+            map['menuID'] != null &&
+            map['subMenuID'] != null &&
             map['deskripsi'] != null &&
-            map['ownerRole'] != null &&
             map['cover'] != null &&
             map['images'] != null &&
             map['video'] != null &&
             map['userID'] != null),
         title = map['title'],
-        categoryID = map['categoryID'],
+        menuID = map['menuID'],
+        subMenuID = map['subMenuID'],
         deskripsi = map['deskripsi'],
-        ownerRole = map['ownerRole'],
         cover = map['cover'],
         images = map['images'],
         video = map['video'],
@@ -34,5 +34,5 @@ class InformasiModel {
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => title + categoryID + deskripsi;
+  String toString() => title  + deskripsi;
 }

@@ -7,14 +7,13 @@ import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
 import 'package:markopi_mobile/models/informasi.dart';
 import 'package:markopi_mobile/controllers/informasi_controller.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
+import 'package:youtube_player/youtube_player.dart';
 
 class DetailInformasi extends StatefulWidget {
   final String documentID;
-  final String categoryID;
   final String cover;
   final String deskripsi;
   final String images;
-  final String ownerRole;
   final String title;
   final String userID;
   final String nama;
@@ -22,11 +21,9 @@ class DetailInformasi extends StatefulWidget {
 
   DetailInformasi(
       {this.documentID,
-      this.categoryID,
       this.cover,
       this.deskripsi,
       this.images,
-      this.ownerRole,
       this.title,
       this.userID,
       this.nama,
@@ -54,115 +51,29 @@ class _DetailInformasiState extends State<DetailInformasi> {
         appBar: HeaderBack(),
         // drawer: DrawerPage(),
         resizeToAvoidBottomPadding: false,
-        body: SingleChildScrollView(
-            child: Column(children: <Widget>[
-          Stack(children: <Widget>[
-            new Container(
-              height: MediaQuery.of(context).size.height / 4.2,
-              margin: const EdgeInsets.only(top: 0.1, bottom: 3.0),
-              child: new Container(
-//                padding: EdgeInsets.only(top: 20.0),
-                child: new Stack(
-                  children: <Widget>[
-                    // DetailThumbnail(),
-                    // DetailImage(),
-                    new Center(
-                        child: new Container(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 14),
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      child: new Container(
-                        height: MediaQuery.of(context).size.height / 4,
-                        decoration: new BoxDecoration(
-                          color: Color(0xFFF0F6FE),
-                          shape: BoxShape.rectangle,
-                          borderRadius: new BorderRadius.circular(2.0),
-                          boxShadow: <BoxShadow>[
-                            new BoxShadow(
-                                color: Colors.white,
-                                blurRadius: 0.0,
-                                offset: new Offset(0.0, 0.0))
-                          ],
-                        ),
-                        child: new Container(
-                            margin: const EdgeInsets.all(5.0),
-                            constraints: new BoxConstraints.expand(),
-                            child: Stack(
-                              children: <Widget>[
-                                new Column(
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.bottomCenter,
-//                      width: 190.0,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.08,
-                                      child: new Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          new Text(
-                                            widget.title,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 22.0),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.bottomCenter,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              16.0,
-                                      child: new Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          new Text("by: " + widget.nama,
-                                              style: TextStyle(
-                                                  color: Colors.black)),
-                                          Spacer(flex: 1),
-                                          // new Text("date: 23 April 2019",
-                                          //     style: TextStyle(
-                                          //         color: Colors.white)),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            )),
-                      ),
-                    )),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-//        color: Colors.red
-                          ),
-//      constraints: BoxConstraints.expand(),
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Container(
-                            width: 90.0,
-                            height: 90.0,
-                            decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: new NetworkImage(widget.cover))),
-                          )),
-                    ),
-                  ],
-                ),
+        body: Container(
+            child: ListView(children: <Widget>[
+          new Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
+              constraints: new BoxConstraints(
+                minHeight: 50.0,
+                minWidth: 5.0,
+                maxHeight: 50.0,
+                maxWidth: 30.0,
               ),
-            ),
-          ]),
+              decoration: BoxDecoration(
+                color: Color(0xFFffc83f),
+                // border: Border.all(),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: new Text(widget.title,
+                    style: new TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black)),
+              )),
           Center(
               child: IntrinsicHeight(
             child: Container(
@@ -190,9 +101,19 @@ class _DetailInformasiState extends State<DetailInformasi> {
 //                    color: Colors.tealAccent,
                     child: Column(
                       children: <Widget>[
-                        Text('Gambar Terkait',
-                            style: TextStyle(
-                                fontSize: 17.0, fontWeight: FontWeight.w700)),
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: new Text("Gambar",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontFamily: 'SF Pro Text',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    color: Color(0xFF3B444F))),
+                          ),
+                        ),
                         Container(
                           margin: EdgeInsets.all(10.0),
                           child: widget.images.isNotEmpty
@@ -237,16 +158,29 @@ class _DetailInformasiState extends State<DetailInformasi> {
 //                    color: Colors.greenAccent,
                           child: Column(
                             children: <Widget>[
-                              Text('Video Terkait',
-                                  style: TextStyle(
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.w700)),
                               Container(
-                                margin: EdgeInsets.all(10.0),
-                                child: widget.video.isNotEmpty
-                                    ? Image.asset('assets/pola_tanam.jpeg')
-                                    : Text("Tidak ada video"),
-                              )
+                                margin: EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: new Text("Video",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontFamily: 'SF Pro Text',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.0,
+                                          color: Color(0xFF3B444F))),
+                                ),
+                              ),
+                              YoutubePlayer(
+                                  context: context,
+                                  source: "ksh2OLHbUtQ",
+                                  quality: YoutubeQuality.LOW,
+                                  // callbackController is (optional).
+                                  // use it to control player on your own.
+                                  // callbackController: (controller) {
+                                  //   _videoController = controller;
+                                  // },
+                                ),
                             ],
                           ),
                         ),
@@ -255,6 +189,37 @@ class _DetailInformasiState extends State<DetailInformasi> {
                   )
                 : Text(""),
           ),
+//           Container(
+//             margin: EdgeInsets.all(8),
+//             child: widget.video.isNotEmpty
+//                 ? Row(
+//                     children: <Widget>[
+//                       Expanded(
+//                         flex: 3,
+//                         child: new Container(
+// //                    height: MediaQuery.of(context).size.height,
+//                           width: MediaQuery.of(context).size.width / 1.5,
+// //                    color: Colors.greenAccent,
+//                           child: Column(
+//                             children: <Widget>[
+//                               Text('Video Terkait',
+//                                   style: TextStyle(
+//                                       fontSize: 22.0,
+//                                       fontWeight: FontWeight.w700)),
+//                               Container(
+//                                 margin: EdgeInsets.all(10.0),
+//                                 child: widget.video.isNotEmpty
+//                                     ? Image.asset('assets/pola_tanam.jpeg')
+//                                     : Text("Tidak ada video"),
+//                               )
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   )
+//                 : Text(""),
+//           ),
         ])));
   }
 

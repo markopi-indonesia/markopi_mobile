@@ -13,15 +13,21 @@ import 'package:flutter/services.dart';
 import 'package:markopi_mobile/components/header_back.dart';
 
 class AddInformasiDialog extends StatefulWidget {
+  final String menuID;
+  final String subMenuID;
+
+  AddInformasiDialog({
+    this.menuID,
+    this.subMenuID,
+  });
   @override
   _AddInformasiDialogState createState() => _AddInformasiDialogState();
 }
 
 class _AddInformasiDialogState extends State<AddInformasiDialog> {
   var _repository = Repository();
-  final _formAddCategoryKey = GlobalKey<FormState>();
+  final _formAddInformasiKey = GlobalKey<FormState>();
   String title;
-  String categoryID;
   String deskripsi;
   String _mySelection;
   String _errorMessage;
@@ -40,7 +46,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   bool _isLoading;
 
   bool _validateAndSave() {
-    final form = _formAddCategoryKey.currentState;
+    final form = _formAddInformasiKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
@@ -76,8 +82,11 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 10,
+        enableCamera: true,
       );
     } on PlatformException catch (e) {
+      error = e.message;
+    } on NoImagesSelectedException catch (e) {
       error = e.message;
     }
 
@@ -96,9 +105,10 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     File selectedImage;
 
     action == 'Gallery'
-        ? selectedImage =
-            await ImagePicker.pickImage(source: ImageSource.gallery)
-        : await ImagePicker.pickImage(source: ImageSource.camera);
+        ? selectedImage = await ImagePicker.pickImage(
+            source: ImageSource.gallery, imageQuality: 70)
+        : await ImagePicker.pickImage(
+            source: ImageSource.camera, imageQuality: 70);
 
     return selectedImage;
   }
@@ -121,15 +131,16 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     });
     if (_validateAndSave()) {
       try {
-        Firestore.instance
-            .collection('profile')
-            .where("userID", isEqualTo: userID)
-            .snapshots()
-            .listen((data) => data.documents.forEach((doc) => setState(() {
-                  ownerRole = doc["role"];
-                  print(ownerRole);
-                  addInformasi();
-                })));
+        // print(widget.menuID);
+        // print(widget.subMenuID);
+        addInformasi();
+        // Firestore.instance
+        //     .collection('profile')
+        //     .where("userID", isEqualTo: userID)
+        //     .snapshots()
+        //     .listen((data) => data.documents.forEach((doc) => setState(() {
+        //           addInformasi();
+        //         })));
         setState(() {
           _isLoading = false;
         });
@@ -154,13 +165,13 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   void addInformasi() async {
     final docRef = await Firestore.instance.collection('informasi').add({
       'title': title,
+      'menuID': widget.menuID,
+      'subMenuID': widget.subMenuID,
       'deskripsi': deskripsi,
-      "categoryID": categoryID,
       'userID': userID,
-      'ownerRole': ownerRole,
       'cover': '',
       'images': '',
-      'video': ''
+      'video': _videoUrl
     });
     print(docRef.documentID);
     _repository.uploadImageToStorage(imageFile).then((url) {
@@ -178,9 +189,9 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
         _repository.addImage(urls, docRef.documentID).then((v) {});
       });
     });
-    _repository.uploadVideoToStorage(videoFile).then((url) {
-      _repository.addVideo(url, docRef.documentID).then((v) {});
-    });
+    // _repository.uploadVideoToStorage(videoFile).then((url) {
+    //   _repository.addVideo(url, docRef.documentID).then((v) {});
+    // });
   }
 
   @override
@@ -218,152 +229,176 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
 
   Widget _showForm() {
     return new Form(
-      key: _formAddCategoryKey,
+      key: _formAddInformasiKey,
       autovalidate: false,
-      child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('category').snapshots(),
-          builder: (context, snapshot) {
-            return new ListView(
-              children: <Widget>[
-                new Container(
-                    padding: new EdgeInsets.all(10.0),
-                    child: new Column(
-                      children: <Widget>[
-                        new Center(
-                          child: Text(
-                            "Form Tambah Informasi",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20.0),
-                          ),
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        new TextFormField(
-                          decoration: new InputDecoration(
-                              hintText: "Judul",
-                              labelText: "Judul",
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(5.0))),
-                          validator: (value) =>
-                              value.isEmpty ? 'Judul tidak boleh kosong' : null,
-                          onSaved: (value) => title = value,
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        GestureDetector(
-                          child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0)),
-                            color: Colors.lightGreen,
-                            child: new Text('Tambah Cover',
-                                style: new TextStyle(
-                                    fontSize: 20.0, color: Colors.white)),
-                            onPressed: _showImageDialog,
-                          ),
-                          // onTap: _showImageDialog,
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 10.0)),
-                        new FormField<String>(
-                          builder: (FormFieldState<String> state) {
-                            return InputDecorator(
-                              decoration: InputDecoration(
-                                errorText:
-                                    state.hasError ? state.errorText : null,
-                              ),
-                              isEmpty: categoryID == '',
-                              child: new DropdownButtonHideUnderline(
-                                child: new DropdownButton<String>(
-                                  isDense: true,
-                                  hint: new Text("Pilih Kategori"),
-                                  value: _mySelection,
-                                  onChanged: (String newValue) {
-                                    state.didChange(newValue);
-                                    setState(() {
-                                      _mySelection = newValue;
-                                    });
-                                  },
-                                  items: snapshot.data.documents.map((map) {
-                                    return new DropdownMenuItem<String>(
-                                      value: map.documentID.toString(),
-                                      child: new Text(
-                                        map["name"],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            );
-                          },
-                          validator: (_mySelection) {
-                            if (_mySelection == null) {
-                              return "Kategori tidak boleh kosong";
-                            }
-                          },
-                          onSaved: (value) => categoryID = value,
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        new TextFormField(
-                          maxLines: 10,
-                          decoration: new InputDecoration(
-                              hintText: "Deskripsi",
-                              labelText: "Deskripsi",
-                              border: new OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(5.0))),
-                          validator: (value) => value.isEmpty
-                              ? 'Deskripsi tidak boleh kosong'
-                              : null,
-                          onSaved: (value) => deskripsi = value,
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        GestureDetector(
-                          child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0)),
-                            color: Colors.lightGreen,
-                            child: new Text('Tambah Gambar',
-                                style: new TextStyle(
-                                    fontSize: 20.0, color: Colors.white)),
-                            onPressed: loadAssets,
-                          ),
-                          // onTap: loadAssets,
-                        ),
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        GestureDetector(
-                          child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0)),
-                            color: Colors.lightGreen,
-                            child: new Text('Tambah Video',
-                                style: new TextStyle(
-                                    fontSize: 20.0, color: Colors.white)),
-                            onPressed: _showVideoDialog,
-                          ),
-                        ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                            child: SizedBox(
-                              height: 40.0,
-                              child: new RaisedButton(
-                                elevation: 5.0,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(5.0)),
-                                color: Colors.green,
-                                child: new Text('Simpan Informasi',
-                                    style: new TextStyle(
-                                        fontSize: 20.0, color: Colors.white)),
-                                onPressed: _validateAndSubmit,
-                              ),
-                            ))
-                      ],
-                    )),
-              ],
-            );
-          }),
+      child: new Container(
+          padding: new EdgeInsets.all(10.0),
+          child: new ListView(
+            children: <Widget>[
+              new Center(
+                child: Text("Form Tambah Informasi",
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              new Align(
+                alignment: Alignment.topLeft,
+                child: new Text("Judul",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              new TextFormField(
+                decoration: new InputDecoration(
+                    hintText: "Judul",
+                    labelText: "Judul",
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(5.0))),
+                validator: (value) =>
+                    value.isEmpty ? 'Judul tidak boleh kosong' : null,
+                onSaved: (value) => title = value,
+              ),
+              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              new Align(
+                alignment: Alignment.topLeft,
+                child: new Text("Tambah Cover",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              SizedBox(
+                height: 47.0,
+                child: new RaisedButton(
+                  elevation: 5.0,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(2.0)),
+                  color: Color(0xFF2696D6),
+                  child: new Text("Tambah Cover",
+                      style:
+                          new TextStyle(fontSize: 16.0, color: Colors.white)),
+                  onPressed: _showImageDialog,
+                ),
+              ),
+              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              new Align(
+                alignment: Alignment.topLeft,
+                child: new Text("Deskripsi",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              new TextFormField(
+                maxLines: 10,
+                decoration: new InputDecoration(
+                    hintText: "Deskripsi",
+                    labelText: "Deskripsi",
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(5.0))),
+                validator: (value) =>
+                    value.isEmpty ? 'Deskripsi tidak boleh kosong' : null,
+                onSaved: (value) => deskripsi = value,
+              ),
+              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              new Align(
+                alignment: Alignment.topLeft,
+                child: new Text("Tambah Gambar",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              SizedBox(
+                height: 47.0,
+                child: new RaisedButton(
+                  elevation: 5.0,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(2.0)),
+                  color: Color(0xFF2696D6),
+                  child: new Text('Tambah Gambar',
+                      style:
+                          new TextStyle(fontSize: 16.0, color: Colors.white)),
+                  onPressed: loadAssets,
+                ),
+              ),
+              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              new Align(
+                alignment: Alignment.topLeft,
+                child: new Text("URL Video Youtube",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Color(0xFF3B444F))),
+              ),
+              new TextFormField(
+                // maxLines: 10,
+                decoration: new InputDecoration(
+                    hintText: "Masukkan URL Video Youtube",
+                    labelText: "URL Video Youtube",
+                    border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(5.0))),
+                validator: (value) =>
+                    value.isEmpty ? 'URL Video tidak boleh kosong' : null,
+                onSaved: (value) => _videoUrl = value,
+              ),
+              // GestureDetector(
+              //   child: new RaisedButton(
+              //     elevation: 5.0,
+              //     shape: new RoundedRectangleBorder(
+              //         borderRadius: new BorderRadius.circular(5.0)),
+              //     color: Colors.lightGreen,
+              //     child: new Text('Tambah Video',
+              //         style:
+              //             new TextStyle(fontSize: 20.0, color: Colors.white)),
+              //     onPressed: _showVideoDialog,
+              //   ),
+              // ),
+              new Padding(padding: new EdgeInsets.only(top: 30.0)),
+              SizedBox(
+                height: 47.0,
+                child: new RaisedButton(
+                  elevation: 5.0,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(5.0)),
+                  color: Color(0xFF1D508D),
+                  child: new Text('Simpan Informasi',
+                      style:
+                          new TextStyle(fontSize: 16.0, color: Colors.white)),
+                  onPressed: _validateAndSubmit,
+                ),
+              ),
+              // Padding(
+              //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+              //     child: SizedBox(
+              //       height: 40.0,
+              //       child: new RaisedButton(
+              //         elevation: 5.0,
+              //         shape: new RoundedRectangleBorder(
+              //             borderRadius: new BorderRadius.circular(5.0)),
+              //         color: Colors.green,
+              //         child: new Text('Simpan Informasi',
+              //             style: new TextStyle(
+              //                 fontSize: 20.0, color: Colors.white)),
+              //         onPressed: _validateAndSubmit,
+              //       ),
+              //     ))
+            ],
+          )),
     );
   }
 

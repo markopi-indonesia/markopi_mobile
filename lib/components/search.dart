@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/models/article_model.dart';
+import 'package:markopi_mobile/models/informasi.dart';
 import 'package:markopi_mobile/ui/menu/detail.dart';
 
 class SearchState extends StatefulWidget {
@@ -18,10 +18,10 @@ class SearchState extends StatefulWidget {
 class _SearchState extends State<SearchState> {
   final key = GlobalKey<ScaffoldState>();
   final TextEditingController _searchQuery = TextEditingController();
-  Article post;
+  InformasiModel post;
   String _error;
   bool _isSearching = false;
-  List<Article> _results = List();
+  List<InformasiModel> _results = List();
   List<String> listTitle = List();
   List<String> _strResult = [];
   String filter;
@@ -89,14 +89,14 @@ class _SearchState extends State<SearchState> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return CircularProgressIndicator();
 
-          List<Article> resultArticle = [];
+          List<InformasiModel> resultArticle = [];
           String _error;
           if (filter != null && filter != "") {
             snapshot.data.documents.forEach((f) {
               String deskripsi = f['deskripsi'];
 
               if (deskripsi.contains(filter)) {
-                resultArticle.add(Article.fromSnapshot(f));
+                resultArticle.add(InformasiModel.fromSnapshot(f));
               } else {
                 // resultArticle = [];
                 _error = 'Data tidak ditemukan';
@@ -104,7 +104,7 @@ class _SearchState extends State<SearchState> {
             });
           } else {
             snapshot.data.documents.forEach((f) {
-              resultArticle.add(Article.fromSnapshot(f));
+              resultArticle.add(InformasiModel.fromSnapshot(f));
             });
           }
 
@@ -138,8 +138,6 @@ class _SearchState extends State<SearchState> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailInformasi(
-                                                        categoryID:
-                                                            doc["categoryID"],
                                                         title: doc["title"],
                                                         cover: doc["cover"],
                                                         deskripsi:
@@ -147,8 +145,6 @@ class _SearchState extends State<SearchState> {
                                                         documentID:
                                                             doc.documentID,
                                                         images: doc["images"],
-                                                        ownerRole:
-                                                            doc["ownerRole"],
                                                         userID: doc["userID"],
                                                         nama: nama,
                                                         video: doc["video"],
