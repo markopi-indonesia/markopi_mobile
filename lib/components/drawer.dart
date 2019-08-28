@@ -107,15 +107,16 @@ class _DrawerPageState extends State<DrawerPage> {
                 ),
                 currentAccountPicture: GestureDetector(
                   child: new CircleAvatar(
-                    backgroundColor: Colors.grey,
+                    backgroundColor: Colors.white,
                     backgroundImage: AssetImage('assets/logo.png'),
                   ),
                 ),
                 decoration: new BoxDecoration(
                   // borderRadius: BorderRadius.circular(100.0),
-                  image: DecorationImage(
-                      image: AssetImage('assets/sanitasi.jpeg'),
-                      fit: BoxFit.cover),
+                  color: Color(0xFF142B44),
+                  // image: DecorationImage(
+                  //     image: AssetImage('assets/sanitasi.jpeg'),
+                  //     fit: BoxFit.cover),
                 ), accountEmail: null,
               ),
 
