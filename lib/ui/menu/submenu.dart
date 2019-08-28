@@ -108,8 +108,8 @@ class _SubMenuState extends State<SubMenu> {
           color: Color(color_num),
         ),
         child: ListTile(
-          onTap: () => _navigateCategory(
-              context, submenu.reference.documentID, color_num.toString()),
+          onTap: () => _navigateSubMenu(
+              context, widget.menuId , submenu.reference.documentID, color_num.toString()),
           title: Text(
             submenu.name,
             style: TextStyle(color: Color(0xff3b444f)),
@@ -119,12 +119,13 @@ class _SubMenuState extends State<SubMenu> {
     );
   }
 
-  void _navigateCategory(
-      BuildContext context, String documentID, String _color) {
+  void _navigateSubMenu(
+      BuildContext context, String menuID, String subMenuID, String _color) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Informasi(
-          documentID: documentID,
+          menuID: menuID,
+          subMenuID: subMenuID,
           color: _color,
         ),
         fullscreenDialog: true,

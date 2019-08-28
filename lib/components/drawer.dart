@@ -233,9 +233,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                     decoration: new BoxDecoration(
                       // borderRadius: BorderRadius.circular(100.0),
-                      image: DecorationImage(
-                          image: AssetImage('assets/sanitasi.jpeg'),
-                          fit: BoxFit.cover),
+                      color: Color(0xFF142B44),
                     ),
                   ),
 

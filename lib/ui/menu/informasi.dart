@@ -9,19 +9,16 @@ import 'package:markopi_mobile/components/header_back.dart';
 import 'package:markopi_mobile/models/informasi.dart';
 
 class Informasi extends StatefulWidget {
-  // final String title;
-  // final String nama;
+  final String menuID;
+  final String subMenuID;
   final String color;
-  final String documentID;
-  // final Image image;
+  
 
   Informasi({
     Key key,
-    @required this.documentID,
+    @required this.menuID,
+    @required this.subMenuID,
     @required this.color,
-    // @required this.title,
-    // @required this.nama,
-    // @required this.image
   }) : super(key: key);
   @override
   State<StatefulWidget> createState() => new InformasiState();
@@ -73,7 +70,7 @@ class InformasiState extends State<Informasi> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddInformasiDialog(),
+                builder: (context) => AddInformasiDialog(menuID: widget.menuID, subMenuID: widget.subMenuID),
                 fullscreenDialog: true,
               ),
             );
@@ -89,7 +86,7 @@ class InformasiState extends State<Informasi> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('informasi')
-          .where("categoryID", isEqualTo: widget.documentID)
+          .where("subMenuID", isEqualTo: widget.subMenuID)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -185,11 +182,11 @@ class InformasiState extends State<Informasi> {
           onTap: () => _detail(
               context,
               data.documentID,
-              informasi.categoryID,
+              // informasi.categoryID,
               informasi.cover,
               informasi.deskripsi,
               informasi.images,
-              informasi.ownerRole,
+              // informasi.ownerRole,
               informasi.title,
               informasi.userID,
               nama,
@@ -202,11 +199,9 @@ class InformasiState extends State<Informasi> {
   void _detail(
     BuildContext context,
     String documentID,
-    String categoryID,
     String cover,
     String deskripsi,
     String images,
-    String ownerRole,
     String title,
     String userID,
     String nama,
@@ -216,11 +211,9 @@ class InformasiState extends State<Informasi> {
       MaterialPageRoute(
         builder: (context) => DetailInformasi(
           documentID: documentID,
-          categoryID: categoryID,
           cover: cover,
           deskripsi: deskripsi,
           images: images,
-          ownerRole: ownerRole,
           title: title,
           userID: userID,
           nama: nama,
