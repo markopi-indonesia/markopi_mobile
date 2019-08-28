@@ -173,7 +173,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                               ),
                               YoutubePlayer(
                                   context: context,
-                                  source: "ksh2OLHbUtQ",
+                                  source: widget.video,
                                   quality: YoutubeQuality.LOW,
                                   // callbackController is (optional).
                                   // use it to control player on your own.
