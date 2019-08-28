@@ -251,7 +251,11 @@ class _RegisterState extends State<Register> {
                     new Text(
                       'LOG IN DENGAN FACEBOOK',
                       style: new TextStyle(fontSize: 13.0, color: Colors.white),
-                    )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+                    new Image.asset('assets/f.png', scale: 6.5,)
                   ],
                 ),
                 color: Color(0xFF1d508d),
