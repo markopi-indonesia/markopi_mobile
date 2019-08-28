@@ -122,11 +122,9 @@ class InformasiState extends State<Informasi> {
                     onTap: () => _detail(
                         context,
                         listInformasi[index].reference.documentID,
-                        listInformasi[index].categoryID,
                         listInformasi[index].cover,
                         listInformasi[index].deskripsi,
                         listInformasi[index].images,
-                        listInformasi[index].ownerRole,
                         listInformasi[index].title,
                         listInformasi[index].userID,
                         nama,
