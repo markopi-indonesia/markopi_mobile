@@ -283,16 +283,16 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   ),
                   // ),
 
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/manage-user");
-                    },
-                    child: ListTile(
-                      title: Text('Mengelola Informasi'),
-                      leading: Icon(Icons.library_books),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).pushNamed("/manage-user");
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text('Mengelola Informasi'),
+                  //     leading: Icon(Icons.library_books),
+                  //   ),
+                  // ),
 
                   InkWell(
                     onTap: () {
@@ -472,7 +472,7 @@ class _DrawerPageState extends State<DrawerPage> {
                               menuList.add(Menu.fromSnapshot(data));
                             });
 
-                            if (!menuList.isEmpty) {
+                            if (menuList.isNotEmpty) {
                               print("menuList not empty");
                             }
 

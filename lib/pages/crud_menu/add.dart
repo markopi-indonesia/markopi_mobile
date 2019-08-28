@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:markopi_mobile/components/header_back.dart';
@@ -29,13 +26,17 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   String currentAsset = "";
 
-  void changeColor(Color color) => setState((){
-    currentColor = color;
+  void changeColor(Color color) => setState(() {
+        currentColor = color;
 
-    Navigator.of(context).pop(color);
-  });
+        Navigator.of(context).pop(color);
+      });
 
-  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
+  void _setIconMenu(String asset) => setState(() {
+        currentAsset = asset;
+
+        Navigator.of(context).pop(asset);
+      });
 
   bool _validateAndSave() {
     final form = _formAddMenuKey.currentState;
@@ -87,9 +88,9 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   void addMenu() async {
     final docRef = await Firestore.instance.collection('menu').add({
-      'name'  : _name,
-      'color' : currentColor.value.toString(),
-      "image" : currentAsset
+      'name': _name,
+      'color': currentColor.value.toString(),
+      "image": currentAsset
     });
     print(docRef.documentID);
   }
@@ -198,7 +199,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                             onPressed: () {
                               showDialog(
                                   context: context,
-                                  barrierDismissible: false,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       titlePadding: const EdgeInsets.all(0.0),
@@ -217,10 +217,8 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                               return GestureDetector(
                                                 onTap: () {
                                                   _setIconMenu(listIcons[index]
-                                                      .assetName.toString());
-
-                                                  print("=== ${currentAsset}");
-                                                  Navigator.of(context).pop(currentAsset);
+                                                      .assetName
+                                                      .toString());
                                                 },
                                                 child: Card(
                                                   clipBehavior: Clip.antiAlias,
@@ -231,12 +229,13 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                                             .center,
                                                     children: <Widget>[
                                                       Container(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  top: 8.0),
-                                                          child: Image(
-                                                            image: listIcons[index],
-                                                          ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 8.0),
+                                                        child: Image(
+                                                          image:
+                                                              listIcons[index],
+                                                        ),
                                                       )
                                                     ],
                                                   ),
