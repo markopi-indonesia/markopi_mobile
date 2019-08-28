@@ -10,8 +10,9 @@ class SubMenu extends StatefulWidget {
   final String color;
   final String menuId;
   final String role;
+  final String menuName;
 
-  SubMenu({this.menuId, this.color, this.role});
+  SubMenu({this.menuId, this.color, this.role, this.menuName});
   @override
   State<StatefulWidget> createState() => new _SubMenuState();
 }
@@ -51,7 +52,7 @@ class _SubMenuState extends State<SubMenu> {
 
   Widget _header() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 5.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
         child: Container(
           constraints: new BoxConstraints(
             minHeight: 50.0,
@@ -63,12 +64,13 @@ class _SubMenuState extends State<SubMenu> {
             color: Color(0xFFF0F6FE),
           ),
           child: Text(
-            'Test1',
+            widget.menuName,
             style: TextStyle(
                 fontSize: 30.0,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF142B44)),
+                color: Color(0xFF3b444f)),
           ),
+          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
         ));
   }
 
@@ -110,7 +112,7 @@ class _SubMenuState extends State<SubMenu> {
               context, submenu.reference.documentID, color_num.toString()),
           title: Text(
             submenu.name,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xff3b444f)),
           ),
         ),
       ),

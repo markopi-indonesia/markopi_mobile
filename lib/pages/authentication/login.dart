@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
-import 'package:markopi_mobile/components/header_back.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
@@ -140,38 +139,35 @@ class _LoginState extends State<Login> {
               _showPasswordInput(),
               _showLupaPasswordButton(),
               _showPrimaryButton(),
-              
+
               _showErrorMessage(),
             ],
           ),
         ));
   }
 
-
-Widget _header() {
+  Widget _header() {
     // return new Padding(
     //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
     return Container(
         constraints: new BoxConstraints(
-    minHeight: 50.0,
-    minWidth: 5.0,
-    maxHeight: 50.0,
-    maxWidth: 30.0,
-  ),
+          minHeight: 50.0,
+          minWidth: 5.0,
+          maxHeight: 50.0,
+          maxWidth: 30.0,
+        ),
         decoration: BoxDecoration(
           color: Color(0xFFF0F6FE),
           // border: Border.all(),
         ),
-        child:Align(
-        alignment: Alignment.center,
-    child: new Text(
-      'Login',
-          style: new TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.black)),
-    )
-      );
+        child: Align(
+          alignment: Alignment.center,
+          child: new Text('Login',
+              style: new TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff3b444f))),
+        ));
   }
 
   Widget _showErrorMessage() {
@@ -205,37 +201,52 @@ Widget _header() {
   //   );
   // }
 
-Widget _showFacebookButton() {
-  return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      child: SizedBox(
-          height: 47.0,
-     child: RaisedButton(
-       
-       child: new Text(
-      'LOG IN DENGAN FACEBOOK',
-      style: new TextStyle(fontSize: 13.0, color: Colors.white),),
-       
-       color: Color(0xFF3B5998),
-       onPressed: (){
-       }
-      )
-        ));    
+  Widget _showFacebookButton() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
+        child: SizedBox(
+            height: 47.0,
+            child: RaisedButton(
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(10.0),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      'LOG IN DENGAN FACEBOOK',
+                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                    ),
+                    new Image.asset('assets/f.png', scale: 6.5,)
+                  ],
+                ),
+                color: Color(0xFF1d508d),
+                onPressed: () {})));
   }
-  
+
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Email',
-            icon: new Icon(
-              Icons.mail,
-              color: Colors.grey,
-            )),
+          labelText: 'Email',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: 'markopi@gmail.com',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Email tidak boleh kosong";
@@ -250,18 +261,23 @@ Widget _showFacebookButton() {
 
   Widget _showPasswordInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Kata Sandi',
-            icon: new Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
-            
+          labelText: 'Password',
+          labelStyle: TextStyle(color: Color(0xff868686)),
+          hintText: '*******',
+          enabledBorder: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderSide: BorderSide(width: 1, color: Color(0xff868686)),
+          ),
+        ),
         validator: (value) {
           if (value.isEmpty) {
             return "Kata sandi tidak boleh kosong";
@@ -276,64 +292,63 @@ Widget _showFacebookButton() {
 
   Widget _showSecondaryButton() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(230.0, 5.0, 0.0, 0.0),
-      child: Stack(
-      children: <Widget>[
-     FlatButton(
-      child: new Text('REGISTER',
-      textAlign: TextAlign.left,
-          style: new TextStyle(
-            decoration: TextDecoration.underline,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.black),
+        padding: const EdgeInsets.fromLTRB(230.0, 5.0, 0.0, 0.0),
+        child: Stack(
+          children: <Widget>[
+            FlatButton(
+              child: new Text(
+                'REGISTER',
+                // textAlign: TextAlign.left,
+                style: new TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black),
               ),
-      onPressed: () => _navigateToRegister(),
-    ),
-      // Text('Sign in manual',
-      // textAlign: TextAlign.center,
-      //     style: new TextStyle(
-      //         fontSize: 15.0,
-      //         fontWeight: FontWeight.w300,
-      //         color: Colors.black),
-      //         ),
-              ],
-    ));
+              onPressed: () => _navigateToRegister(),
+            ),
+            // Text('Sign in manual',
+            // textAlign: TextAlign.center,
+            //     style: new TextStyle(
+            //         fontSize: 15.0,
+            //         fontWeight: FontWeight.w300,
+            //         color: Colors.black),
+            //         ),
+          ],
+        ));
   }
 
   Widget _showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
         child: SizedBox(
           height: 47.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(2.0)),
+                borderRadius: new BorderRadius.circular(10.0)),
             color: Color(0xFF2696D6),
             child: new Text('LOG IN',
-            
                 style: new TextStyle(fontSize: 16.0, color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));
   }
 
-    Widget _showLupaPasswordButton() {
+  Widget _showLupaPasswordButton() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(216.0, 5.0, 0.0, 0.0),
-    child: new FlatButton(
-      child: new Text('Lupa password?',
-      textAlign: TextAlign.left,
-          style: new TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.black),
-              ),
-      onPressed: () => _navigateToRegister(),
-    )
-
-    );
+        padding: const EdgeInsets.fromLTRB(216.0, 5.0, 0.0, 0.0),
+        child: new FlatButton(
+          child: new Text(
+            'Lupa password?',
+            textAlign: TextAlign.left,
+            style: new TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.black),
+          ),
+          onPressed: () => _navigateToRegister(),
+        ));
   }
 
   _navigateToRegister() {
