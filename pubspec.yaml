@@ -98,6 +98,7 @@ flutter:
     - assets/menu_icon/plant-3.png
     - assets/f.png
   
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
@@ -110,11 +111,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts: 
-     - family: Montserrat
+     - family: SF Pro Text
        fonts: 
-         - asset: fonts/Montserrat-Light.ttf
-         - asset: fonts/Montserrat-LightItalic.ttf
-           style: italic
+         - asset: fonts/SFProText-Bold.ttf
+         - asset: fonts/SFProText-SemiBold.ttf
+         - asset: fonts/SFProText-Medium.ttf
+           
       # - family: Sanfransisco
       #  fonts:
       #    - asset: fonts/SFProText-Heavy.ttf

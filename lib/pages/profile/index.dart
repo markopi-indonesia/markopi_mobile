@@ -198,7 +198,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                           fontSize:25.0,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.normal,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                         ),
                     ),
                     Text(
@@ -206,7 +206,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                       style: TextStyle(
                           fontSize:12.0,
                           fontStyle: FontStyle.italic,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                     
@@ -234,7 +234,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                       Text(
@@ -242,7 +242,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           )
                         ),
                       ],
@@ -255,7 +255,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                       Text(
@@ -263,7 +263,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                     ]
@@ -275,7 +275,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                       Text(
@@ -283,7 +283,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                      style: TextStyle(
                           fontSize:14.0,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Montserrat'
+                          fontFamily: 'SF Pro Text'
                           ),
                     ),
                     ]

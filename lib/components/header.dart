@@ -7,9 +7,9 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
         iconTheme: new IconThemeData(color: Colors.white),
         backgroundColor: Color(0xFF2696D6),
-        title: Center(child:Text('markopi', 
-       
-        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),)),
+        title:Text(
+            'markopi', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search, semanticLabel: 'search'),
