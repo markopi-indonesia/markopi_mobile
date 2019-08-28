@@ -276,11 +276,11 @@ Widget _showFacebookButton() {
 
   Widget _showSecondaryButton() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(245.0, 5.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(230.0, 5.0, 0.0, 0.0),
       child: Stack(
       children: <Widget>[
      FlatButton(
-      child: new Text('DAFTAR',
+      child: new Text('REGISTER',
       textAlign: TextAlign.left,
           style: new TextStyle(
             decoration: TextDecoration.underline,
