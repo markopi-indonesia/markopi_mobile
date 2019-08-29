@@ -12,7 +12,6 @@ class Informasi extends StatefulWidget {
   final String menuID;
   final String subMenuID;
   final String color;
-  
 
   Informasi({
     Key key,
