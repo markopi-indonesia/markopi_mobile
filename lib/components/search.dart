@@ -35,9 +35,9 @@ class _SearchState extends State<SearchState> {
         debounceTimer.cancel();
       }
 
-      debounceTimer = Timer(Duration(milliseconds: 500), () {
+      debounceTimer = Timer(Duration(milliseconds: 200), () {
         if (this.mounted) {
-          filter = _searchQuery.text;
+          filter = _searchQuery.text.toLowerCase();
           performSearch(_searchQuery.text);
         }
       });
@@ -92,10 +92,15 @@ class _SearchState extends State<SearchState> {
           List<InformasiModel> resultArticle = [];
           String _error;
           if (filter != null && filter != "") {
-            snapshot.data.documents.forEach((f) {
-              String deskripsi = f['deskripsi'];
-
-              if (deskripsi.contains(filter)) {
+            snapshot.data.documents.forEach((f) async {
+              String menuName = f['menuName'].toString().toLowerCase();
+              String subMenuName = f['subMenuName'].toString().toLowerCase();
+              String judul = f['title'].toString().toLowerCase();
+              String deskripsi = f['deskripsi'].toString().toLowerCase();
+              if (deskripsi.contains(filter) ||
+                  judul.contains(filter) ||
+                  menuName.contains(filter) ||
+                  subMenuName.contains(filter)) {
                 resultArticle.add(InformasiModel.fromSnapshot(f));
               } else {
                 // resultArticle = [];
