@@ -34,6 +34,8 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
   String _photoUrl;
   String _videoUrl;
   String _error;
+  String menuName;
+  String subMenuName;
   FirebaseUser currentUser;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -166,7 +168,9 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     final docRef = await Firestore.instance.collection('informasi').add({
       'title': title,
       'menuID': widget.menuID,
+      'menuName': menuName,
       'subMenuID': widget.subMenuID,
+      'subMenuName': subMenuName,
       'deskripsi': deskripsi,
       'userID': userID,
       'cover': '',
@@ -206,6 +210,17 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
         }
       });
     });
+    Firestore.instance.collection('menu').document(widget.menuID).get().then((menu){
+      setState(() {
+        menuName = menu.data['name'];
+      });
+    });
+    Firestore.instance.collection('submenu').document(widget.subMenuID).get().then((submenu){
+      setState(() {
+        subMenuName = submenu.data['name'];
+      });
+    });
+    
     super.initState();
   }
 
