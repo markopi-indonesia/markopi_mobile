@@ -257,11 +257,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
                   onPressed: () => _update(
                       context,
                       widget.documentID,
-                      widget.categoryID,
-                      widget.cover,
                       widget.deskripsi,
                       widget.images,
-                      widget.ownerRole,
                       widget.title,
                       widget.userID,
                       widget.video),
@@ -284,11 +281,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
   void _update(
     BuildContext context,
     String documentID,
-    String categoryID,
-    String cover,
     String deskripsi,
-    String images,
-    String ownerRole,
+    String images,    
     String title,
     String userID,
     String video,
@@ -297,11 +291,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
       MaterialPageRoute(
         builder: (context) => EditInformasiDialog(
           documentID: documentID,
-          categoryID: categoryID,
-          cover: cover,
           deskripsi: deskripsi,
-          images: images,
-          ownerRole: ownerRole,
+          images: images,          
           title: title,
           userID: userID,
           video: video,
@@ -335,9 +326,16 @@ class _DetailInformasiState extends State<DetailInformasi> {
             FlatButton(
                 child: Text('Ya'),
                 onPressed: () => {
-                      InformasiController.removeInformasi(documentID),
+                      Firestore.instance
+                          .collection('informasi')
+                          .document(documentID)
+                          .delete()
+                          .catchError((e) {
+                        print(e);
+                      }),
                       Navigator.pop(context),
-                      Navigator.of(context).pushNamed("/informasi"),
+                      Navigator.pop(context),
+                      // Navigator.of(context).pushNamed("/informasi"),
                       // Navigator.of(context).pushNamed("/informasi"),
                     }),
           ],

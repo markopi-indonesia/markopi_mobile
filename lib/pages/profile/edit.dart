@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
@@ -83,8 +83,23 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       try {
         print(_nama);
         print(_docID);
-        ProfileController.updateProfile(_docID, _nama, _profesi, _noHP,
-            _provinsi, _kabupaten, _kecamatan, _alamat, _bio);
+        // ProfileController.updateProfile(_docID, _nama, _profesi, _noHP,
+        //     _provinsi, _kabupaten, _kecamatan, _alamat, _bio);
+
+        await Firestore.instance
+            .collection('profile')
+            .document(_docID)
+            .updateData({
+          "nama": _nama,
+          "profesi": _profesi,
+          "noHP": _noHP,
+          "provinsi": _provinsi,
+          "kabupaten": _kabupaten,
+          "kecamatan": _kecamatan,
+          "alamat": _alamat,
+          "bio": _bio
+        });
+        Navigator.pop(context);
         _showUpdateSuccess();
         setState(() {
           _isLoading = false;
@@ -180,8 +195,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
+        appBar: HeaderBack(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -195,7 +209,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         key: _formEditProfileKey,
         child: ListView(
           children: <Widget>[
-            
             new Container(
                 padding: new EdgeInsets.all(10.0),
                 child: new Column(

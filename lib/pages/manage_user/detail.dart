@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:markopi_mobile/controllers/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/components/header_back.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/resources/repository.dart';
@@ -140,8 +140,7 @@ class _IndexProfileAdminState extends State<IndexProfileAdmin> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: Header(),
-        drawer: DrawerPage(),
+        appBar: HeaderBack(),
         body: Stack(
           children: <Widget>[
             _build(context),

@@ -30,6 +30,7 @@ class _DrawerPageState extends State<DrawerPage> {
   String nama = "";
   String image = "";
   String email;
+  String role = "";
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _DrawerPageState extends State<DrawerPage> {
             if (profile != null) {
               nama = profile.nama;
               image = profile.photoUrl;
+              role = profile.role;
               print(nama);
               print(image);
             }
@@ -117,7 +119,8 @@ class _DrawerPageState extends State<DrawerPage> {
                   // image: DecorationImage(
                   //     image: AssetImage('assets/sanitasi.jpeg'),
                   //     fit: BoxFit.cover),
-                ), accountEmail: null,
+                ),
+                accountEmail: null,
               ),
 
 //            body
@@ -160,9 +163,11 @@ class _DrawerPageState extends State<DrawerPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () => _navigateSubMenu(
-                                    context,
-                                    menuList[index].reference.documentID,
-                                    menuList[index].color),
+                                  context,
+                                  menuList[index].reference.documentID,
+                                  menuList[index].color,
+                                  menuList[index].name,
+                                ),
                                 child: ListTile(
                                   title: RichText(
                                     text: TextSpan(
@@ -249,58 +254,26 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                   ),
 
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/video");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Tambah Video'),
-                  //     leading: Icon(Icons.videocam),
-                  //   ),
-                  // ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/menu");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Menu'),
-                  //     leading: Icon(Icons.more),
-                  //   ),
-                  // ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/manage-informasi");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Manage Informasi'),
-                  //     leading: Icon(Icons.library_books),
-                  //   ),
-                  // ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/manage-user");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Mengelola Informasi'),
-                  //     leading: Icon(Icons.library_books),
-                  //   ),
-                  // ),
-
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushNamed("/pengajuan_fasilitator_admin");
+                      Navigator.of(context).pushNamed("/manage-user");
                     },
                     child: ListTile(
                       title: Text('Mengelola User'),
                       leading: Icon(Icons.supervised_user_circle),
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .pushNamed("/pengajuan_fasilitator_admin");
+                    },
+                    child: ListTile(
+                      title: Text('Pengajuan Fasilitator'),
+                      leading: Icon(Icons.verified_user),
                     ),
                   ),
 
@@ -330,13 +303,16 @@ class _DrawerPageState extends State<DrawerPage> {
                                 // itemExtent: 60.0,
                                 // shrinkWrap: true,
                                 // physics: AlwaysScrollableScrollPhysics(),
+                                physics: ScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () => _navigateSubMenu(
-                                        context,
-                                        menuList[index].reference.documentID,
-                                        menuList[index].color),
+                                      context,
+                                      menuList[index].reference.documentID,
+                                      menuList[index].color,
+                                      menuList[index].name,
+                                    ),
                                     child: ListTile(
                                       title: RichText(
                                         text: TextSpan(
@@ -412,10 +388,7 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                     decoration: new BoxDecoration(
-                      // borderRadius: BorderRadius.circular(100.0),
-                      image: DecorationImage(
-                          image: AssetImage('assets/sanitasi.jpeg'),
-                          fit: BoxFit.cover),
+                      color: Color(0xFF142B44),
                     ),
                   ),
 
@@ -438,7 +411,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     },
                     child: ListTile(
                       title: Text('Pengajuan Fasilitator'),
-                      leading: Icon(Icons.record_voice_over),
+                      leading: Icon(Icons.verified_user),
                     ),
                   ),
 
@@ -482,9 +455,11 @@ class _DrawerPageState extends State<DrawerPage> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () => _navigateSubMenu(
-                                        context,
-                                        menuList[index].reference.documentID,
-                                        menuList[index].color),
+                                      context,
+                                      menuList[index].reference.documentID,
+                                      menuList[index].color,
+                                      menuList[index].name,
+                                    ),
                                     child: ListTile(
                                       title: RichText(
                                         text: TextSpan(
@@ -546,12 +521,14 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   void _navigateSubMenu(
-      BuildContext context, String documentID, String _color) {
+      BuildContext context, String documentID, String _color, String name) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SubMenu(
           menuId: documentID,
           color: _color,
+          menuName: name,
+          role: role,
         ),
         fullscreenDialog: true,
       ),
