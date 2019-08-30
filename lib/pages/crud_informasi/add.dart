@@ -173,14 +173,13 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
       'subMenuName': subMenuName,
       'deskripsi': deskripsi,
       'userID': userID,
-      'cover': '',
       'images': '',
       'video': _videoUrl
     });
-    print(docRef.documentID);
-    _repository.uploadImageToStorage(imageFile).then((url) {
-      _repository.addPhoto(url, docRef.documentID).then((v) {});
-    });
+    // print(docRef.documentID);
+    // _repository.uploadImageToStorage(imageFile).then((url) {
+    //   _repository.addPhoto(url, docRef.documentID).then((v) {});
+    // });
     images.forEach((f) {
       _repository.saveImage(f).then((url) {
         if (urls.isEmpty) {
@@ -210,17 +209,25 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
         }
       });
     });
-    Firestore.instance.collection('menu').document(widget.menuID).get().then((menu){
+    Firestore.instance
+        .collection('menu')
+        .document(widget.menuID)
+        .get()
+        .then((menu) {
       setState(() {
         menuName = menu.data['name'];
       });
     });
-    Firestore.instance.collection('submenu').document(widget.subMenuID).get().then((submenu){
+    Firestore.instance
+        .collection('submenu')
+        .document(widget.subMenuID)
+        .get()
+        .then((submenu) {
       setState(() {
         subMenuName = submenu.data['name'];
       });
     });
-    
+
     super.initState();
   }
 
@@ -280,29 +287,29 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                 onSaved: (value) => title = value,
               ),
               new Padding(padding: new EdgeInsets.only(top: 20.0)),
-              new Align(
-                alignment: Alignment.topLeft,
-                child: new Text("Tambah Cover",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontFamily: 'SF Pro Text',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                        color: Color(0xFF3B444F))),
-              ),
-              SizedBox(
-                height: 47.0,
-                child: new RaisedButton(
-                  elevation: 5.0,
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(2.0)),
-                  color: Color(0xFF2696D6),
-                  child: new Text("Tambah Cover",
-                      style:
-                          new TextStyle(fontSize: 16.0, color: Colors.white)),
-                  onPressed: _showImageDialog,
-                ),
-              ),
+              // new Align(
+              //   alignment: Alignment.topLeft,
+              //   child: new Text("Tambah Cover",
+              //       textAlign: TextAlign.left,
+              //       style: TextStyle(
+              //           fontFamily: 'SF Pro Text',
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 15.0,
+              //           color: Color(0xFF3B444F))),
+              // ),
+              // SizedBox(
+              //   height: 47.0,
+              //   child: new RaisedButton(
+              //     elevation: 5.0,
+              //     shape: new RoundedRectangleBorder(
+              //         borderRadius: new BorderRadius.circular(2.0)),
+              //     color: Color(0xFF2696D6),
+              //     child: new Text("Tambah Cover",
+              //         style:
+              //             new TextStyle(fontSize: 16.0, color: Colors.white)),
+              //     onPressed: _showImageDialog,
+              //   ),
+              // ),
               new Padding(padding: new EdgeInsets.only(top: 20.0)),
               new Align(
                 alignment: Alignment.topLeft,
@@ -325,28 +332,24 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                     value.isEmpty ? 'Deskripsi tidak boleh kosong' : null,
                 onSaved: (value) => deskripsi = value,
               ),
-              new Padding(padding: new EdgeInsets.only(top: 20.0)),
-              new Align(
-                alignment: Alignment.topLeft,
-                child: new Text("Tambah Gambar",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontFamily: 'SF Pro Text',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                        color: Color(0xFF3B444F))),
-              ),
-              SizedBox(
-                height: 47.0,
-                child: new RaisedButton(
-                  elevation: 5.0,
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(2.0)),
-                  color: Color(0xFF2696D6),
-                  child: new Text('Tambah Gambar',
-                      style:
-                          new TextStyle(fontSize: 16.0, color: Colors.white)),
-                  onPressed: loadAssets,
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                child: SizedBox(
+                  height: 43.0,
+                  width: 420.0,
+                  child: new RaisedButton(
+                    elevation: 5.0,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(3.0)),
+                    color: Color(0xFFABDCFF),
+                    // child: new Image.asset('assets/camera.png'),
+                    child: new Text('Tambah Gambar',
+                        style: new TextStyle(
+                            fontFamily: 'SF Pro Text',
+                            fontSize: 15.0,
+                            color: Color(0xFF3B444F))),
+                    onPressed: loadAssets,
+                  ),
                 ),
               ),
               new Padding(padding: new EdgeInsets.only(top: 20.0)),
@@ -383,35 +386,21 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
               //     onPressed: _showVideoDialog,
               //   ),
               // ),
-              new Padding(padding: new EdgeInsets.only(top: 30.0)),
-              SizedBox(
-                height: 47.0,
-                child: new RaisedButton(
-                  elevation: 5.0,
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(5.0)),
-                  color: Color(0xFF1D508D),
-                  child: new Text('Simpan Informasi',
-                      style:
-                          new TextStyle(fontSize: 16.0, color: Colors.white)),
-                  onPressed: _validateAndSubmit,
-                ),
-              ),
-              // Padding(
-              //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-              //     child: SizedBox(
-              //       height: 40.0,
-              //       child: new RaisedButton(
-              //         elevation: 5.0,
-              //         shape: new RoundedRectangleBorder(
-              //             borderRadius: new BorderRadius.circular(5.0)),
-              //         color: Colors.green,
-              //         child: new Text('Simpan Informasi',
-              //             style: new TextStyle(
-              //                 fontSize: 20.0, color: Colors.white)),
-              //         onPressed: _validateAndSubmit,
-              //       ),
-              //     ))
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+                  child: SizedBox(
+                    height: 40.0,
+                    child: new RaisedButton(
+                      elevation: 5.0,
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(5.0)),
+                      color: Color(0xFF2696D6),
+                      child: new Text('Simpan Informasi',
+                          style: new TextStyle(
+                              fontSize: 20.0, color: Colors.white)),
+                      onPressed: () => _validateAndSubmit(),
+                    ),
+                  )),
             ],
           )),
     );

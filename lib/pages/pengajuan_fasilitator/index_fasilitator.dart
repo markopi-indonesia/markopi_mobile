@@ -6,6 +6,7 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/add.dart';
 import 'package:markopi_mobile/models/pengajuan_fasilitator.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/detail_fasilitator.dart';
+import 'package:markopi_mobile/models/profile.dart';
 
 class PengajuanFasilitator extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
+  final Firestore _firestore = Firestore.instance;
+  var _isVisible = false;
 
   @override
   void initState() {
@@ -23,6 +26,13 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
       setState(() {
         if (user != null) {
           userID = user?.uid;
+          this.retrieveUserDetails(user).then((profile) {
+            if (profile.role == "Petani") {
+              setState(() {
+                _isVisible = true;
+              });
+            }
+          });
         }
       });
     });
@@ -32,6 +42,13 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user;
+  }
+
+  Future<ProfileModel> retrieveUserDetails(FirebaseUser user) async {
+    DocumentSnapshot _documentSnapshot =
+        await _firestore.collection("profile").document(user.uid).get();
+    ProfileModel profile = ProfileModel.fromMap(_documentSnapshot.data);
+    return profile;
   }
 
   @override
@@ -71,18 +88,17 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
     final informasi = PengajuanFasilitatorModel.fromSnapshot(data);
     Color status;
     if (informasi.status == "Menunggu") {
-      status = Colors.grey;
+      status = Color(0xFF99a9b3);
     } else if (informasi.status == "Disetujui") {
-      status = Colors.green;
+      status = Color(0xFF16C98D);
     } else {
-      status = Colors.red;
+      status = Color(0xFFD90600);
     }
     return Padding(
       key: ValueKey(informasi.dateTime),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(5.0),
           color: status,
         ),
@@ -96,7 +112,7 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
           //     informasi.dateTime.year.toString()),
           title: new Text(informasi.status +
               " - " +
-              informasi.dateTime.toDate().toString()),
+              informasi.dateTime.toDate().toString(), style: TextStyle(color: Colors.white),),
           onTap: () => _detail(
             context,
             data.documentID,
@@ -115,14 +131,16 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
   }
 
   buildAddPengajuanFab() {
-    return FloatingActionButton(
-      backgroundColor: Colors.green,
-      shape: CircleBorder(),
-      onPressed: () {
-        _navigateToAddPengajuan();
-      },
-      child: Icon(Icons.add),
-    );
+    return new Visibility(
+        visible: _isVisible,
+        child: FloatingActionButton(
+          backgroundColor: Colors.blue,
+          shape: CircleBorder(),
+          onPressed: () {
+            _navigateToAddPengajuan();
+          },
+          child: Icon(Icons.add),
+        ));
   }
 
   void _navigateToAddPengajuan() {

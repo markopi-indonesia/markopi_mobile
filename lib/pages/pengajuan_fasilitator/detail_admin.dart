@@ -386,7 +386,21 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   }
 
   Widget _sertifikat() {
-    return new Column(children: urls.map((item) => new Text(item)).toList());
+    // return new Column(children: urls.map((item) => new Text(item)).toList());
+    return new Column(
+        children: urls
+            .map((item) => new PinchZoomImage(
+                  image: Image.network(item),
+                  zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+                  hideStatusBarWhileZooming: true,
+                  onZoomStart: () {
+                    print('Zoom started');
+                  },
+                  onZoomEnd: () {
+                    print('Zoom finished');
+                  },
+                ))
+            .toList());
   }
 
   bool _validateAndSave() {
