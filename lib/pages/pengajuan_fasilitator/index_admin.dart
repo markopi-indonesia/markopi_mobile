@@ -45,7 +45,10 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('pengajuan').orderBy('status').snapshots(),
+      stream: Firestore.instance
+          .collection('pengajuan')
+          .orderBy('status')
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return new Center(
@@ -135,6 +138,31 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
       String status,
       String pesan,
       String dateTime) {
+    String _nama;
+    String _photo;
+    String _profesi;
+    String _noHP;
+    String _provinsi;
+    String _kabupaten;
+    String _kecamatan;
+    String _alamat;
+    String _bio;
+    Firestore.instance
+        .collection('profile')
+        .where("userID", isEqualTo: userID)
+        .snapshots()
+        .listen((data) => data.documents.forEach((doc) => [
+              _nama = doc["nama"],
+              _photo = doc["photoURL"],
+              _profesi = doc["profesi"],
+              _noHP = doc["noHP"],
+              _provinsi = doc["provinsi"],
+              _kabupaten = doc["kabupaten"],
+              _kecamatan = doc["kecamatan"],
+              _alamat = doc["alamat"],
+              _bio = doc["bio"],
+              initState()
+            ]));
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DetailPengajuan(
@@ -147,6 +175,15 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
           status: status,
           pesan: pesan,
           dateTime: dateTime,
+          nama: _nama,
+          alamat: _alamat,
+          bio: _bio,
+          kabupaten: _kabupaten,
+          kecamatan: _kecamatan,
+          noHP: _noHP,
+          photo: _photo,
+          profesi: _profesi,
+          provinsi: _provinsi,
         ),
         fullscreenDialog: true,
       ),

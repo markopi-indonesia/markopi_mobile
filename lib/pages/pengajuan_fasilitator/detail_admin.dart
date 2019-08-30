@@ -15,6 +15,15 @@ class DetailPengajuan extends StatefulWidget {
   final String status;
   final String pesan;
   final String dateTime;
+  final String nama;
+  final String photo;
+  final String profesi;
+  final String noHP;
+  final String provinsi;
+  final String kabupaten;
+  final String kecamatan;
+  final String alamat;
+  final String bio;
 
   DetailPengajuan(
       {this.documentID,
@@ -25,7 +34,16 @@ class DetailPengajuan extends StatefulWidget {
       this.sertifikat,
       this.status,
       this.pesan,
-      this.dateTime});
+      this.dateTime,
+      this.nama,
+      this.photo,
+      this.profesi,
+      this.noHP,
+      this.provinsi,
+      this.kabupaten,
+      this.kecamatan,
+      this.alamat,
+      this.bio});
 
   @override
   State<StatefulWidget> createState() => new _DetailPengajuanState();
@@ -41,6 +59,15 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   TextEditingController _kecamatanController = TextEditingController();
   TextEditingController _alamatController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
+  String _nama;
+  String _photo;
+  String _profesi;
+  String _noHP;
+  String _provinsi;
+  String _kabupaten;
+  String _kecamatan;
+  String _alamat;
+  String _bio;
   final _formUpdateStatusKey = GlobalKey<FormState>();
   String _errorMessage;
   String _pesan;
@@ -66,6 +93,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
               _alamatController.text = doc["alamat"],
               _bioController.text = doc["bio"]
             ]));
+    print(widget.nama);
     super.initState();
   }
 
@@ -91,7 +119,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(75.0)),
                           image: DecorationImage(
-                              image: _photoUrlController.text.isEmpty
+                              image: widget.photo.isEmpty
                                   ? AssetImage('assets/no_user.jpg')
                                   : NetworkImage(_photoUrlController.text),
                               fit: BoxFit.cover),
@@ -102,7 +130,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
               ),
               SizedBox(height: 10.0),
               Text(
-                _namaController.text,
+                widget.nama,
                 style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
@@ -110,14 +138,14 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                     fontFamily: 'Montserrat'),
               ),
               Text(
-                _profesiController.text,
+                widget.profesi,
                 style: TextStyle(
                     fontSize: 12.0,
                     fontStyle: FontStyle.italic,
                     fontFamily: 'Montserrat'),
               ),
               Text(
-                _noHPController.text,
+                widget.noHP,
                 style: TextStyle(
                     fontSize: 12.0,
                     fontStyle: FontStyle.italic,
@@ -138,7 +166,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Montserrat'),
                       ),
-                      Text(_provinsiController.text,
+                      Text(widget.provinsi,
                           style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.normal,
@@ -154,7 +182,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                           fontFamily: 'Montserrat'),
                     ),
                     Text(
-                      _kabupatenController.text,
+                      widget.kabupaten,
                       style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.normal,
@@ -170,7 +198,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                           fontFamily: 'Montserrat'),
                     ),
                     Text(
-                      _kecamatanController.text,
+                      widget.kecamatan,
                       style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.normal,

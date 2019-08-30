@@ -8,6 +8,7 @@ import 'package:markopi_mobile/models/informasi.dart';
 import 'package:markopi_mobile/controllers/informasi_controller.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
 import 'package:youtube_player/youtube_player.dart';
+import 'package:markopi_mobile/models/profile.dart';
 
 class DetailInformasi extends StatefulWidget {
   final String documentID;
@@ -34,15 +35,41 @@ class DetailInformasi extends StatefulWidget {
 
 class _DetailInformasiState extends State<DetailInformasi> {
   var images = [];
+  var _isVisible = false;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final Firestore _firestore = Firestore.instance;
   @override
   void initState() {
     setState(() {
       images = widget.images.split(";");
     });
+    this.getCurrentUser().then((user) {
+      if (user != null) {
+        this.retrieveUserDetails(user).then((profile) {
+          if (profile.userID == widget.userID) {
+            setState(() {
+              _isVisible = true;
+            });
+          }
+        });
+      }
+    });
     super.initState();
     images.forEach((f) {
       print(f);
     });
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user;
+  }
+
+  Future<ProfileModel> retrieveUserDetails(FirebaseUser user) async {
+    DocumentSnapshot _documentSnapshot =
+        await _firestore.collection("profile").document(user.uid).get();
+    ProfileModel profile = ProfileModel.fromMap(_documentSnapshot.data);
+    return profile;
   }
 
   @override
@@ -70,7 +97,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                 alignment: Alignment.centerLeft,
                 child: new Text(widget.title,
                     style: new TextStyle(
-                        fontSize: 30.0,
+                        fontSize: 25.0,
                         fontWeight: FontWeight.w300,
                         color: Colors.black)),
               )),
@@ -120,19 +147,24 @@ class _DetailInformasiState extends State<DetailInformasi> {
                               ? Column(
                                   children: <Widget>[
                                     for (var img in images)
-                                      PinchZoomImage(
-                                        image: Image.network(img),
-                                        zoomedBackgroundColor:
-                                            Color.fromRGBO(240, 240, 240, 1.0),
-                                        hideStatusBarWhileZooming: true,
-                                        onZoomStart: () {
-                                          print('Zoom started');
-                                        },
-                                        onZoomEnd: () {
-                                          print('Zoom finished');
-                                        },
-                                      ),
-                                    Divider(),
+                                      Column(
+                                        children: <Widget>[
+                                          PinchZoomImage(
+                                            image: Image.network(img),
+                                            zoomedBackgroundColor:
+                                                Color.fromRGBO(
+                                                    240, 240, 240, 1.0),
+                                            hideStatusBarWhileZooming: true,
+                                            onZoomStart: () {
+                                              print('Zoom started');
+                                            },
+                                            onZoomEnd: () {
+                                              print('Zoom finished');
+                                            },
+                                          ),
+                                          Divider(),
+                                        ],
+                                      )
                                   ],
                                 )
                               : Text("Tidak ada gambar"),
@@ -172,15 +204,15 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                 ),
                               ),
                               YoutubePlayer(
-                                  context: context,
-                                  source: widget.video,
-                                  quality: YoutubeQuality.LOW,
-                                  // callbackController is (optional).
-                                  // use it to control player on your own.
-                                  // callbackController: (controller) {
-                                  //   _videoController = controller;
-                                  // },
-                                ),
+                                context: context,
+                                source: widget.video,
+                                quality: YoutubeQuality.LOW,
+                                // callbackController is (optional).
+                                // use it to control player on your own.
+                                // callbackController: (controller) {
+                                //   _videoController = controller;
+                                // },
+                              ),
                             ],
                           ),
                         ),
@@ -188,6 +220,42 @@ class _DetailInformasiState extends State<DetailInformasi> {
                     ],
                   )
                 : Text(""),
+          ),
+          Visibility(
+            visible: _isVisible,
+            child: new Column(
+              children: <Widget>[
+                new Padding(padding: new EdgeInsets.only(top: 30.0)),
+                new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      new RaisedButton(
+                        padding: const EdgeInsets.all(8.0),
+                        textColor: Colors.white,
+                        color: Colors.green,
+                        onPressed: () => _update(
+                            context,
+                            widget.documentID,
+                            widget.deskripsi,
+                            widget.images,
+                            widget.title,
+                            widget.userID,
+                            widget.video),
+                        child: new Text("Ubah"),
+                      ),
+                      new RaisedButton(
+                        onPressed: () => _buildConfirmationDialog(
+                            context, widget.documentID),
+                        textColor: Colors.white,
+                        color: Colors.lightGreen[800],
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Text(
+                          "Hapus",
+                        ),
+                      ),
+                    ])
+              ],
+            ),
           ),
 //           Container(
 //             margin: EdgeInsets.all(8),
@@ -226,11 +294,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
   void _update(
     BuildContext context,
     String documentID,
-    String categoryID,
-    String cover,
     String deskripsi,
     String images,
-    String ownerRole,
     String title,
     String userID,
     String video,
@@ -239,11 +304,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
       MaterialPageRoute(
         builder: (context) => EditInformasiDialog(
           documentID: documentID,
-          categoryID: categoryID,
-          cover: cover,
           deskripsi: deskripsi,
           images: images,
-          ownerRole: ownerRole,
           title: title,
           userID: userID,
           video: video,
@@ -268,7 +330,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
       builder: (context) {
         return AlertDialog(
           title: Text('Hapus'),
-          content: Text('Apakah anda ingin menghapus artikel ini?'),
+          content: Text('Apakah anda ingin menghapus informasi ini?'),
           actions: <Widget>[
             FlatButton(
               child: Text('Tidak'),
@@ -277,9 +339,15 @@ class _DetailInformasiState extends State<DetailInformasi> {
             FlatButton(
                 child: Text('Ya'),
                 onPressed: () => {
-                      InformasiController.removeInformasi(documentID),
+                      Firestore.instance
+                          .collection('informasi')
+                          .document(documentID)
+                          .delete()
+                          .catchError((e) {
+                        print(e);
+                      }),
                       Navigator.pop(context),
-                      // Navigator.of(context).pushNamed("/informasi"),
+                      Navigator.pop(context),
                     }),
           ],
         );
