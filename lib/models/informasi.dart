@@ -7,7 +7,7 @@ class InformasiModel {
   final String subMenuID;
   final String subMenuName;
   final String deskripsi;
-  final String cover;
+  // final String cover;
   final String images;
   final String video;
   final String userID;
@@ -21,7 +21,7 @@ class InformasiModel {
             map['subMenuID'] != null &&
             map['subMenuName'] != null &&
             map['deskripsi'] != null &&
-            map['cover'] != null &&
+            // map['cover'] != null &&
             map['images'] != null &&
             map['video'] != null &&
             map['userID'] != null),
@@ -31,7 +31,7 @@ class InformasiModel {
         subMenuID = map['subMenuID'],
         subMenuName = map['subMenuName'],
         deskripsi = map['deskripsi'],
-        cover = map['cover'],
+        // cover = map['cover'],
         images = map['images'],
         video = map['video'],
         userID = map['userID'];

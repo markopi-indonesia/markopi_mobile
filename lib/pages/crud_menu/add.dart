@@ -24,7 +24,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   Color currentColor = Colors.amber;
 
-  String currentAsset = "";
+  String currentAsset = "assets/menu_icon/bag-2.png";
 
   void changeColor(Color color) => setState(() {
         currentColor = color;

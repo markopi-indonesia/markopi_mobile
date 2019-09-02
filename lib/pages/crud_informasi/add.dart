@@ -180,18 +180,20 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
     // _repository.uploadImageToStorage(imageFile).then((url) {
     //   _repository.addPhoto(url, docRef.documentID).then((v) {});
     // });
-    images.forEach((f) {
-      _repository.saveImage(f).then((url) {
-        if (urls.isEmpty) {
-          urls = url;
-        } else {
-          urls = urls + ";" + url;
-        }
-        print(urls);
-        print("masuk");
-        _repository.addImage(urls, docRef.documentID).then((v) {});
+    if (images != null) {
+      images.forEach((f) {
+        _repository.saveImage(f).then((url) {
+          if (urls.isEmpty) {
+            urls = url;
+          } else {
+            urls = urls + ";" + url;
+          }
+          print(urls);
+          print("masuk");
+          _repository.addImage(urls, docRef.documentID).then((v) {});
+        });
       });
-    });
+    }
     // _repository.uploadVideoToStorage(videoFile).then((url) {
     //   _repository.addVideo(url, docRef.documentID).then((v) {});
     // });
@@ -321,11 +323,39 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                         fontSize: 15.0,
                         color: Color(0xFF3B444F))),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                width: double.maxFinite,
+                child: SizedBox(
+                  child: Row(
+                    children: <Widget>[
+                      new Icon(
+                        Icons.warning,
+                        color: Colors.orange,
+                      ),
+                      new Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Apabila ingin membuat paragraf baru, gunakan simbol '##'.",
+                              style: TextStyle(
+                                  fontFamily: 'SF Pro Text',
+                                  fontSize: 12.0,
+                                  color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               new TextFormField(
                 maxLines: 10,
-                decoration: new InputDecoration(
-                    hintText: "Deskripsi",
-                    labelText: "Deskripsi",
+                decoration: new InputDecoration.collapsed(
+                    hintText:
+                        "Contoh:\n ##Tujuan\n- Untuk meningkatkan kadar humus pada tanah\n- Untuk menambah nutrisi pada kopi\n##Caranya:\n- Mengukur lubang tanam 30x30 cm",
                     border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(5.0))),
                 validator: (value) =>
