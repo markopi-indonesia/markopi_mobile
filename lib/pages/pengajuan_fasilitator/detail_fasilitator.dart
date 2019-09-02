@@ -77,11 +77,10 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
 
   Widget _judulPengajuan() {
     return new Center(
-      child: Text(
-        "Detail Pengajuan Fasilitator",
-        style: TextStyle(
-          fontSize: 20,
-        ),
+        child: Text(
+             "Detail Pengajuan Fasilitator",
+              style: TextStyle(
+              fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 22.0,color:Color(0xFF3B444F)),        
       ),
     );
   }
