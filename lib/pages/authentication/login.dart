@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
 
 class Login extends StatefulWidget {
@@ -12,7 +11,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = new GlobalKey<FormState>();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   String _email;
@@ -51,7 +49,6 @@ class _LoginState extends State<Login> {
         if (user.uid.length > 0 && user.uid != null) {
           Navigator.pop(context);
           Navigator.of(context).pushNamed("/home");
-          print(user.email);
         }
       } catch (e) {
         print('Error: $e');
@@ -101,27 +98,27 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void _showVerifyEmailSentDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Verifikasi Akun Anda"),
-          content: new Text(
-              "Link untuk verifikasi akun sudah dikirim ke email anda.\n Silahkan verifikasi akun anda."),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Tutup"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showVerifyEmailSentDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       // return object of type Dialog
+  //       return AlertDialog(
+  //         title: new Text("Verifikasi Akun Anda"),
+  //         content: new Text(
+  //             "Link untuk verifikasi akun sudah dikirim ke email anda.\n Silahkan verifikasi akun anda."),
+  //         actions: <Widget>[
+  //           new FlatButton(
+  //             child: new Text("Tutup"),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _showBody() {
     return new Container(
@@ -147,8 +144,6 @@ class _LoginState extends State<Login> {
   }
 
   Widget _header() {
-    // return new Padding(
-    //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
     return Container(
         constraints: new BoxConstraints(
           minHeight: 50.0,
@@ -187,20 +182,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-  // Widget _showLogo() {
-  //   return new Hero(
-  //     tag: 'hero',
-  //     child: Padding(
-  //       padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-  //       child: CircleAvatar(
-  //         backgroundColor: Colors.transparent,
-  //         radius: 70.0,
-  //         child: Image.asset('assets/logo.png'),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _showFacebookButton() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
@@ -221,7 +202,10 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
-                    new Image.asset('assets/f.png', scale: 6.5,)
+                    new Image.asset(
+                      'assets/f.png',
+                      scale: 6.5,
+                    )
                   ],
                 ),
                 color: Color(0xFF1d508d),
@@ -252,6 +236,8 @@ class _LoginState extends State<Login> {
             return "Email tidak boleh kosong";
           } else if (!value.contains("@") && !value.contains(".")) {
             return "Format email salah";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _email = value,
@@ -283,6 +269,8 @@ class _LoginState extends State<Login> {
             return "Kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Kata sandi harus lebih dari 6 karakter";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _password = value,
@@ -307,13 +295,6 @@ class _LoginState extends State<Login> {
               ),
               onPressed: () => _navigateToRegister(),
             ),
-            // Text('Sign in manual',
-            // textAlign: TextAlign.center,
-            //     style: new TextStyle(
-            //         fontSize: 15.0,
-            //         fontWeight: FontWeight.w300,
-            //         color: Colors.black),
-            //         ),
           ],
         ));
   }

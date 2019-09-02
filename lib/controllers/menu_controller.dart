@@ -4,8 +4,7 @@ class MenuController {
   static Stream<QuerySnapshot> menuStream =
       Firestore.instance.collection('menu').snapshots();
 
-  static CollectionReference reference =
-      Firestore.instance.collection('menu');
+  static CollectionReference reference = Firestore.instance.collection('menu');
 
   static addMenu(String name, String color, String image) {
     Firestore.instance.runTransaction((Transaction transaction) async {
@@ -25,7 +24,8 @@ class MenuController {
     });
   }
 
-  static updateMenu(String id, String newName, String newColor, String newImage) {
+  static updateMenu(
+      String id, String newName, String newColor, String newImage) {
     Firestore.instance.runTransaction((Transaction transaction) async {
       await reference.document(id).updateData({
         "name": newName,

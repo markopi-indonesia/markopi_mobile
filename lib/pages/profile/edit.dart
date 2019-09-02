@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:image/image.dart' as Im;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:markopi_mobile/controllers/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header_back.dart';
@@ -23,10 +19,7 @@ class EditProfileDialog extends StatefulWidget {
 class _EditProfileDialogState extends State<EditProfileDialog> {
   var _repository = Repository();
   final _formEditProfileKey = GlobalKey<FormState>();
-  String _userID;
   String _nama;
-  String _role;
-  String _photoUrl;
   String _profesi;
   String _noHP;
   String _provinsi;
@@ -35,7 +28,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   String _alamat;
   String _bio;
   String _docID;
-  String _errorMessage;
   TextEditingController _namaController = TextEditingController();
   TextEditingController _photoUrlController = TextEditingController();
   TextEditingController _profesiController = TextEditingController();
@@ -50,8 +42,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
-
-  bool _isIos;
   bool _isLoading;
   Image image;
 
@@ -76,16 +66,10 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (_validateAndSave()) {
       try {
-        print(_nama);
-        print(_docID);
-        // ProfileController.updateProfile(_docID, _nama, _profesi, _noHP,
-        //     _provinsi, _kabupaten, _kecamatan, _alamat, _bio);
-
         await Firestore.instance
             .collection('profile')
             .document(_docID)
@@ -108,10 +92,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -123,13 +103,11 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     this.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
           currentUser = user;
-          _userID = user?.uid;
         }
       });
     });
@@ -367,42 +345,19 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                       imageFile = selectedImage;
                       _isLoading = true;
                     });
-                    // compressImage();
+
                     _repository.uploadImageToStorage(imageFile).then((url) {
                       _repository.updatePhoto(url, currentUser.uid).then((v) {
-                        print("masuk");
-                        // setState(() {
-                        //   _isLoading = true;
-                        // });
-                        // print("keluar");
                         setState(() {
                           _isLoading = false;
                         });
                         _showUploadDialog();
                         Navigator.pop(context);
-
-                        // Navigator.of(context).pushNamed("/");
                       });
                     });
                   });
                 },
               ),
-              // SimpleDialogOption(
-              //   child: Text('Take Photo'),
-              //   onPressed: () {
-              //     _pickImage('Camera').then((selectedImage) {
-              //       setState(() {
-              //         imageFile = selectedImage;
-              //       });
-              //       // compressImage();
-              //       _repository.uploadImageToStorage(imageFile).then((url) {
-              //         _repository.updatePhoto(url, currentUser.uid).then((v) {
-              //           Navigator.pop(context);
-              //         });
-              //       });
-              //     });
-              //   },
-              // ),
               SimpleDialogOption(
                 child: Text(
                   'Batal',
@@ -417,24 +372,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
           );
         }));
   }
-
-  // void compressImage() async {
-  //   print('starting compression');
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String path = tempDir.path;
-  //   int rand = Random().nextInt(10000);
-
-  //   Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
-  //   Im.copyResize(image);
-
-  //   var newim2 = new File('$path/img_$rand.jpg')
-  //     ..writeAsBytesSync(Im.encodeJpg(image, quality: 85));
-
-  //   setState(() {
-  //     imageFile = newim2;
-  //   });
-  //   print('done');
-  // }
 
   void _showUploadDialog() {
     showDialog(

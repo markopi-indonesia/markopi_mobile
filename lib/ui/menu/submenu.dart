@@ -19,7 +19,7 @@ class SubMenu extends StatefulWidget {
 
 class _SubMenuState extends State<SubMenu> {
   int x = 2;
-  int color_num;
+  int colorNum;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,6 @@ class _SubMenuState extends State<SubMenu> {
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
-      // shrinkWrap: true,
       padding: const EdgeInsets.only(top: 80.0),
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
@@ -98,18 +97,18 @@ class _SubMenuState extends State<SubMenu> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final submenu = SubMenuModel.fromSnapshot(data);
     x = x + x;
-    color_num = int.parse(widget.color) + x;
+    colorNum = int.parse(widget.color) + x;
     return Padding(
       key: ValueKey(submenu.name),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
-          color: Color(color_num),
+          color: Color(colorNum),
         ),
         child: ListTile(
-          onTap: () => _navigateSubMenu(
-              context, widget.menuId , submenu.reference.documentID, color_num.toString()),
+          onTap: () => _navigateSubMenu(context, widget.menuId,
+              submenu.reference.documentID, colorNum.toString()),
           title: Text(
             submenu.name,
             style: TextStyle(color: Color(0xffffffff)),

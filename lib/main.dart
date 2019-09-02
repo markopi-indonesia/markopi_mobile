@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:markopi_mobile/pages/manage_informasi/index.dart';
 import 'package:markopi_mobile/pages/manage_user/index.dart';
 import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
 import 'package:markopi_mobile/pages/authentication/login.dart';
-import 'package:markopi_mobile/pages/crud_menu/index.dart';
 import 'package:markopi_mobile/pages/profile/index.dart';
-import 'package:markopi_mobile/pages/video.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/index_fasilitator.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/index_admin.dart';
 import 'package:markopi_mobile/ui/menu/AnimatedSplashScreen.dart';
-import 'package:markopi_mobile/ui/menu/informasi.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,7 +28,8 @@ class MyApp extends StatelessWidget {
         '/manage-user': (context) => ManageUser(),
         '/profile': (context) => IndexProfileDialog(),
         '/pengajuan_fasilitator': (context) => PengajuanFasilitator(),
-        '/pengajuan_fasilitator_admin': (context) => PengajuanFasilitatorAdmin(),
+        '/pengajuan_fasilitator_admin': (context) =>
+            PengajuanFasilitatorAdmin(),
       },
     );
   }
@@ -41,7 +37,7 @@ class MyApp extends StatelessWidget {
 
 final ThemeData _markopiTheme = _buildMarkopiTheme();
 
-ThemeData _buildMarkopiTheme(){
+ThemeData _buildMarkopiTheme() {
   final ThemeData base = ThemeData.light();
 
   return base.copyWith(
@@ -49,33 +45,27 @@ ThemeData _buildMarkopiTheme(){
     scaffoldBackgroundColor: kShrineBackgroundWhite,
     cardColor: kShrineBackgroundWhite,
     errorColor: kShrineErrorRed,
-    primaryIconTheme: base.iconTheme.copyWith(
-        color: kShrineAltBlack
-    ),
+    primaryIconTheme: base.iconTheme.copyWith(color: kShrineAltBlack),
     primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
   );
 }
 
 TextTheme _buildShrineTextTheme(TextTheme base) {
-  return base.copyWith(
-    headline: base.headline.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    title: base.title.copyWith(
-        fontSize: 18.0
-    ),
-    caption: base.caption.copyWith(
-      fontWeight: FontWeight.w400,
-      fontSize: 14.0,
-    ),
-  ).apply(
-    fontFamily: 'Rubik',
-
-    displayColor: kShrineAltBlack,
-    bodyColor: kShrineAltBlack,
-  );
-
-  
+  return base
+      .copyWith(
+        headline: base.headline.copyWith(
+          fontWeight: FontWeight.w500,
+        ),
+        title: base.title.copyWith(fontSize: 18.0),
+        caption: base.caption.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 14.0,
+        ),
+      )
+      .apply(
+        fontFamily: 'Rubik',
+        displayColor: kShrineAltBlack,
+        bodyColor: kShrineAltBlack,
+      );
 }
-

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Article {
   String userId;
-  String  title;
+  String title;
   String deskripsi;
   String coverImage;
   String ownerRole;
@@ -39,15 +39,15 @@ class Article {
   static List<Article> mapJsonStringToList(List<dynamic> jsonList) {
     return jsonList
         .map((p) => Article(
-      p['userID'],
-      p['title'],
-      p['deskripsi'],
-      p['cover'],
-      p['ownerRole'],
-      p['images'],
-      p['video'],
-      p['categoryID'],
-    ))
+              p['userID'],
+              p['title'],
+              p['deskripsi'],
+              p['cover'],
+              p['ownerRole'],
+              p['images'],
+              p['video'],
+              p['categoryID'],
+            ))
         .toList();
   }
 

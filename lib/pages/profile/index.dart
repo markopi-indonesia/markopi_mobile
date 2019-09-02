@@ -1,18 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:image/image.dart' as Im;
-import 'package:image_picker/image_picker.dart';
 import 'package:markopi_mobile/pages/profile/edit.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:markopi_mobile/controllers/profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:markopi_mobile/resources/repository.dart';
 
 class IndexProfileDialog extends StatefulWidget {
   final String userID;
@@ -22,21 +16,7 @@ class IndexProfileDialog extends StatefulWidget {
 }
 
 class _IndexProfileDialogState extends State<IndexProfileDialog> {
-  var _repository = Repository();
-  final _ProfileKeyPage = GlobalKey<ScaffoldState>();
-  String _userID;
-  String _nama;
-  String _role;
-  String _photoUrl;
-  String _profesi;
-  String _noHP;
-  String _provinsi;
-  String _kabupaten;
-  String _kecamatan;
-  String _alamat;
-  String _bio;
   String _docID;
-  String _errorMessage;
   TextEditingController _namaController = TextEditingController();
   TextEditingController _photoUrlController = TextEditingController();
   TextEditingController _profesiController = TextEditingController();
@@ -51,8 +31,6 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
-
-  bool _isIos;
   bool _isLoading;
   Image image;
 
@@ -68,13 +46,11 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     this.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
           currentUser = user;
-          _userID = user?.uid;
         }
       });
     });
@@ -100,38 +76,6 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
 
   File imageFile;
 
-  Future<File> _pickImage(String action) async {
-    File selectedImage;
-
-    action == 'Gallery'
-        ? selectedImage =
-            await ImagePicker.pickImage(source: ImageSource.gallery)
-        : await ImagePicker.pickImage(source: ImageSource.camera);
-
-    return selectedImage;
-  }
-
-  void _showUpdateSuccess() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Perubahan Profil"),
-          content: new Text("Perubahan profil yang anda lakukan berhasil"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Tutup"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user;
@@ -152,163 +96,146 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
 
   Widget _build(BuildContext context) {
     return new Scaffold(
-        key: _ProfileKeyPage,
         body: new Stack(
-          children: <Widget>[
-            ClipPath(
-              child: Container(color: Colors.blueGrey.withOpacity(0.8)),
-              clipper: getClipper(),
+      children: <Widget>[
+        ClipPath(
+          child: Container(color: Colors.blueGrey.withOpacity(0.8)),
+          clipper: GetClipper(),
+        ),
+        Positioned(
+          width: 350.0,
+          top: MediaQuery.of(context).size.height / 9,
+          child: new Column(children: <Widget>[
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Container(
+                    width: 140.0,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                        image: DecorationImage(
+                            image: _photoUrlController.text.isEmpty
+                                ? AssetImage('assets/no_user.jpg')
+                                : NetworkImage(_photoUrlController.text),
+                            fit: BoxFit.cover),
+                        boxShadow: [
+                          BoxShadow(blurRadius: 7.0, color: Colors.white)
+                        ])),
+              ),
             ),
-            Positioned(
-              width: 350.0,
-              top: MediaQuery.of(context).size.height / 9,
-              child: new Column(children: <Widget>[
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: Container(
-                        width: 140.0,
-                        height: 150.0,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(75.0)),
-                            image: DecorationImage(
-                                image: _photoUrlController.text.isEmpty
-                                    ? AssetImage('assets/no_user.jpg')
-                                    : NetworkImage(_photoUrlController.text),
-                                fit: BoxFit.cover),
-                            boxShadow: [
-                              BoxShadow(blurRadius: 7.0, color: Colors.white)
-                            ])),
-                  ),
-                ),
-                // new Padding(padding: new EdgeInsets.only(top: 10.0)),
-
-                SizedBox(height: 10.0),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // children: <Widget>[
-                Text(
-                  _namaController.text,
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.normal,
-                      fontFamily: 'SF Pro Text'),
-                ),
-                Text(
-                  _profesiController.text,
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontStyle: FontStyle.italic,
-                      fontFamily: 'SF Pro Text'),
-                ),
-
-                // new Padding(padding: new EdgeInsets.only(top: 10.0)),
-                Text(
-                  _noHPController.text,
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontStyle: FontStyle.italic,
-                      fontFamily: 'Montserrat'),
-                ),
-
-                SizedBox(
-                  height: 30.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            SizedBox(height: 10.0),
+            Text(
+              _namaController.text,
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                  fontFamily: 'SF Pro Text'),
+            ),
+            Text(
+              _profesiController.text,
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'SF Pro Text'),
+            ),
+            Text(
+              _noHPController.text,
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'Montserrat'),
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        //  / new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        Text(
-                          "Provinsi:  ",
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'SF Pro Text'),
-                        ),
-                        Text(_provinsiController.text,
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'SF Pro Text')),
-                      ],
+                    Text(
+                      "Provinsi:  ",
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'SF Pro Text'),
                     ),
-                    Column(children: <Widget>[
-                      Text(
-                        "Kabupaten:  ",
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'SF Pro Text'),
-                      ),
-                      Text(
-                        _kabupatenController.text,
+                    Text(_provinsiController.text,
                         style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.normal,
-                            fontFamily: 'SF Pro Text'),
-                      ),
-                    ]),
-                    Column(children: <Widget>[
-                      Text(
-                        "Kecamatan:  ",
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'SF Pro Text'),
-                      ),
-                      Text(
-                        _kecamatanController.text,
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'SF Pro Text'),
-                      ),
-                    ]),
+                            fontFamily: 'SF Pro Text')),
                   ],
                 ),
-
-                // Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                // new Padding(padding: new EdgeInsets.only(top: 20.0)),
-
-                Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-                    child: SizedBox(
-                      height: 40.0,
-                      child: new RaisedButton(
-                          elevation: 5.0,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0)),
-                          color: Color(0xFF2696D6),
-                          child: new Text('Ubah Profil',
-                              style: new TextStyle(
-                                  fontSize: 20.0, color: Colors.white)),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfileDialog(
+                Column(children: <Widget>[
+                  Text(
+                    "Kabupaten:  ",
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'SF Pro Text'),
+                  ),
+                  Text(
+                    _kabupatenController.text,
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'SF Pro Text'),
+                  ),
+                ]),
+                Column(children: <Widget>[
+                  Text(
+                    "Kecamatan:  ",
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'SF Pro Text'),
+                  ),
+                  Text(
+                    _kecamatanController.text,
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'SF Pro Text'),
+                  ),
+                ]),
+              ],
+            ),
+            Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+                child: SizedBox(
+                  height: 40.0,
+                  child: new RaisedButton(
+                      elevation: 5.0,
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(5.0)),
+                      color: Color(0xFF2696D6),
+                      child: new Text('Ubah Profil',
+                          style: new TextStyle(
+                              fontSize: 20.0, color: Colors.white)),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProfileDialog(
                                     userID: _docID,
                                   )),
-                            );
-                          }),
-                      // )
-                    )
-                    // ]
-                    ),
-              ]),
-            ),
-          ],
-        ));
+                        );
+                      }),
+                  // )
+                )
+                // ]
+                ),
+          ]),
+        ),
+      ],
+    ));
   }
 }
 
-class getClipper extends CustomClipper<Path> {
+class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
@@ -321,9 +248,6 @@ class getClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 }
-
-// https://www.youtube.com/watch?v=GwENgFQo0Qg

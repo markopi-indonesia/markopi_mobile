@@ -69,7 +69,8 @@ class InformasiState extends State<Informasi> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddInformasiDialog(menuID: widget.menuID, subMenuID: widget.subMenuID),
+                builder: (context) => AddInformasiDialog(
+                    menuID: widget.menuID, subMenuID: widget.subMenuID),
                 fullscreenDialog: true,
               ),
             );
@@ -92,15 +93,10 @@ class InformasiState extends State<Informasi> {
           return new Center(
             child: CircularProgressIndicator(),
           );
-        // return _buildList(context, snapshot.data.documents);
         List<InformasiModel> listInformasi = [];
 
         snapshot.data.documents.forEach(
             (data) => listInformasi.add(InformasiModel.fromSnapshot(data)));
-
-        if (listInformasi.isEmpty) {
-          print('informasi is empty');
-        }
 
         return ListView.separated(
             itemCount: listInformasi.length,
@@ -121,82 +117,30 @@ class InformasiState extends State<Informasi> {
                     onTap: () => _detail(
                         context,
                         listInformasi[index].reference.documentID,
-                        // listInformasi[index].cover,
                         listInformasi[index].deskripsi,
                         listInformasi[index].images,
                         listInformasi[index].title,
                         listInformasi[index].userID,
                         nama,
                         listInformasi[index].video),
-                      child: Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                          child:  Text(listInformasi[index].title, style: TextStyle(fontSize: 18, color: Color(0xff3b444f)),)
-                      ),
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                        child: Text(
+                          listInformasi[index].title,
+                          style:
+                              TextStyle(fontSize: 18, color: Color(0xff3b444f)),
+                        )),
                   ));
-                  
-            }, separatorBuilder: (BuildContext context, int index) => Divider(color: Colors.black));
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                Divider(color: Colors.black));
       },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return Container(
-      child: ListView(
-        // shrinkWrap: true,
-        padding: const EdgeInsets.only(top: 20.0),
-        children:
-            snapshot.map((data) => _buildListItem(context, data)).toList(),
-      ),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final informasi = InformasiModel.fromSnapshot(data);
-    String nama;
-    Firestore.instance
-        .collection('profile')
-        .where("userID", isEqualTo: informasi.userID)
-        .snapshots()
-        .listen((data) => data.documents.forEach((doc) => [
-              nama = doc["nama"],
-            ]));
-    return Padding(
-      key: ValueKey(informasi.title),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: new ListTile(
-          leading: new CircleAvatar(
-            radius: 30.0,
-            child: Icon(Icons.label),
-            backgroundColor: Colors.green,
-          ),
-          // leading: Icon(Icons.label_important),
-          title: new Text(informasi.title),
-          onTap: () => _detail(
-              context,
-              data.documentID,
-              // informasi.categoryID,
-              // informasi.cover,
-              informasi.deskripsi,
-              informasi.images,
-              // informasi.ownerRole,
-              informasi.title,
-              informasi.userID,
-              nama,
-              informasi.video),
-        ),
-      ),
     );
   }
 
   void _detail(
     BuildContext context,
     String documentID,
-    // String cover,
     String deskripsi,
     String images,
     String title,
@@ -208,7 +152,6 @@ class InformasiState extends State<Informasi> {
       MaterialPageRoute(
         builder: (context) => DetailInformasi(
           documentID: documentID,
-          // cover: cover,
           deskripsi: deskripsi,
           images: images,
           title: title,

@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/models/menu.dart';
 import 'package:markopi_mobile/pages/profile/index.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
-
-//Self import
 import 'package:markopi_mobile/models/profile.dart';
 
 class DrawerPage extends StatefulWidget {
@@ -21,12 +18,10 @@ enum AuthStatus {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String _userId = "";
-  ProfileModel _profile;
   String nama = "";
   String image = "";
   String email;
@@ -42,8 +37,6 @@ class _DrawerPageState extends State<DrawerPage> {
               nama = profile.nama;
               image = profile.photoUrl;
               role = profile.role;
-              print(nama);
-              print(image);
             }
           });
         });
@@ -52,10 +45,6 @@ class _DrawerPageState extends State<DrawerPage> {
         if (user != null) {
           _userId = user?.uid;
           email = user.email;
-          // print(_userId);
-          print(_userId);
-          // retrieveUserDetails();
-          // print(_profile.nama);
         }
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
@@ -88,9 +77,7 @@ class _DrawerPageState extends State<DrawerPage> {
   _signOut() async {
     try {
       _firebaseAuth.signOut();
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   @override
@@ -114,11 +101,7 @@ class _DrawerPageState extends State<DrawerPage> {
                   ),
                 ),
                 decoration: new BoxDecoration(
-                  // borderRadius: BorderRadius.circular(100.0),
                   color: Color(0xFF142B44),
-                  // image: DecorationImage(
-                  //     image: AssetImage('assets/sanitasi.jpeg'),
-                  //     fit: BoxFit.cover),
                 ),
                 accountEmail: null,
               ),
@@ -151,13 +134,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         snapshot.data.documents.forEach((data) {
                           menuList.add(Menu.fromSnapshot(data));
                         });
-
-                        if (menuList.isNotEmpty) {
-                          print("menuList not empty");
-                        }
-
                         return ListView.builder(
-                            // itemExtent: 62.0,
                             physics: ScrollPhysics(),
                             itemCount: menuList.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -237,7 +214,6 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                     decoration: new BoxDecoration(
-                      // borderRadius: BorderRadius.circular(100.0),
                       color: Color(0xFF142B44),
                     ),
                   ),
@@ -294,15 +270,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             snapshot.data.documents.forEach((data) {
                               menuList.add(Menu.fromSnapshot(data));
                             });
-
-                            if (menuList.isNotEmpty) {
-                              print("menuList not empty");
-                            }
-
                             return ListView.builder(
-                                // itemExtent: 60.0,
-                                // shrinkWrap: true,
-                                // physics: AlwaysScrollableScrollPhysics(),
                                 physics: ScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -330,18 +298,6 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/informasi");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Informasiku'),
-                  //     leading: Icon(Icons.info),
-                  //   ),
-                  // ),
-
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(
@@ -414,18 +370,6 @@ class _DrawerPageState extends State<DrawerPage> {
                       leading: Icon(Icons.verified_user),
                     ),
                   ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/category");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Kategori'),
-                  //     leading: Icon(Icons.category),
-                  //   ),
-                  // ),
-
                   Center(
                     child: new AspectRatio(
                       aspectRatio: 90 / 100,
@@ -443,13 +387,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             snapshot.data.documents.forEach((data) {
                               menuList.add(Menu.fromSnapshot(data));
                             });
-
-                            if (menuList.isNotEmpty) {
-                              print("menuList not empty");
-                            }
-
                             return ListView.builder(
-                                // itemExtent: 60.0,
                                 physics: ScrollPhysics(),
                                 itemCount: menuList.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -477,18 +415,6 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
-
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/informasi");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Informasiku'),
-                  //     leading: Icon(Icons.info),
-                  //   ),
-                  // ),
-
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(
@@ -536,8 +462,6 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   void _navigateToEditProfile(BuildContext context, String userID) {
-    print("masuk");
-    print(userID);
     Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(

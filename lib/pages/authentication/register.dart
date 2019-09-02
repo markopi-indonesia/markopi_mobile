@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:markopi_mobile/controllers/profile_controller.dart';
-import 'package:markopi_mobile/pages/authentication/login.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -13,7 +11,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = new GlobalKey<FormState>();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   String _email;
@@ -58,17 +55,7 @@ class _RegisterState extends State<Register> {
           // var string = user.email;
           var nama = _nama;
           ProfileController.addProfile(
-              user.uid,
-              nama,
-              "",
-              "Petani",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "",
-              "");
+              user.uid, nama, "", "Petani", "", "", "", "", "", "", "");
           user.sendEmailVerification();
           setState(() {
             _isLoading = false;
@@ -195,8 +182,6 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _header() {
-    // return new Padding(
-    //     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
     return Container(
         constraints: new BoxConstraints(
           minHeight: 50.0,
@@ -255,7 +240,10 @@ class _RegisterState extends State<Register> {
                     Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
-                    new Image.asset('assets/f.png', scale: 6.5,)
+                    new Image.asset(
+                      'assets/f.png',
+                      scale: 6.5,
+                    )
                   ],
                 ),
                 color: Color(0xFF1d508d),
@@ -287,20 +275,6 @@ class _RegisterState extends State<Register> {
         ));
   }
 
-  // Widget _showLogo() {
-  //   return new Hero(
-  //     tag: 'hero',
-  //     child: Padding(
-  //       padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-  //       child: CircleAvatar(
-  //         backgroundColor: Colors.transparent,
-  //         radius: 70.0,
-  //         child: Image.asset('assets/logo.png'),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _showEmailInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
@@ -325,6 +299,8 @@ class _RegisterState extends State<Register> {
             return "Email tidak boleh kosong";
           } else if (!value.contains("@") && !value.contains(".")) {
             return "Format email salah";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _email = value,
@@ -354,6 +330,8 @@ class _RegisterState extends State<Register> {
         validator: (value) {
           if (value.isEmpty) {
             return "Nama tidak boleh kosong";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _nama = value,
@@ -385,6 +363,8 @@ class _RegisterState extends State<Register> {
             return "Kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Kata sandi harus lebih dari 6 karakter";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _password = value,
@@ -416,21 +396,12 @@ class _RegisterState extends State<Register> {
             return "Konfirmasi kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Konfirmasi kata sandi harus lebih dari 6 karakter";
+          } else {
+            return "";
           }
         },
         onSaved: (value) => _confirmPassword = value,
       ),
-    );
-  }
-
-  Widget _showSecondaryButton() {
-    return new FlatButton(
-      child: new Text('Sudah punya akun? Masuk di sini',
-          style: new TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w300,
-              color: Colors.blueAccent)),
-      onPressed: () => _navigateToLogin(),
     );
   }
 
@@ -449,14 +420,5 @@ class _RegisterState extends State<Register> {
             onPressed: _validateAndSubmit,
           ),
         ));
-  }
-
-  _navigateToLogin() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => Login(),
-        fullscreenDialog: true,
-      ),
-    );
   }
 }

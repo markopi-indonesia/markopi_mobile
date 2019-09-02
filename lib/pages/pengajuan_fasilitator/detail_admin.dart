@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-// import 'package:markopi_mobile/pages/crud_Pengajuan/edit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
 
@@ -59,21 +57,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   TextEditingController _kecamatanController = TextEditingController();
   TextEditingController _alamatController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
-  String _nama;
-  String _photo;
-  String _profesi;
-  String _noHP;
-  String _provinsi;
-  String _kabupaten;
-  String _kecamatan;
-  String _alamat;
-  String _bio;
   final _formUpdateStatusKey = GlobalKey<FormState>();
-  String _errorMessage;
   String _pesan;
-//  Future<File> _imageFile;
-  bool _isIos;
-  bool _isLoading;
   List<String> urls;
   @override
   void initState() {
@@ -93,7 +78,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
               _alamatController.text = doc["alamat"],
               _bioController.text = doc["bio"]
             ]));
-    print(widget.nama);
+
     super.initState();
   }
 
@@ -108,7 +93,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
               _judulProfil(),
               ClipPath(
                 child: Container(color: Colors.blueGrey.withOpacity(0.8)),
-                clipper: getClipper(),
+                clipper: GetClipper(),
               ),
               GestureDetector(
                 child: Padding(
@@ -240,120 +225,6 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
     );
   }
 
-  Widget _profil() {
-    return new Stack(
-      children: <Widget>[
-        ClipPath(
-          child: Container(color: Colors.blueGrey.withOpacity(0.8)),
-          clipper: getClipper(),
-        ),
-        Positioned(
-          width: 350.0,
-          top: MediaQuery.of(context).size.height / 9,
-          child: new Column(children: <Widget>[
-            GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Container(
-                    width: 140.0,
-                    height: 150.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                        image: DecorationImage(
-                            image: _photoUrlController.text.isEmpty
-                                ? AssetImage('assets/no_user.jpg')
-                                : NetworkImage(_photoUrlController.text),
-                            fit: BoxFit.cover),
-                        boxShadow: [
-                          BoxShadow(blurRadius: 7.0, color: Colors.white)
-                        ])),
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              _namaController.text,
-              style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.normal,
-                  fontFamily: 'Montserrat'),
-            ),
-            Text(
-              _profesiController.text,
-              style: TextStyle(
-                  fontSize: 12.0,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Montserrat'),
-            ),
-            Text(
-              _noHPController.text,
-              style: TextStyle(
-                  fontSize: 12.0,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Montserrat'),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "Provinsi:  ",
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                    Text(_provinsiController.text,
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Montserrat')),
-                  ],
-                ),
-                Column(children: <Widget>[
-                  Text(
-                    "Kabupaten:  ",
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat'),
-                  ),
-                  Text(
-                    _kabupatenController.text,
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Montserrat'),
-                  ),
-                ]),
-                Column(children: <Widget>[
-                  Text(
-                    "Kecamatan:  ",
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat'),
-                  ),
-                  Text(
-                    _kecamatanController.text,
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Montserrat'),
-                  ),
-                ]),
-              ],
-            ),
-          ]),
-        ),
-      ],
-    );
-  }
-
   Widget _judulPengajuan() {
     return new Center(
       child: Text(
@@ -370,12 +241,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
       image: Image.network(widget.ktp),
       zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
       hideStatusBarWhileZooming: true,
-      onZoomStart: () {
-        print('Zoom started');
-      },
-      onZoomEnd: () {
-        print('Zoom finished');
-      },
+      onZoomStart: () {},
+      onZoomEnd: () {},
     );
   }
 
@@ -387,12 +254,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
       ),
       zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
       hideStatusBarWhileZooming: true,
-      onZoomStart: () {
-        print('Zoom started');
-      },
-      onZoomEnd: () {
-        print('Zoom finished');
-      },
+      onZoomStart: () {},
+      onZoomEnd: () {},
     );
   }
 
@@ -414,19 +277,14 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   }
 
   Widget _sertifikat() {
-    // return new Column(children: urls.map((item) => new Text(item)).toList());
     return new Column(
         children: urls
             .map((item) => new PinchZoomImage(
                   image: Image.network(item),
                   zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
                   hideStatusBarWhileZooming: true,
-                  onZoomStart: () {
-                    print('Zoom started');
-                  },
-                  onZoomEnd: () {
-                    print('Zoom finished');
-                  },
+                  onZoomStart: () {},
+                  onZoomEnd: () {},
                 ))
             .toList());
   }
@@ -440,52 +298,19 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
     return false;
   }
 
-  Widget _showCircularProgress() {
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
-    }
-    return Container(
-      height: 0.0,
-      width: 0.0,
-    );
-  }
-
   _validateAndSubmit(String status) async {
-    setState(() {
-      _errorMessage = "";
-      _isLoading = true;
-    });
     if (_validateAndSave()) {
       try {
         updateStatus(status);
-        setState(() {
-          _isLoading = false;
-        });
         Navigator.pop(context);
       } catch (e) {
         print('Error: $e');
-        setState(() {
-          _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
-        });
       }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   void updateStatus(String status) async {
-    // final docRef = await Firestore.instance.collection('menu').add({
-    //   'name'  : _name,
-    //   'color' : currentColor.value.toString(),
-    //   "image" : currentAsset
-    // });
-    final docRef = await Firestore.instance
+    await Firestore.instance
         .collection('pengajuan')
         .document(widget.documentID)
         .updateData({
@@ -493,12 +318,11 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
       "pesan": _pesan,
     });
     if (status == "Disetujui") {
-      final docRef = await Firestore.instance
+      await Firestore.instance
           .collection('profile')
           .document(widget.userID)
           .updateData({'role': "Fasilitator"});
     }
-    // print(docRef.documentID);
   }
 
   Widget _formKonfirmasi() {
@@ -523,9 +347,6 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                     labelText: "Isi Pesan",
                     border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(5.0))),
-                // validator: (value) => value.isEmpty
-                //     ? 'Nama menu tidak boleh kosong'
-                //     : null,
                 onSaved: (value) => _pesan = value,
               ),
               new Padding(padding: new EdgeInsets.only(top: 20.0)),
@@ -568,7 +389,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   }
 }
 
-class getClipper extends CustomClipper<Path> {
+class GetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
@@ -581,7 +402,6 @@ class getClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 }

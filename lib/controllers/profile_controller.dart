@@ -6,7 +6,6 @@ class ProfileController {
 
   static CollectionReference reference =
       Firestore.instance.collection('profile');
-  
 
   static addProfile(
       String userID,
@@ -20,20 +19,6 @@ class ProfileController {
       String kecamatan,
       String alamat,
       String bio) {
-    // Firestore.instance.runTransaction((Transaction transaction) async {
-    //   await reference.add({
-    //     "userID": userID,
-    //     "nama": nama,
-    //     "role": role,
-    //     "profesi": profesi,
-    //     "noHP": noHP,
-    //     "provinsi": provinsi,
-    //     "kabupaten": kabupaten,
-    //     "kecamatan": kecamatan,
-    //     "alamat": alamat,
-    //     "bio": bio
-    //   });
-    // });
     final Firestore _firestore = Firestore.instance;
     _firestore.collection("profile").document(userID).setData({
       "userID": userID,
@@ -53,7 +38,6 @@ class ProfileController {
   static updateProfile(
       String id,
       String newNama,
-      // String newPhotoURL,
       String newProfesi,
       String newNoHP,
       String newProvinsi,

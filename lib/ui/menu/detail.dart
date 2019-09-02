@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
-import 'package:markopi_mobile/models/informasi.dart';
-import 'package:markopi_mobile/controllers/informasi_controller.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
 import 'package:youtube_player/youtube_player.dart';
 import 'package:markopi_mobile/models/profile.dart';
@@ -55,9 +52,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
       }
     });
     super.initState();
-    images.forEach((f) {
-      print(f);
-    });
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -76,7 +70,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         resizeToAvoidBottomPadding: false,
         body: Container(
             child: ListView(children: <Widget>[
@@ -91,7 +84,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
               ),
               decoration: BoxDecoration(
                 color: Color(0xFFffc83f),
-                // border: Border.all(),
               ),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -109,9 +101,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                 Expanded(
                   flex: 3,
                   child: new Container(
-//                    height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width / 1.5,
-//                    color: Colors.tealAccent,
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -141,12 +131,8 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                                 Color.fromRGBO(
                                                     240, 240, 240, 1.0),
                                             hideStatusBarWhileZooming: true,
-                                            onZoomStart: () {
-                                              print('Zoom started');
-                                            },
-                                            onZoomEnd: () {
-                                              print('Zoom finished');
-                                            },
+                                            onZoomStart: () {},
+                                            onZoomEnd: () {},
                                           ),
                                           Divider(),
                                         ],
@@ -162,7 +148,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
               ],
             ),
           ),
-          // Divider(),
           Container(
             margin: EdgeInsets.all(8),
             child: widget.video.isNotEmpty
@@ -171,9 +156,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                       Expanded(
                         flex: 3,
                         child: new Container(
-//                    height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width / 1.5,
-//                    color: Colors.greenAccent,
                           child: Column(
                             children: <Widget>[
                               Container(
@@ -193,11 +176,6 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                 context: context,
                                 source: widget.video,
                                 quality: YoutubeQuality.LOW,
-                                // callbackController is (optional).
-                                // use it to control player on your own.
-                                // callbackController: (controller) {
-                                //   _videoController = controller;
-                                // },
                               ),
                             ],
                           ),
@@ -243,45 +221,12 @@ class _DetailInformasiState extends State<DetailInformasi> {
               ],
             ),
           ),
-//           Container(
-//             margin: EdgeInsets.all(8),
-//             child: widget.video.isNotEmpty
-//                 ? Row(
-//                     children: <Widget>[
-//                       Expanded(
-//                         flex: 3,
-//                         child: new Container(
-// //                    height: MediaQuery.of(context).size.height,
-//                           width: MediaQuery.of(context).size.width / 1.5,
-// //                    color: Colors.greenAccent,
-//                           child: Column(
-//                             children: <Widget>[
-//                               Text('Video Terkait',
-//                                   style: TextStyle(
-//                                       fontSize: 22.0,
-//                                       fontWeight: FontWeight.w700)),
-//                               Container(
-//                                 margin: EdgeInsets.all(10.0),
-//                                 child: widget.video.isNotEmpty
-//                                     ? Image.asset('assets/pola_tanam.jpeg')
-//                                     : Text("Tidak ada video"),
-//                               )
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   )
-//                 : Text(""),
-//           ),
         ])));
   }
 
   Widget deskripsiTeks() {
-    // return new Text(widget.deskripsi);
     List<String> text = widget.deskripsi.split("##");
     if (!widget.deskripsi.contains("##")) {
-      print("berhasil");
       return Column(
         children: <Widget>[
           new Container(
@@ -294,17 +239,17 @@ class _DetailInformasiState extends State<DetailInformasi> {
     }
     List<Widget> list = new List<Widget>();
     if (text[0] != "") {
-        list.add(Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
-                child: new Text(text[0]))));
-      }
+      list.add(Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+              padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom:
+                          BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+              child: new Text(text[0]))));
+    }
     for (var i = 1; i < text.length; i++) {
       list.add(Align(
           alignment: Alignment.centerLeft,

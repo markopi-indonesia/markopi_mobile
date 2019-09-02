@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'package:flutter_colorpicker/utils.dart';
 
 class AddSubMenuDialog extends StatefulWidget {
   final String menuId;
@@ -16,9 +14,6 @@ class AddSubMenuDialog extends StatefulWidget {
 class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
   final _formAddSubMenuKey = GlobalKey<FormState>();
   String _name;
-  String _errorMessage;
-//  Future<File> _imageFile;
-  bool _isIos;
   bool _isLoading;
 
   bool _validateAndSave() {
@@ -42,7 +37,6 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (_validateAndSave()) {
@@ -56,10 +50,6 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -70,16 +60,14 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
   }
 
   void addSubMenu() async {
-    final docRef = await Firestore.instance.collection('submenu').add({
+    await Firestore.instance.collection('submenu').add({
       'name': _name,
       "menuId": widget.menuId,
     });
-    print(docRef.documentID);
   }
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     super.initState();
   }
@@ -88,7 +76,6 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -130,8 +117,6 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
                               : null,
                           onSaved: (value) => _name = value,
                         ),
-
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
