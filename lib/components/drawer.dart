@@ -230,7 +230,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                     currentAccountPicture: GestureDetector(
                       child: new CircleAvatar(
-                        backgroundColor: Colors.grey,
+                        backgroundColor: Colors.white,
                         backgroundImage: image.isNotEmpty
                             ? NetworkImage(image)
                             : AssetImage('assets/no_user.jpg'),

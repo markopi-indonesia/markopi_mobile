@@ -288,7 +288,7 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                     value.isEmpty ? 'Judul tidak boleh kosong' : null,
                 onSaved: (value) => title = value,
               ),
-              new Padding(padding: new EdgeInsets.only(top: 20.0)),
+              // new Padding(padding: new EdgeInsets.only(top: 20.0)),
               // new Align(
               //   alignment: Alignment.topLeft,
               //   child: new Text("Tambah Cover",
@@ -323,39 +323,40 @@ class _AddInformasiDialogState extends State<AddInformasiDialog> {
                         fontSize: 15.0,
                         color: Color(0xFF3B444F))),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                width: double.maxFinite,
-                child: SizedBox(
-                  child: Row(
-                    children: <Widget>[
-                      new Icon(
-                        Icons.warning,
-                        color: Colors.orange,
-                      ),
-                      new Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Apabila ingin membuat paragraf baru, gunakan simbol '##'.",
-                              style: TextStyle(
-                                  fontFamily: 'SF Pro Text',
-                                  fontSize: 12.0,
-                                  color: Colors.orange),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+              //   width: double.maxFinite,
+              //   child: SizedBox(
+              //     child: Row(
+              //       children: <Widget>[
+              //         new Icon(
+              //           Icons.warning,
+              //           color: Colors.orange,
+              //         ),
+              //         new Flexible(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: <Widget>[
+              //               Text(
+              //                 "Apabila ingin membuat paragraf baru, gunakan simbol '##'.",
+              //                 style: TextStyle(
+              //                     fontFamily: 'SF Pro Text',
+              //                     fontSize: 12.0,
+              //                     color: Colors.orange),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               new TextFormField(
                 maxLines: 10,
-                decoration: new InputDecoration.collapsed(
-                    hintText:
-                        "Contoh:\n ##Tujuan\n- Untuk meningkatkan kadar humus pada tanah\n- Untuk menambah nutrisi pada kopi\n##Caranya:\n- Mengukur lubang tanam 30x30 cm",
+                decoration: new InputDecoration(
+                    // hintText:
+                    //     "Contoh:\n ##Tujuan\n- Untuk meningkatkan kadar humus pada tanah\n- Untuk menambah nutrisi pada kopi\n##Caranya:\n- Mengukur lubang tanam 30x30 cm",
+                    hintText: "Deskripsi",
                     border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(5.0))),
                 validator: (value) =>

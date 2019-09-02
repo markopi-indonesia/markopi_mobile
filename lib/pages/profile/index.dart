@@ -285,7 +285,7 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
                           color: Color(0xFF2696D6),
-                          child: new Text('Ubah Profile',
+                          child: new Text('Ubah Profil',
                               style: new TextStyle(
                                   fontSize: 20.0, color: Colors.white)),
                           onPressed: () {
