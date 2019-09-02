@@ -282,16 +282,16 @@ class _DrawerPageState extends State<DrawerPage> {
                   //   ),
                   // ),
 
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     Navigator.of(context).pushNamed("/manage-user");
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text('Mengelola Informasi'),
-                  //     leading: Icon(Icons.library_books),
-                  //   ),
-                  // ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/manage-user");
+                    },
+                    child: ListTile(
+                      title: Text('Mengelola User'),
+                      leading: Icon(Icons.supervised_user_circle),
+                    ),
+                  ),
 
                   InkWell(
                     onTap: () {
@@ -299,8 +299,8 @@ class _DrawerPageState extends State<DrawerPage> {
                       Navigator.of(context).pushNamed("/pengajuan_fasilitator_admin");
                     },
                     child: ListTile(
-                      title: Text('Mengelola User'),
-                      leading: Icon(Icons.supervised_user_circle),
+                      title: Text('Pengajuan Fasilitator'),
+                      leading: Icon(Icons.verified_user),
                     ),
                   ),
 
