@@ -56,11 +56,67 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
     return new Scaffold(
         appBar: Header(),
         drawer: DrawerPage(),
-        body: Stack(children: <Widget>[_buildBody(context)]),
+        body: Stack(children: <Widget>[
+          _build1(),
+          // _build2(),
+          _buildBody(),
+          ]),
+          
         floatingActionButton: buildAddPengajuanFab());
   }
+  
+@override
+  Widget _build1() {
+    return new Container(
+      height: 150.0,
+      margin: new EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(18),
+      decoration: new BoxDecoration(
+      borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
+      gradient: new LinearGradient(
+      colors: [Colors.lightBlueAccent, Colors.lightBlue[100]],
+      begin: Alignment.centerLeft, end: Alignment.centerRight, tileMode: TileMode.clamp)),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+        // new Padding(padding: new EdgeInsets.only(left: 10.0, right: 10.0),
+        //   child: new Icon(Icons.cloud, color: Colors.white70,),
+        // ),
+          new Expanded(
+            child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Padding(padding: new EdgeInsets.only(left: 10.0, right: 40.0)),
+               Align(
+                alignment: Alignment.topCenter,
+                child: new Text("Fasilitator",
+                    style: new TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black)),
+              ),
+              Padding(padding: new EdgeInsets.only(top: 10.0)),
+              Align(
+                alignment: Alignment.topLeft,
+              child: new Text('  - Membantu para petani kopi ', style: new TextStyle(fontSize: 15.0, color: Colors.white70),
+              )),
+              new Text('  - Memberikan informasi kepada petani kopi', style: new TextStyle(fontSize: 15.0, color: Colors.white70),),
+              new Text('  - Memberikan pelatihan kepada petani kopi', style: new TextStyle(fontSize: 15.0, color: Colors.white70, ),),
+            ],)),
+      ],),
+    );
+  }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _build2(){
+    new Visibility(
+        visible: _isVisible,
+        child: new Text('Status Pengajuan')
+      );
+  }
+
+  @override
+  Widget _buildBody() {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('pengajuan')
@@ -76,10 +132,12 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
     );
   }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildList(BuildContext context, 
+  List<DocumentSnapshot> snapshot) {
     return ListView(
       // shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 200.0),
+
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
@@ -87,29 +145,32 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final informasi = PengajuanFasilitatorModel.fromSnapshot(data);
     Color status;
-    if (informasi.status == "Menunggu") {
+    if (
+      informasi.status == "Menunggu") {
       status = Color(0xFF99a9b3);
-    } else if (informasi.status == "Disetujui") {
+    } else if (
+      informasi.status == "Disetujui") {
       status = Color(0xFF16C98D);
     } else {
       status = Color(0xFFD90600);
     }
-    return Padding(
+    return Column(children: <Widget>[
+      new Text (
+        'Status Pengajuan',
+       style: new TextStyle(
+          fontSize: 25.0,
+          fontWeight: FontWeight.w300,
+          color: Colors.black),
+      ),
+      Padding(
       key: ValueKey(informasi.dateTime),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(6.0),
           color: status,
         ),
         child: new ListTile(
-          // title: new Text(informasi.status +
-          //     " - " +
-          //     informasi.dateTime.day.toString() +
-          //     "/" +
-          //     informasi.dateTime.month.toString() +
-          //     "/" +
-          //     informasi.dateTime.year.toString()),
           title: new Text(informasi.status +
               " - " +
               informasi.dateTime.toDate().toString(), style: TextStyle(color: Colors.white),),
@@ -127,7 +188,8 @@ class _PengajuanFasilitatorState extends State<PengajuanFasilitator> {
           ),
         ),
       ),
-    );
+    ),
+    ]);
   }
 
   buildAddPengajuanFab() {

@@ -226,11 +226,11 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                     padding: new EdgeInsets.all(10.0),
                     child: new Column(
                       children: <Widget>[
-                        new Center(
+                         new Center(
                           child: Text(
                             "Form Tambah Pengajuan Fasilitator",
                             style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 20.0,color:Color(0xFF3B444F)),
+                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 22.0,color:Color(0xFF3B444F)),
                           ),
                         ),
                         Padding(padding: new EdgeInsets.only(top: 20.0)),
