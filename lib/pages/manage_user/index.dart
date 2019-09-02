@@ -6,7 +6,6 @@ import 'package:markopi_mobile/components/drawer.dart';
 import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/models/profile.dart';
 import 'package:markopi_mobile/pages/manage_user/detail.dart';
-import 'package:markopi_mobile/resources/repository.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
 
@@ -16,30 +15,6 @@ class ManageUser extends StatefulWidget {
 }
 
 class _ManageUserState extends State<ManageUser> {
-  var _repository = Repository();
-  String _userID;
-  String _nama;
-  String _role;
-  String _photoUrl;
-  String _profesi;
-  String _noHP;
-  String _provinsi;
-  String _kabupaten;
-  String _kecamatan;
-  String _alamat;
-  String _bio;
-  String _docID;
-  String _errorMessage;
-  TextEditingController _namaController = TextEditingController();
-  TextEditingController _photoUrlController = TextEditingController();
-  TextEditingController _profesiController = TextEditingController();
-  TextEditingController _noHPController = TextEditingController();
-  TextEditingController _provinsiController = TextEditingController();
-  TextEditingController _kabupatenController = TextEditingController();
-  TextEditingController _kecamatanController = TextEditingController();
-  TextEditingController _alamatController = TextEditingController();
-  TextEditingController _bioController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -61,11 +36,6 @@ class _ManageUserState extends State<ManageUser> {
 
               snapshot.data.documents.forEach(
                   (data) => listProfile.add(ProfileModel.fromSnapshot(data)));
-
-              if (listProfile.isEmpty) {
-                print('profile is empty');
-              }
-
               return ListView.builder(
                 itemCount: listProfile.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -73,7 +43,8 @@ class _ManageUserState extends State<ManageUser> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
                     child: GestureDetector(
-                      onTap: () => _navigateToEditProfile(context, listProfile[index].userID),
+                      onTap: () => _navigateToEditProfile(
+                          context, listProfile[index].userID),
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
@@ -139,15 +110,13 @@ void deleteUser(String docId) {
 }
 
 void _navigateToEditProfile(BuildContext context, String userID) {
-    print("masuk");
-    print(userID);
-    Navigator.pop(context);
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => IndexProfileAdmin(
-          userID: userID,
-        ),
-        fullscreenDialog: true,
+  Navigator.pop(context);
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => IndexProfileAdmin(
+        userID: userID,
       ),
-    );
-  }
+      fullscreenDialog: true,
+    ),
+  );
+}

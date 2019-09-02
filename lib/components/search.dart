@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/models/informasi.dart';
@@ -19,11 +17,9 @@ class _SearchState extends State<SearchState> {
   final key = GlobalKey<ScaffoldState>();
   final TextEditingController _searchQuery = TextEditingController();
   InformasiModel post;
-  String _error;
-  bool _isSearching = false;
-  List<InformasiModel> _results = List();
+  
   List<String> listTitle = List();
-  List<String> _strResult = [];
+  
   String filter;
   Timer debounceTimer;
   DocumentReference documentReference =
@@ -48,17 +44,13 @@ class _SearchState extends State<SearchState> {
     if (query.isEmpty) {
       print('===query empty====');
       setState(() {
-        _isSearching = false;
-        _error = null;
-        _results = List();
+        
       });
       return;
     }
 
     setState(() {
-      _isSearching = true;
-      _error = null;
-      _results = List();
+      
     });
   }
 
@@ -90,7 +82,7 @@ class _SearchState extends State<SearchState> {
           if (!snapshot.hasData) return CircularProgressIndicator();
 
           List<InformasiModel> resultArticle = [];
-          String _error;
+          
           bool flag = false;
           if (filter != null && filter != "") {
             flag = true;
@@ -104,9 +96,6 @@ class _SearchState extends State<SearchState> {
                   menuName.contains(filter) ||
                   subMenuName.contains(filter)) {
                 resultArticle.add(InformasiModel.fromSnapshot(f));
-              } else {
-                // resultArticle = [];
-                _error = 'Data tidak ditemukan';
               }
             });
           } else {

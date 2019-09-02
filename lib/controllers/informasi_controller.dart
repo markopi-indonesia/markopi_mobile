@@ -7,7 +7,8 @@ class InformasiController {
   static CollectionReference reference =
       Firestore.instance.collection('informasi');
 
-  static addInformasi(String title, String categoryID, String deskripsi, String userID, String ownerRole) {
+  static addInformasi(String title, String categoryID, String deskripsi,
+      String userID, String ownerRole) {
     Firestore.instance.runTransaction((Transaction transaction) async {
       await reference.add({
         "title": title,
@@ -27,7 +28,8 @@ class InformasiController {
     });
   }
 
-  static updateInformasi(String id, String newTitle, String newCategoryID, String newDeskripsi) {
+  static updateInformasi(
+      String id, String newTitle, String newCategoryID, String newDeskripsi) {
     Firestore.instance.runTransaction((Transaction transaction) async {
       await reference.document(id).updateData({
         "title": newTitle,

@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +34,7 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
   final _formAddInformasiKey = GlobalKey<FormState>();
   String title;
   String deskripsi;
-  String _mySelection;
-  String _errorMessage;
-  String _photoUrl;
   String _videoUrl;
-  String _error;
   String menuName;
   String subMenuName;
   FirebaseUser currentUser;
@@ -50,9 +43,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
   String ownerRole = "";
-  StorageReference _storageReference;
-
-  bool _isIos;
   bool _isLoading;
 
   bool _validateAndSave() {
@@ -76,8 +66,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
 
   File imageFile;
   File videoFile;
-  List<File> _imageList = [];
-  File _image;
   String urls = "";
   List<Asset> images = List<Asset>();
 
@@ -87,18 +75,13 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
     });
 
     List<Asset> resultList;
-    String error;
 
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 10,
         enableCamera: true,
       );
-    } on PlatformException catch (e) {
-      error = e.message;
-    } on NoImagesSelectedException catch (e) {
-      error = e.message;
-    }
+    } on PlatformException {} on NoImagesSelectedException {}
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -107,50 +90,16 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
 
     setState(() {
       images = resultList;
-      if (error == null) _error = 'No Error Dectected';
     });
-  }
-
-  Future<File> _pickImage(String action) async {
-    File selectedImage;
-
-    action == 'Gallery'
-        ? selectedImage = await ImagePicker.pickImage(
-            source: ImageSource.gallery, imageQuality: 70)
-        : await ImagePicker.pickImage(
-            source: ImageSource.camera, imageQuality: 70);
-
-    return selectedImage;
-  }
-
-  Future<File> _pickVideo(String action) async {
-    File selectedVideo;
-
-    action == 'Gallery'
-        ? selectedVideo =
-            await ImagePicker.pickVideo(source: ImageSource.gallery)
-        : await ImagePicker.pickVideo(source: ImageSource.camera);
-
-    return selectedVideo;
   }
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (_validateAndSave()) {
       try {
-        // print(widget.menuID);
-        // print(widget.subMenuID);
         updateInformasi();
-        // Firestore.instance
-        //     .collection('profile')
-        //     .where("userID", isEqualTo: userID)
-        //     .snapshots()
-        //     .listen((data) => data.documents.forEach((doc) => setState(() {
-        //           addInformasi();
-        //         })));
         setState(() {
           _isLoading = false;
         });
@@ -159,10 +108,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -190,19 +135,15 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
           } else {
             urls = urls + ";" + url;
           }
-          print(urls);
-          print("masuk");
           _repository.addImage(urls, widget.documentID).then((v) {});
         });
       });
     }
     Navigator.pop(context);
-    
   }
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     this.getCurrentUser().then((user) {
       setState(() {
@@ -225,7 +166,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -273,30 +213,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                 onSaved: (value) => title = value,
               ),
               new Padding(padding: new EdgeInsets.only(top: 20.0)),
-              // new Align(
-              //   alignment: Alignment.topLeft,
-              //   child: new Text("Tambah Cover",
-              //       textAlign: TextAlign.left,
-              //       style: TextStyle(
-              //           fontFamily: 'SF Pro Text',
-              //           fontWeight: FontWeight.bold,
-              //           fontSize: 15.0,
-              //           color: Color(0xFF3B444F))),
-              // ),
-              // SizedBox(
-              //   height: 47.0,
-              //   child: new RaisedButton(
-              //     elevation: 5.0,
-              //     shape: new RoundedRectangleBorder(
-              //         borderRadius: new BorderRadius.circular(2.0)),
-              //     color: Color(0xFF2696D6),
-              //     child: new Text("Tambah Cover",
-              //         style:
-              //             new TextStyle(fontSize: 16.0, color: Colors.white)),
-              //     onPressed: _showImageDialog,
-              //   ),
-              // ),
-              new Padding(padding: new EdgeInsets.only(top: 20.0)),
               new Align(
                 alignment: Alignment.topLeft,
                 child: new Text("Deskripsi",
@@ -329,7 +245,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(3.0)),
                     color: Color(0xFFABDCFF),
-                    // child: new Image.asset('assets/camera.png'),
                     child: new Text('Perbaharui Gambar',
                         style: new TextStyle(
                             fontFamily: 'SF Pro Text',
@@ -351,7 +266,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                         color: Color(0xFF3B444F))),
               ),
               new TextFormField(
-                // maxLines: 10,
                 decoration: new InputDecoration(
                     hintText: "Masukkan URL Video Youtube",
                     labelText: "URL Video Youtube",
@@ -362,18 +276,6 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                 initialValue: widget.video,
                 onSaved: (value) => _videoUrl = value,
               ),
-              // GestureDetector(
-              //   child: new RaisedButton(
-              //     elevation: 5.0,
-              //     shape: new RoundedRectangleBorder(
-              //         borderRadius: new BorderRadius.circular(5.0)),
-              //     color: Colors.lightGreen,
-              //     child: new Text('Tambah Video',
-              //         style:
-              //             new TextStyle(fontSize: 20.0, color: Colors.white)),
-              //     onPressed: _showVideoDialog,
-              //   ),
-              // ),
               Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
                   child: SizedBox(
@@ -392,65 +294,5 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
             ],
           )),
     );
-  }
-
-  _showImageDialog() {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: ((context) {
-          return SimpleDialog(
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text('Pilih dari Galeri'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImage('Gallery').then((selectedImage) {
-                    setState(() {
-                      imageFile = selectedImage;
-                      // _isLoading = true;
-                    });
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                child: Text('Batal'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        }));
-  }
-
-  _showVideoDialog() {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: ((context) {
-          return SimpleDialog(
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text('Pilih dari Galeri'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickVideo('Gallery').then((selectedVideo) {
-                    setState(() {
-                      videoFile = selectedVideo;
-                      // _isLoading = true;
-                    });
-                  });
-                },
-              ),
-              SimpleDialogOption(
-                child: Text('Batal'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        }));
   }
 }

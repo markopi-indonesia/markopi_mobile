@@ -1,18 +1,12 @@
 import 'dart:io';
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class FirebaseProvider {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   StorageReference _storageReference;
 
   Future<String> uploadImageToStorage(File imageFile) async {
@@ -24,12 +18,11 @@ class FirebaseProvider {
     return url;
   }
 
-  Future<String> uploadVideoToStorage(File videoFile ) async {
+  Future<String> uploadVideoToStorage(File videoFile) async {
     _storageReference = FirebaseStorage.instance
         .ref()
         .child('${DateTime.now().millisecondsSinceEpoch}');
-    StorageUploadTask storageUploadTask = _storageReference.putFile(
-        videoFile);
+    StorageUploadTask storageUploadTask = _storageReference.putFile(videoFile);
     var url = await (await storageUploadTask.onComplete).ref.getDownloadURL();
     return url;
   }
@@ -87,5 +80,4 @@ class FirebaseProvider {
     map['sertifikat'] = photoUrl;
     return _firestore.collection("pengajuan").document(id).updateData(map);
   }
-  
 }

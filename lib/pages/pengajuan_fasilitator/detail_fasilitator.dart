@@ -1,17 +1,8 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-// import 'package:markopi_mobile/pages/crud_Pengajuan/edit.dart';
-import 'package:markopi_mobile/models/pengajuan_fasilitator.dart';
 import 'package:markopi_mobile/pages/pengajuan_fasilitator/edit.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
-import 'package:http/http.dart' as http;
-// import 'package:markopi_mobile/controllers/Pengajuan_controller.dart';
 
 class DetailPengajuan extends StatefulWidget {
   final String documentID;
@@ -41,7 +32,6 @@ class DetailPengajuan extends StatefulWidget {
 
 class _DetailPengajuanState extends State<DetailPengajuan> {
   List<String> urls;
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   static CollectionReference reference =
       Firestore.instance.collection('pengajuan');
   @override
@@ -77,10 +67,13 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
 
   Widget _judulPengajuan() {
     return new Center(
-        child: Text(
-             "Detail Pengajuan Fasilitator",
-              style: TextStyle(
-              fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 22.0,color:Color(0xFF3B444F)),        
+      child: Text(
+        "Detail Pengajuan Fasilitator",
+        style: TextStyle(
+            fontFamily: 'SF Pro Text',
+            fontWeight: FontWeight.bold,
+            fontSize: 22.0,
+            color: Color(0xFF3B444F)),
       ),
     );
   }
@@ -90,12 +83,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
       image: Image.network(widget.ktp),
       zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
       hideStatusBarWhileZooming: true,
-      onZoomStart: () {
-        print('Zoom started');
-      },
-      onZoomEnd: () {
-        print('Zoom finished');
-      },
+      onZoomStart: () {},
+      onZoomEnd: () {},
     );
   }
 
@@ -107,12 +96,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
       ),
       zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
       hideStatusBarWhileZooming: true,
-      onZoomStart: () {
-        print('Zoom started');
-      },
-      onZoomEnd: () {
-        print('Zoom finished');
-      },
+      onZoomStart: () {},
+      onZoomEnd: () {},
     );
   }
 
@@ -123,19 +108,14 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   }
 
   Widget _sertifikat() {
-    // return new Column(children: urls.map((item) => new Text(item)).toList());
     return new Column(
         children: urls
             .map((item) => new PinchZoomImage(
                   image: Image.network(item),
                   zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
                   hideStatusBarWhileZooming: true,
-                  onZoomStart: () {
-                    print('Zoom started');
-                  },
-                  onZoomEnd: () {
-                    print('Zoom finished');
-                  },
+                  onZoomStart: () {},
+                  onZoomEnd: () {},
                 ))
             .toList());
   }
@@ -163,7 +143,6 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                     .catchError((e) {
                   print(e);
                 }),
-                print(documentID),
                 Navigator.pop(context),
                 Navigator.of(context).pushNamed("/pengajuan_fasilitator"),
               },

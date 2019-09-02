@@ -1,19 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/components/drawer.dart';
-import 'package:flutter_colorpicker/material_picker.dart';
-import 'package:flutter_colorpicker/utils.dart';
 import 'package:markopi_mobile/components/header_back.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 
@@ -45,8 +39,6 @@ class EditPengajuanDialog extends StatefulWidget {
 class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   final _formAddPengajuanKey = GlobalKey<FormState>();
   var _repository = Repository();
-  String _fileName;
-  String _path;
   Map<String, String> _paths;
   String _extension;
   File ktp;
@@ -58,10 +50,7 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   String _status;
   String _pesan;
   DateTime dateTime;
-  String _errorMessage;
   String urls = "";
-//  Future<File> _imageFile;
-  bool _isIos;
   bool _isLoading;
   FirebaseUser currentUser;
 
@@ -69,12 +58,10 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   String userID = "";
   String ownerRole = "";
-  StorageReference _storageReference;
   TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     this.getCurrentUser().then((user) {
       setState(() {
@@ -98,20 +85,11 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
 
   void _openFileExplorer() async {
     try {
-      _path = null;
       _paths = await FilePicker.getMultiFilePath(type: FileType.IMAGE);
-      print("test");
-      print(_extension);
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
     if (!mounted) return;
-
-    setState(() {
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null ? _paths.keys.toString() : '...';
-    });
   }
 
   Future<File> _pickImage(String action) async {
@@ -146,15 +124,13 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
-    print("A");
+
     if (_validateAndSave()) {
       try {
-        print("B");
         updatePengajuan();
-        print("C");
+
         setState(() {
           _isLoading = false;
         });
@@ -163,10 +139,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -177,7 +149,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   }
 
   void updatePengajuan() async {
-    print("D");
     await Firestore.instance
         .collection('pengajuan')
         .document(widget.documentID)
@@ -192,19 +163,19 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
       'dateTime': DateTime.now(),
     });
 
-    if(ktp!=null){
+    if (ktp != null) {
       _repository.uploadImageToStorage(ktp).then((url) {
-      _repository.addKTP(url, widget.documentID).then((v) {});
-    });
+        _repository.addKTP(url, widget.documentID).then((v) {});
+      });
     }
-    if(selfie!=null){
+    if (selfie != null) {
       _repository.uploadImageToStorage(selfie).then((url) {
-      _repository.addSelfie(url, widget.documentID).then((v) {});
-    });
+        _repository.addSelfie(url, widget.documentID).then((v) {});
+      });
     }
-    if(_paths!=null){
+    if (_paths != null) {
       uploadToFirebase(widget.documentID);
-    }    
+    }
   }
 
   uploadToFirebase(String docID) async {
@@ -240,11 +211,9 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
-            // _builder(),
             _showCircularProgress(),
           ],
         ));
@@ -295,7 +264,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                               shape: new RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(3.0)),
                               color: Color(0xFFABDCFF),
-                              // child: new Image.asset('assets/camera.png'),
                               child: new Text('Perbaharui Gambar KTP',
                                   style: new TextStyle(
                                       fontFamily: 'SF Pro Text',
@@ -305,8 +273,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                             ),
                           ),
                         ),
-                        // onTap: loadAssets,
-
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Align(
                           alignment: Alignment.topLeft,
@@ -319,7 +285,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                                 color: Color(0xFF3B444F)),
                           ),
                         ),
-
                         Padding(
                           padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                           child: SizedBox(
@@ -330,7 +295,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                               shape: new RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(3.0)),
                               color: Color(0xFFABDCFF),
-                              // child: new Image.asset('assets/camera.png'),
                               child: new Text('Perbaharui Gambar Selfie',
                                   style: new TextStyle(
                                       fontFamily: 'SF Pro Text',
@@ -395,7 +359,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                                       color: Color(0xFF3B444F))),
                               onPressed: () => _openFileExplorer(),
                             ),
-                            // onTap: loadAssets,
                           ),
                         ),
                         Padding(
@@ -422,41 +385,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
     );
   }
 
-  Widget _builder() {
-    return new Builder(
-      builder: (BuildContext context) => _path != null || _paths != null
-          ? new Container(
-              padding: const EdgeInsets.only(bottom: 30.0),
-              height: MediaQuery.of(context).size.height * 0.50,
-              child: new Scrollbar(
-                  child: new ListView.separated(
-                itemCount:
-                    _paths != null && _paths.isNotEmpty ? _paths.length : 1,
-                itemBuilder: (BuildContext context, int index) {
-                  final bool isMultiPath = _paths != null && _paths.isNotEmpty;
-                  final String name = 'File $index: ' +
-                      (isMultiPath
-                          ? _paths.keys.toList()[index]
-                          : _fileName ?? '...');
-                  final path = isMultiPath
-                      ? _paths.values.toList()[index].toString()
-                      : _path;
-
-                  return new ListTile(
-                    title: new Text(
-                      name,
-                    ),
-                    subtitle: new Text(path),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    new Divider(),
-              )),
-            )
-          : new Container(),
-    );
-  }
-
   _showKTPDialog() {
     return showDialog(
         context: context,
@@ -475,7 +403,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                   _pickImage('Gallery').then((selectedImage) {
                     setState(() {
                       ktp = selectedImage;
-                      // _isLoading = true;
                     });
                   });
                 },
@@ -527,7 +454,6 @@ class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
                   _pickImage('Gallery').then((selectedImage) {
                     setState(() {
                       selfie = selectedImage;
-                      // _isLoading = true;
                     });
                   });
                 },

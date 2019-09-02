@@ -13,11 +13,6 @@ class AddMenuDialog extends StatefulWidget {
 class _AddMenuDialogState extends State<AddMenuDialog> {
   final _formAddMenuKey = GlobalKey<FormState>();
   String _name;
-  String _color;
-  String _image;
-  String _errorMessage;
-//  Future<File> _imageFile;
-  bool _isIos;
   bool _isLoading;
 
   List<AssetImage> listIcons = [];
@@ -28,13 +23,11 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   void changeColor(Color color) => setState(() {
         currentColor = color;
-
         Navigator.of(context).pop(color);
       });
 
   void _setIconMenu(String asset) => setState(() {
         currentAsset = asset;
-
         Navigator.of(context).pop(asset);
       });
 
@@ -59,7 +52,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (_validateAndSave()) {
@@ -73,10 +65,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -87,12 +75,11 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
   }
 
   void addMenu() async {
-    final docRef = await Firestore.instance.collection('menu').add({
+    await Firestore.instance.collection('menu').add({
       'name': _name,
       'color': currentColor.value.toString(),
       "image": currentAsset
     });
-    print(docRef.documentID);
   }
 
   void _loadIconAsset() {
@@ -110,7 +97,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     _loadIconAsset();
     super.initState();
@@ -120,7 +106,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -162,7 +147,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                               : null,
                           onSaved: (value) => _name = value,
                         ),
-
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Center(
                           child: RaisedButton(
@@ -192,7 +176,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -252,7 +235,6 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
@@ -275,17 +257,5 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
             );
           }),
     );
-  }
-}
-
-class IconMenu {
-  String name;
-
-  IconMenu(this.name);
-
-  static IconMenu getJsonParser(dynamic json) {
-    String name = json['name'];
-
-    return new IconMenu(name);
   }
 }

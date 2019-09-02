@@ -69,11 +69,6 @@ class _HomePageState extends State<HomePage> {
 
             snapshot.data.documents
                 .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
-
-            if (listMenu.isEmpty) {
-              print('menu is empty');
-            }
-
             return GridView.builder(
               padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 60.0),
               shrinkWrap: true,
@@ -82,14 +77,12 @@ class _HomePageState extends State<HomePage> {
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: (){
+                  onTap: () {
                     _navigateSubMenu(
-                      context,
-                      listMenu[index].reference.documentID,
-                      listMenu[index].name,
-                      listMenu[index].color);
-                    
-                    print("#### subMenu ${listMenu[index].reference.documentID}");
+                        context,
+                        listMenu[index].reference.documentID,
+                        listMenu[index].name,
+                        listMenu[index].color);
                   },
                   child: CardMenu(
                       name: listMenu[index].name,
@@ -175,7 +168,10 @@ class CardMenu extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(8.0, 10.0, 16.0, 20.0),
             child: Text(this.name,
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Color(0xff3b444f))),
+                style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                    color: Color(0xff3b444f))),
           ),
         ],
       ),

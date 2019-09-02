@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:markopi_mobile/controllers/menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:markopi_mobile/components/header_back.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_colorpicker/material_picker.dart';
-import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 
 class EditMenuDialog extends StatefulWidget {
@@ -28,12 +24,6 @@ class EditMenuDialog extends StatefulWidget {
 class _EditMenuDialogState extends State<EditMenuDialog> {
   final _formEditMenuKey = GlobalKey<FormState>();
   String _name;
-  String _docId;
-  String _color;
-  String _image;
-  String _errorMessage;
-//  Future<File> _imageFile;
-  bool _isIos;
   bool _isLoading;
 
   List<AssetImage> listIcons = [];
@@ -66,7 +56,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
 
   void _validateAndSubmit() async {
     setState(() {
-      _errorMessage = "";
       _isLoading = true;
     });
     if (_validateAndSave()) {
@@ -80,10 +69,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
         print('Error: $e');
         setState(() {
           _isLoading = false;
-          if (_isIos) {
-            _errorMessage = e.details;
-          } else
-            _errorMessage = e.message;
         });
       }
     } else {
@@ -94,8 +79,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   }
 
   void addMenu() async {
-    print("#### ${_name}");
-    final docRef = await Firestore.instance
+    await Firestore.instance
         .collection('menu')
         .document(widget.docId)
         .updateData({
@@ -118,13 +102,9 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
 
   @override
   void initState() {
-    _errorMessage = "";
     _isLoading = false;
     setState(() {
-      _docId = widget.docId;
       _name = widget.name;
-      _color = widget.color;
-      _image = widget.image;
       currentAsset = widget.image;
       currentColor = Color(int.parse(widget.color));
     });
@@ -136,7 +116,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: HeaderBack(),
-        // drawer: DrawerPage(),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -178,9 +157,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                               value.isEmpty ? 'Judul tidak boleh kosong' : null,
                           onSaved: (value) => _name = value,
                         ),
-
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -209,7 +186,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-
                         Center(
                           child: RaisedButton(
                             elevation: 3.0,
@@ -236,8 +212,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                                   _setIconMenu(listIcons[index]
                                                       .assetName
                                                       .toString());
-
-                                                  print("=== ${currentAsset}");
                                                 },
                                                 child: Card(
                                                   clipBehavior: Clip.antiAlias,
@@ -272,9 +246,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                 : const Color(0xff000000),
                           ),
                         ),
-
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        // new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
