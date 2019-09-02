@@ -91,7 +91,9 @@ class _SearchState extends State<SearchState> {
 
           List<InformasiModel> resultArticle = [];
           String _error;
+          bool flag = false;
           if (filter != null && filter != "") {
+            flag = true;
             snapshot.data.documents.forEach((f) async {
               String menuName = f['menuName'].toString().toLowerCase();
               String subMenuName = f['subMenuName'].toString().toLowerCase();
@@ -118,10 +120,9 @@ class _SearchState extends State<SearchState> {
               child: Text('Data Tidak Ditemukan!'),
             );
           }
-
           return ListView.builder(
               itemExtent: 60.0,
-              itemCount: resultArticle.length,
+              itemCount: flag? resultArticle.length:10,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   onTap: () {

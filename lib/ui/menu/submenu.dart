@@ -112,7 +112,7 @@ class _SubMenuState extends State<SubMenu> {
               context, widget.menuId , submenu.reference.documentID, color_num.toString()),
           title: Text(
             submenu.name,
-            style: TextStyle(color: Color(0xff3b444f)),
+            style: TextStyle(color: Color(0xffffffff)),
           ),
         ),
       ),

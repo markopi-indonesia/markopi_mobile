@@ -86,7 +86,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
               constraints: new BoxConstraints(
                 minHeight: 50.0,
                 minWidth: 5.0,
-                maxHeight: 50.0,
+                maxHeight: double.infinity,
                 maxWidth: 30.0,
               ),
               decoration: BoxDecoration(
@@ -101,21 +101,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                         fontWeight: FontWeight.w300,
                         color: Colors.black)),
               )),
-          Center(
-              child: IntrinsicHeight(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              margin: EdgeInsets.all(10.0),
-              alignment: AlignmentDirectional(0.0, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(widget.deskripsi),
-                  Divider(),
-                ],
-              ),
-            ),
-          )),
+          deskripsiTeks(),
           Container(
             margin: EdgeInsets.all(2),
             child: Row(
@@ -232,7 +218,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                       new RaisedButton(
                         padding: const EdgeInsets.all(8.0),
                         textColor: Colors.white,
-                        color: Colors.green,
+                        color: Color(0xff2696D6),
                         onPressed: () => _update(
                             context,
                             widget.documentID,
@@ -247,7 +233,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
                         onPressed: () => _buildConfirmationDialog(
                             context, widget.documentID),
                         textColor: Colors.white,
-                        color: Colors.lightGreen[800],
+                        color: Color(0xffD90600),
                         padding: const EdgeInsets.all(8.0),
                         child: new Text(
                           "Hapus",
@@ -289,6 +275,51 @@ class _DetailInformasiState extends State<DetailInformasi> {
 //                 : Text(""),
 //           ),
         ])));
+  }
+
+  Widget deskripsiTeks() {
+    // return new Text(widget.deskripsi);
+    List<String> text = widget.deskripsi.split("##");
+    if (!widget.deskripsi.contains("##")) {
+      print("berhasil");
+      return Column(
+        children: <Widget>[
+          new Container(
+              padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+              width: double.infinity,
+              child: new Text(widget.deskripsi)),
+          new Divider(),
+        ],
+      );
+    }
+    List<Widget> list = new List<Widget>();
+    if (text[0] != "") {
+        list.add(Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+                child: new Text(text[0]))));
+      }
+    for (var i = 1; i < text.length; i++) {
+      list.add(Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+              padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom:
+                          BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+              child: new Text(text[i]))));
+    }
+    return new Container(
+        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        child: Column(children: list));
   }
 
   void _update(

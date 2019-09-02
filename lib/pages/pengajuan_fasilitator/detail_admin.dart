@@ -540,7 +540,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                           elevation: 5.0,
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
-                          color: Colors.green,
+                          color: Color(0xff2696D6),
                           child: new Text('Setujui',
                               style: new TextStyle(
                                   fontSize: 20.0, color: Colors.white)),
@@ -553,7 +553,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                           elevation: 5.0,
                           shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0)),
-                          color: Colors.red,
+                          color: Color(0xffD90600),
                           child: new Text('Tolak',
                               style: new TextStyle(
                                   fontSize: 20.0, color: Colors.white)),

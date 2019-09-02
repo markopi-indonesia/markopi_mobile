@@ -92,9 +92,9 @@ class _InformasiState extends State<InformasiAdmin> {
           onTap: () => _detail(
               context,
               data.documentID,
-              informasi.cover,
+              // informasi.cover,
               // informasi.categoryID,
-              informasi.cover,
+              // informasi.cover,
               informasi.deskripsi,
               informasi.images,
               informasi.images,
@@ -131,8 +131,8 @@ class _InformasiState extends State<InformasiAdmin> {
   void _detail(
     BuildContext context,
     String documentID,
-    String categoryID,
-    String cover,
+    // String categoryID,
+    // String cover,
     String deskripsi,
     String images,
     String ownerRole,
@@ -145,8 +145,8 @@ class _InformasiState extends State<InformasiAdmin> {
       MaterialPageRoute(
         builder: (context) => DetailInformasi(
           documentID: documentID,
-          categoryID: categoryID,
-          cover: cover,
+          // categoryID: categoryID,
+          // cover: cover,
           deskripsi: deskripsi,
           images: images,
           ownerRole: ownerRole,
