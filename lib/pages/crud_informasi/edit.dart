@@ -15,22 +15,16 @@ import 'package:flutter/services.dart';
 
 class EditInformasiDialog extends StatefulWidget {
   final String documentID;
-  final String categoryID;
-  final String cover;
   final String deskripsi;
   final String images;
-  final String ownerRole;
   final String title;
   final String userID;
   final String video;
 
   EditInformasiDialog(
       {this.documentID,
-      this.categoryID,
-      this.cover,
       this.deskripsi,
       this.images,
-      this.ownerRole,
       this.title,
       this.userID,
       this.video});
@@ -231,11 +225,8 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
     _isLoading = false;
 
     setState(() {
-      categoryID = widget.categoryID;
-      cover = widget.cover;
       deskripsi = widget.deskripsi;
       images = widget.images;
-      ownerRole = widget.ownerRole;
       title = widget.title;
       userID = widget.userID;
       video = widget.video;
@@ -317,45 +308,7 @@ class _EditInformasiDialogState extends State<EditInformasiDialog> {
                           // onTap: _showImageDialog,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 10.0)),
-                        new FormField<String>(
-                          builder: (FormFieldState<String> state) {
-                            return InputDecorator(
-                              decoration: InputDecoration(
-                                errorText:
-                                    state.hasError ? state.errorText : null,
-                              ),
-                              isEmpty: categoryID == '',
-                              child: new DropdownButtonHideUnderline(
-                                child: new DropdownButton<String>(
-                                  isDense: true,
-                                  hint: new Text("Perbaharui Kategori"),
-                                  value: _mySelection,
-                                  onChanged: (String newValue) {
-                                    state.didChange(newValue);
-                                    setState(() {
-                                      _mySelection = newValue;
-                                    });
-                                  },
-                                  // items: snapshot.data.documents.map((map) {
-                                  //   return new DropdownMenuItem<String>(
-                                  //     value: map.documentID.toString(),
-                                  //     child: new Text(
-                                  //       map["name"],
-                                  //     ),
-                                  //   );
-                                  // }).toList(),
-                                ),
-                              ),
-                            );
-                          },
-                          initialValue: widget.categoryID,
-                          validator: (_mySelection) {
-                            if (_mySelection == null) {
-                              return "Kategori tidak boleh kosong";
-                            }
-                          },
-                          onSaved: (value) => categoryID = value,
-                        ),
+                        
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           maxLines: 10,

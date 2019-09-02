@@ -17,12 +17,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:markopi_mobile/resources/repository.dart';
 
-class AddPengajuanDialog extends StatefulWidget {
+class EditPengajuanDialog extends StatefulWidget {
+  final String documentID;
+  final String userID;
+  final String ktp;
+  final String selfie;
+  final String pengalaman;
+  final String sertifikat;
+  final String status;
+  final String pesan;
+  final String dateTime;
+
+  EditPengajuanDialog(
+      {this.documentID,
+      this.userID,
+      this.ktp,
+      this.selfie,
+      this.pengalaman,
+      this.sertifikat,
+      this.status,
+      this.pesan,
+      this.dateTime});
   @override
-  _AddPengajuanDialogState createState() => _AddPengajuanDialogState();
+  _EditPengajuanDialogState createState() => _EditPengajuanDialogState();
 }
 
-class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
+class _EditPengajuanDialogState extends State<EditPengajuanDialog> {
   final _formAddPengajuanKey = GlobalKey<FormState>();
   var _repository = Repository();
   String _fileName;
@@ -31,10 +51,12 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
   String _extension;
   File ktp;
   File selfie;
-  String pengalaman;
-  String sertifikat;
-  String status;
-  String pesan;
+  String _ktp;
+  String _selfie;
+  String _pengalaman;
+  String _sertifikat;
+  String _status;
+  String _pesan;
   DateTime dateTime;
   String _errorMessage;
   String urls = "";
@@ -49,6 +71,30 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
   String ownerRole = "";
   StorageReference _storageReference;
   TextEditingController _controller = new TextEditingController();
+
+  @override
+  void initState() {
+    _errorMessage = "";
+    _isLoading = false;
+    this.getCurrentUser().then((user) {
+      setState(() {
+        if (user != null) {
+          currentUser = user;
+          userID = user?.uid;
+        }
+      });
+    });
+    _controller.addListener(() => _extension = _controller.text);
+    setState(() {
+      _ktp = widget.ktp;
+      _selfie = widget.selfie;
+      _pengalaman = widget.pengalaman;
+      _sertifikat = widget.sertifikat;
+      _status = widget.status;
+      _pesan = widget.pesan;
+    });
+    super.initState();
+  }
 
   void _openFileExplorer() async {
     try {
@@ -107,7 +153,7 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
     if (_validateAndSave()) {
       try {
         print("B");
-        addPengajuan();
+        updatePengajuan();
         print("C");
         setState(() {
           _isLoading = false;
@@ -130,31 +176,38 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
     }
   }
 
-  void addPengajuan() async {
+  void updatePengajuan() async {
     print("D");
-    final docRef =
-        await Firestore.instance.collection('pengajuan').add({
+    await Firestore.instance
+        .collection('pengajuan')
+        .document(widget.documentID)
+        .updateData({
       'userID': userID,
-      'ktp': '',
-      "selfie": '',
-      'pengalaman': pengalaman,
-      'sertifikat': '',
-      'status': 'Menunggu',
-      'pesan': '',
+      'ktp': _ktp,
+      "selfie": _selfie,
+      'pengalaman': _pengalaman,
+      'sertifikat': _sertifikat,
+      'status': _status,
+      'pesan': _pesan,
       'dateTime': DateTime.now(),
     });
-    
-    print(docRef.documentID);
-    _repository.uploadImageToStorage(ktp).then((url) {
-      _repository.addKTP(url, docRef.documentID).then((v) {});
+
+    if(ktp!=null){
+      _repository.uploadImageToStorage(ktp).then((url) {
+      _repository.addKTP(url, widget.documentID).then((v) {});
     });
-    _repository.uploadImageToStorage(selfie).then((url) {
-      _repository.addSelfie(url, docRef.documentID).then((v) {});
+    }
+    if(selfie!=null){
+      _repository.uploadImageToStorage(selfie).then((url) {
+      _repository.addSelfie(url, widget.documentID).then((v) {});
     });
-    uploadToFirebase(docRef.documentID);
+    }
+    if(_paths!=null){
+      uploadToFirebase(widget.documentID);
+    }    
   }
 
-  uploadToFirebase(String docID) async{
+  uploadToFirebase(String docID) async {
     _paths.forEach((fileName, filePath) => {upload(fileName, filePath, docID)});
   }
 
@@ -176,22 +229,6 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
     }
     print(urls);
     _repository.addSertifikat(urls, docID);
-  }
-
-  @override
-  void initState() {
-    _errorMessage = "";
-    _isLoading = false;
-    this.getCurrentUser().then((user) {
-      setState(() {
-        if (user != null) {
-          currentUser = user;
-          userID = user?.uid;
-        }
-      });
-    });
-    super.initState();
-    _controller.addListener(() => _extension = _controller.text);
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -228,77 +265,91 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                       children: <Widget>[
                         new Center(
                           child: Text(
-                            "Form Tambah Pengajuan Fasilitator",
+                            "Form Ubah Pengajuan Fasilitator",
                             style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 20.0,color:Color(0xFF3B444F)),
+                                fontFamily: 'SF Pro Text',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                                color: Color(0xFF3B444F)),
                           ),
                         ),
                         Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            "1. Unggah Gambar Kartu Tanda Penduduk",
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "1. Perbaharui Gambar Kartu Tanda Penduduk",
                             style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 15.0,color:Color(0xFF3B444F)),
+                                fontFamily: 'SF Pro Text',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Color(0xFF3B444F)),
                           ),
                         ),
-                         Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                            child: SizedBox(
-                               height: 43.0,
-                               width: 420.0,
-                               child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(3.0)),
-                            color: Color(0xFFABDCFF),
-                            // child: new Image.asset('assets/camera.png'),
-                            child: new Text('Unggah Gambar KTP',
-                                style: new TextStyle(
-                                    fontFamily: 'SF Pro Text', fontSize: 15.0,color:Color(0xFF3B444F))
-                                    ),
-                            onPressed: _showKTPDialog,
-                          ),
-                          ),
-                         ),
-                          // onTap: loadAssets,
-                        
-                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
-                        Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            "2. Unggah Gambar Selfie",
-                            style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 15.0,color:Color(0xFF3B444F)),
-                          ),
-                        ),
-                        
                         Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                            child: SizedBox(
-                               height: 43.0,
-                               width: 420.0,
-                               child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(3.0)),
-                            color: Color(0xFFABDCFF),
-                            // child: new Image.asset('assets/camera.png'),
-                            child: new Text('Unggah Gambar Selfie',
-                                style: new TextStyle(
-                                    fontFamily: 'SF Pro Text', fontSize: 15.0,color:Color(0xFF3B444F))
-                                    ),
-                            onPressed: _showSelfieDialog,
+                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                          child: SizedBox(
+                            height: 43.0,
+                            width: 420.0,
+                            child: new RaisedButton(
+                              elevation: 5.0,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(3.0)),
+                              color: Color(0xFFABDCFF),
+                              // child: new Image.asset('assets/camera.png'),
+                              child: new Text('Perbaharui Gambar KTP',
+                                  style: new TextStyle(
+                                      fontFamily: 'SF Pro Text',
+                                      fontSize: 15.0,
+                                      color: Color(0xFF3B444F))),
+                              onPressed: _showKTPDialog,
+                            ),
                           ),
-                          ),
-                         ),
+                        ),
+                        // onTap: loadAssets,
+
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            "3. Masukan Pengalaman Anda",
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "2. Perbaharui Gambar Selfie",
                             style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 15.0,color:Color(0xFF3B444F)),
+                                fontFamily: 'SF Pro Text',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Color(0xFF3B444F)),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                          child: SizedBox(
+                            height: 43.0,
+                            width: 420.0,
+                            child: new RaisedButton(
+                              elevation: 5.0,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(3.0)),
+                              color: Color(0xFFABDCFF),
+                              // child: new Image.asset('assets/camera.png'),
+                              child: new Text('Perbaharui Gambar Selfie',
+                                  style: new TextStyle(
+                                      fontFamily: 'SF Pro Text',
+                                      fontSize: 15.0,
+                                      color: Color(0xFF3B444F))),
+                              onPressed: _showSelfieDialog,
+                            ),
+                          ),
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 20.0)),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "3. Perbaharui Pengalaman Anda",
+                            style: TextStyle(
+                                fontFamily: 'SF Pro Text',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Color(0xFF3B444F)),
                           ),
                         ),
                         new TextFormField(
@@ -312,36 +363,41 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                           validator: (value) => value.isEmpty
                               ? 'Pengalaman Pengajuan tidak boleh kosong'
                               : null,
-                          onSaved: (value) => pengalaman = value,
+                          initialValue: _pengalaman,
+                          onSaved: (value) => _pengalaman = value,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            "4. Unggah Gambar Sertifikat Anda",
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "4. Perbaharui Gambar Sertifikat Anda",
                             style: TextStyle(
-                                fontFamily: 'SF Pro Text',fontWeight: FontWeight.bold, fontSize: 15.0,color:Color(0xFF3B444F)),
+                                fontFamily: 'SF Pro Text',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Color(0xFF3B444F)),
                           ),
                         ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                           child: SizedBox(
-                               height: 43.0,
-                               width: 420.0,
-                          child: new RaisedButton(
-                            elevation: 5.0,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(5.0)),
-                            color: Color(0xFFABDCFF),
-                            child: new Text('Unggah Sertifikat',
-                                style: new TextStyle(
-                                    fontFamily: 'SF Pro Text', fontSize: 15.0,color:Color(0xFF3B444F))
-                                    ),
-                            onPressed: () => _openFileExplorer(),
+                            height: 43.0,
+                            width: 420.0,
+                            child: new RaisedButton(
+                              elevation: 5.0,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0)),
+                              color: Color(0xFFABDCFF),
+                              child: new Text('Perbaharui Sertifikat',
+                                  style: new TextStyle(
+                                      fontFamily: 'SF Pro Text',
+                                      fontSize: 15.0,
+                                      color: Color(0xFF3B444F))),
+                              onPressed: () => _openFileExplorer(),
+                            ),
+                            // onTap: loadAssets,
                           ),
-                          // onTap: loadAssets,
                         ),
-                      ),
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                             child: SizedBox(
@@ -352,10 +408,10 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
                                 color: Color(0xFF2696D6),
-                                child: new Text('Simpan Pengajuan',
+                                child: new Text('Perbaharui Pengajuan',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
-                                onPressed: () =>  _validateAndSubmit(),
+                                onPressed: () => _validateAndSubmit(),
                               ),
                             ))
                       ],
