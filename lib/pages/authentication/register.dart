@@ -363,8 +363,6 @@ class _RegisterState extends State<Register> {
             return "Kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Kata sandi harus lebih dari 6 karakter";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _password = value,
@@ -396,8 +394,6 @@ class _RegisterState extends State<Register> {
             return "Konfirmasi kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Konfirmasi kata sandi harus lebih dari 6 karakter";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _confirmPassword = value,

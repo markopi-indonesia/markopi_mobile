@@ -37,6 +37,7 @@ class _LoginState extends State<Login> {
       _isLoading = true;
     });
     if (_validateAndSave()) {
+      print("test");
       try {
         FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
           email: _email,
@@ -236,8 +237,6 @@ class _LoginState extends State<Login> {
             return "Email tidak boleh kosong";
           } else if (!value.contains("@") && !value.contains(".")) {
             return "Format email salah";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _email = value,
@@ -269,8 +268,6 @@ class _LoginState extends State<Login> {
             return "Kata sandi tidak boleh kosong";
           } else if (value.length < 6) {
             return "Kata sandi harus lebih dari 6 karakter";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _password = value,
