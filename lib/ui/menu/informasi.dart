@@ -224,87 +224,95 @@ class InformasiState extends State<Informasi> {
         .listen((data) => data.documents.forEach((doc) => [
               nama = doc["nama"],
             ]));
-    return Column(
-      children: <Widget>[
-        Padding(
-            key: ValueKey(informasi.title),
-            padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+
+    if (informasi.menuName == "Kedai Kopi") {
+      List<String> text = informasi.deskripsi.split("##");
+      if (!informasi.deskripsi.contains("##")) {
+        return Column(
+          children: <Widget>[
+            new Container(
+                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                width: double.infinity,
+                child: new Text(informasi.deskripsi)),
+            new Divider(),
+          ],
+        );
+      }
+      List<Widget> list = new List<Widget>();
+      if (text[0] != "") {
+        list.add(Align(
+            alignment: Alignment.centerLeft,
             child: Container(
-                child: ListTile(
-              onTap: () => _detail(
-                  context,
-                  informasi.reference.documentID,
-                  informasi.deskripsi,
-                  informasi.images,
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+                child: new Text(text[0]))));
+      }
+      for (var i = 1; i < text.length; i++) {
+        list.add(Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+                child: new Text(text[i]))));
+      }
+      return Padding(
+          key: ValueKey(informasi.title),
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          child: Card(
+            elevation: 8.0,
+              child: Column(
+            children: <Widget>[
+              Text(informasi.title, style: TextStyle(color: Color(0xff000000), fontSize: 18, fontWeight: FontWeight.w600)),
+              ListTile(
+                onTap: () => _detail(
+                    context,
+                    informasi.reference.documentID,
+                    informasi.deskripsi,
+                    informasi.images,
+                    informasi.title,
+                    informasi.userID,
+                    nama,
+                    informasi.video),
+                title: Column(
+                  children: list,
+                )),
+            ],
+          )));
+    } else {
+      return Column(
+        children: <Widget>[
+          Padding(
+              key: ValueKey(informasi.title),
+              padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+              child: Container(
+                  child: ListTile(
+                onTap: () => _detail(
+                    context,
+                    informasi.reference.documentID,
+                    informasi.deskripsi,
+                    informasi.images,
+                    informasi.title,
+                    informasi.userID,
+                    nama,
+                    informasi.video),
+                title: Text(
                   informasi.title,
-                  informasi.userID,
-                  nama,
-                  informasi.video),
-              title: Text(
-                informasi.title,
-                style: TextStyle(color: Color(0xff000000)),
-              ),
-            ))),
-        Divider(),
-      ],
-    );
+                  style: TextStyle(color: Color(0xff000000)),
+                ),
+              ))),
+          Divider(),
+        ],
+      );
+    }
   }
-
-  // Widget _buildBody(BuildContext context) {
-  //   return StreamBuilder<QuerySnapshot>(
-  //     stream: Firestore.instance
-  //         .collection('informasi')
-  //         .where("subMenuID", isEqualTo: widget.subMenuID)
-  //         .snapshots(),
-  //     builder: (context, snapshot) {
-  //       if (!snapshot.hasData)
-  //         return new Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       List<InformasiModel> listInformasi = [];
-
-  //       snapshot.data.documents.forEach(
-  //           (data) => listInformasi.add(InformasiModel.fromSnapshot(data)));
-
-  //       return ListView.separated(
-  //           itemCount: listInformasi.length,
-  //           itemBuilder: (BuildContext context, int index) {
-  //             String nama;
-  //             Firestore.instance
-  //                 .collection('profile')
-  //                 .where("userID", isEqualTo: listInformasi[index].userID)
-  //                 .snapshots()
-  //                 .listen((data) => data.documents.forEach((doc) => [
-  //                       nama = doc["nama"],
-  //                     ]));
-
-  //             return Padding(
-  //                 key: ValueKey(listInformasi[index].title),
-  //                 padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-  //                 child: GestureDetector(
-  //                   onTap: () => _detail(
-  //                       context,
-  //                       listInformasi[index].reference.documentID,
-  //                       listInformasi[index].deskripsi,
-  //                       listInformasi[index].images,
-  //                       listInformasi[index].title,
-  //                       listInformasi[index].userID,
-  //                       nama,
-  //                       listInformasi[index].video),
-  //                   child: Container(
-  //                       margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-  //                       child: Text(
-  //                         listInformasi[index].title,
-  //                         style:
-  //                             TextStyle(fontSize: 18, color: Color(0xff3b444f)),
-  //                       )),
-  //                 ));
-  //           },
-  //           separatorBuilder: (BuildContext context, int index) =>
-  //               Divider(color: Colors.black));
-  //     },
-  //   );
-  // }
 
   void _detail(
     BuildContext context,
