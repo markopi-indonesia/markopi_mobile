@@ -43,7 +43,7 @@ class _ManageUserState extends State<ManageUser> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
                     child: GestureDetector(
-                      onTap: () => _navigateToEditProfile(
+                      onTap: () => _navigateToProfile(
                           context, listProfile[index].userID),
                       child: Container(
                         decoration: BoxDecoration(
@@ -109,11 +109,11 @@ void deleteUser(String docId) {
   Firestore.instance.collection('profile').document(docId).delete();
 }
 
-void _navigateToEditProfile(BuildContext context, String userID) {
+void _navigateToProfile(BuildContext context, String userID) {
   Navigator.pop(context);
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (context) => IndexProfileAdmin(
+      builder: (context) => DetailProfile(
         userID: userID,
       ),
       fullscreenDialog: true,

@@ -233,16 +233,16 @@ class _RegisterState extends State<Register> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Text(
-                      'LOG IN DENGAN FACEBOOK',
-                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
+                    new Image.asset(
+                      'assets/f.png',
+                      scale: 6.5,
                     ),
                     Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
-                    new Image.asset(
-                      'assets/f.png',
-                      scale: 6.5,
+                    new Text(
+                      'LOG IN DENGAN FACEBOOK',
+                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
                     )
                   ],
                 ),
@@ -360,9 +360,9 @@ class _RegisterState extends State<Register> {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return "Kata sandi tidak boleh kosong";
+            return "Password tidak boleh kosong";
           } else if (value.length < 6) {
-            return "Kata sandi harus lebih dari 6 karakter";
+            return "Password harus lebih dari 6 karakter";
           }
         },
         onSaved: (value) => _password = value,
@@ -391,9 +391,9 @@ class _RegisterState extends State<Register> {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return "Konfirmasi kata sandi tidak boleh kosong";
+            return "Konfirmasi password tidak boleh kosong";
           } else if (value.length < 6) {
-            return "Konfirmasi kata sandi harus lebih dari 6 karakter";
+            return "Konfirmasi password harus lebih dari 6 karakter";
           }
         },
         onSaved: (value) => _confirmPassword = value,

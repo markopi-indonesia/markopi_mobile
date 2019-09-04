@@ -31,9 +31,15 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
 
   Color currentColor;
 
-  void _setIconMenu(String asset) => setState(() => currentAsset = asset);
+  void changeColor(Color color) => setState(() {
+        currentColor = color;
+        Navigator.of(context).pop(color);
+      });
 
-  void changeColor(Color color) => setState(() => currentColor = color);
+  void _setIconMenu(String asset) => setState(() {
+        currentAsset = asset;
+        Navigator.of(context).pop(asset);
+      });
 
   bool _validateAndSave() {
     final form = _formEditMenuKey.currentState;
@@ -64,6 +70,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
         setState(() {
           _isLoading = false;
         });
+        Navigator.pop(context);
         Navigator.pop(context);
       } catch (e) {
         print('Error: $e');
@@ -139,7 +146,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                       children: <Widget>[
                         new Center(
                           child: Text(
-                            "Form Edit Menu",
+                            "Form Ubah Menu",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
@@ -153,8 +160,9 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                   borderRadius:
                                       new BorderRadius.circular(5.0))),
                           initialValue: widget.name,
-                          validator: (value) =>
-                              value.isEmpty ? 'Judul tidak boleh kosong' : null,
+                          validator: (value) => value.isEmpty
+                              ? 'Nama menu tidak boleh kosong'
+                              : null,
                           onSaved: (value) => _name = value,
                         ),
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
@@ -183,7 +191,7 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                             color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
-                                : const Color(0xff000000),
+                                : const Color(0xffffffff),
                           ),
                         ),
                         Center(
@@ -240,7 +248,6 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                   });
                             },
                             child: const Text('Pilih ikon menu'),
-                            color: currentColor,
                             textColor: useWhiteForeground(currentColor)
                                 ? const Color(0xffffffff)
                                 : const Color(0xff000000),
@@ -256,8 +263,8 @@ class _EditMenuDialogState extends State<EditMenuDialog> {
                                 shape: new RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
-                                color: Colors.green,
-                                child: new Text('Simpan Menu',
+                                color: Colors.blue,
+                                child: new Text('Ubah Menu',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
                                 onPressed: _validateAndSubmit,

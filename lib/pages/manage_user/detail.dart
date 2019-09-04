@@ -7,14 +7,14 @@ import 'package:markopi_mobile/components/header_back.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class IndexProfileAdmin extends StatefulWidget {
+class DetailProfile extends StatefulWidget {
   final String userID;
-  IndexProfileAdmin({this.userID});
+  DetailProfile({this.userID});
   @override
-  _IndexProfileAdminState createState() => _IndexProfileAdminState();
+  _DetailProfileState createState() => _DetailProfileState();
 }
 
-class _IndexProfileAdminState extends State<IndexProfileAdmin> {
+class _DetailProfileState extends State<DetailProfile> {
   TextEditingController _namaController = TextEditingController();
   TextEditingController _photoUrlController = TextEditingController();
   TextEditingController _profesiController = TextEditingController();

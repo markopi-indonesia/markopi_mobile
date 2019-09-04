@@ -15,7 +15,10 @@ class HeaderBack extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         'markopi',
         style: TextStyle(
-            fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),
+            fontFamily: 'SF Pro Text',
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
       actions: <Widget>[
         IconButton(

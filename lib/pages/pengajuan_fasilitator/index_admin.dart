@@ -70,11 +70,11 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
     final informasi = PengajuanFasilitatorModel.fromSnapshot(data);
     Color status;
     if (informasi.status == "Menunggu") {
-      status = Colors.grey;
+      status = Color(0xFF99a9b3);
     } else if (informasi.status == "Disetujui") {
-      status = Colors.green;
+      status = Color(0xFF16C98D);
     } else {
-      status = Colors.red;
+      status = Color(0xFFD90600);
     }
     return Padding(
       key: ValueKey(informasi.dateTime),
@@ -86,9 +86,9 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
           color: status,
         ),
         child: new ListTile(
-          title: new Text(informasi.status +
-              " - " +
-              informasi.dateTime.toDate().toString()),
+          title: new Text(
+              informasi.status + " - " + informasi.dateTime.toDate().toString(),
+              style: TextStyle(color: Colors.white)),
           onTap: () => _detail(
             context,
             data.documentID,

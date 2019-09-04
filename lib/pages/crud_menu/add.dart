@@ -244,7 +244,7 @@ class _AddMenuDialogState extends State<AddMenuDialog> {
                                 shape: new RoundedRectangleBorder(
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
-                                color: Colors.green,
+                                color: Colors.blue,
                                 child: new Text('Simpan Menu',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),

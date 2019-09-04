@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             snapshot.data.documents
                 .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
             return GridView.builder(
-              padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 60.0),
+              padding: EdgeInsets.fromLTRB(8.0, 15.0, 8.0, 60.0),
               shrinkWrap: true,
               itemCount: listMenu.length,
               gridDelegate:
@@ -82,7 +82,8 @@ class _HomePageState extends State<HomePage> {
                         context,
                         listMenu[index].reference.documentID,
                         listMenu[index].name,
-                        listMenu[index].color);
+                        listMenu[index].color,
+                        listMenu[index].image);
                   },
                   child: CardMenu(
                       name: listMenu[index].name,
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateSubMenu(
-      BuildContext context, String documentID, String nameMenu, String _color) {
+      BuildContext context, String documentID, String nameMenu, String _color, String _image) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SubMenu(
@@ -121,6 +122,7 @@ class _HomePageState extends State<HomePage> {
           menuName: nameMenu,
           color: _color,
           role: role,
+          image: _image,
         ),
         fullscreenDialog: true,
       ),
