@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:markopi_mobile/components/header_back.dart';
 
-class AddSubMenuDialog extends StatefulWidget {
-  final String menuId;
+class EditSubMenuDialog extends StatefulWidget {
+  final String subMenuId;
+  final String namaSubMenu;
 
-  AddSubMenuDialog({this.menuId});
+  EditSubMenuDialog({this.subMenuId, this.namaSubMenu});
   @override
-  _AddSubMenuDialogState createState() => _AddSubMenuDialogState();
+  _EditSubMenuDialogState createState() => _EditSubMenuDialogState();
 }
 
-class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
+class _EditSubMenuDialogState extends State<EditSubMenuDialog> {
   final _formAddSubMenuKey = GlobalKey<FormState>();
   String _name;
   bool _isLoading;
@@ -46,6 +47,7 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
           _isLoading = false;
         });
         Navigator.pop(context);
+        Navigator.pop(context);
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -60,14 +62,19 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
   }
 
   void addSubMenu() async {
-    await Firestore.instance.collection('submenu').add({
+    await Firestore.instance
+        .collection('submenu')
+        .document(widget.subMenuId)
+        .updateData({
       'name': _name,
-      "menuId": widget.menuId,
     });
   }
 
   @override
   void initState() {
+    setState(() {
+      _name = widget.namaSubMenu;
+    });
     _isLoading = false;
     super.initState();
   }
@@ -99,7 +106,7 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
                       children: <Widget>[
                         new Center(
                           child: Text(
-                            "Form Tambah SubMenu",
+                            "Form Ubah Sub Menu",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
@@ -107,13 +114,14 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
                         new Padding(padding: new EdgeInsets.only(top: 20.0)),
                         new TextFormField(
                           decoration: new InputDecoration(
-                              hintText: "Nama SubMenu",
-                              labelText: "Nama SubMenu",
+                              hintText: "Nama Sub Menu",
+                              labelText: "Nama Sub Menu",
                               border: new OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(5.0))),
+                          initialValue: _name,
                           validator: (value) => value.isEmpty
-                              ? 'Nama SubMenu tidak boleh kosong'
+                              ? 'Nama Sub Menu tidak boleh kosong'
                               : null,
                           onSaved: (value) => _name = value,
                         ),
@@ -127,7 +135,7 @@ class _AddSubMenuDialogState extends State<AddSubMenuDialog> {
                                     borderRadius:
                                         new BorderRadius.circular(5.0)),
                                 color: Colors.blue,
-                                child: new Text('Simpan Sub Menu',
+                                child: new Text('Ubah Sub Menu',
                                     style: new TextStyle(
                                         fontSize: 20.0, color: Colors.white)),
                                 onPressed: _validateAndSubmit,

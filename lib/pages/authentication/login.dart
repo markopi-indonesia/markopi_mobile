@@ -3,6 +3,7 @@ import 'package:markopi_mobile/components/header.dart';
 import 'package:markopi_mobile/components/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
+import 'package:markopi_mobile/pages/authentication/forgot_password.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -196,16 +197,16 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Text(
-                      'LOG IN DENGAN FACEBOOK',
-                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
+                    new Image.asset(
+                      'assets/f.png',
+                      scale: 6.5,
                     ),
                     Padding(
                       padding: EdgeInsets.all(10.0),
                     ),
-                    new Image.asset(
-                      'assets/f.png',
-                      scale: 6.5,
+                    new Text(
+                      'LOG IN DENGAN FACEBOOK',
+                      style: new TextStyle(fontSize: 13.0, color: Colors.white),
                     )
                   ],
                 ),
@@ -265,9 +266,9 @@ class _LoginState extends State<Login> {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return "Kata sandi tidak boleh kosong";
+            return "Password tidak boleh kosong";
           } else if (value.length < 6) {
-            return "Kata sandi harus lebih dari 6 karakter";
+            return "Password harus lebih dari 6 karakter";
           }
         },
         onSaved: (value) => _password = value,
@@ -288,7 +289,7 @@ class _LoginState extends State<Login> {
                     decoration: TextDecoration.underline,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w300,
-                    color: Colors.black),
+                    color: Color(0xff297CBB)),
               ),
               onPressed: () => _navigateToRegister(),
             ),
@@ -323,9 +324,9 @@ class _LoginState extends State<Login> {
             style: new TextStyle(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w300,
-                color: Colors.black),
+                color: Color(0xff297CBB)),
           ),
-          onPressed: () => _navigateToRegister(),
+          onPressed: () => _navigateToForgotPassword(),
         ));
   }
 
@@ -333,6 +334,15 @@ class _LoginState extends State<Login> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Register(),
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
+  _navigateToForgotPassword() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ForgotPassword(),
         fullscreenDialog: true,
       ),
     );

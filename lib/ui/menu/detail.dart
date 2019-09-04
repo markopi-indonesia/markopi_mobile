@@ -73,25 +73,26 @@ class _DetailInformasiState extends State<DetailInformasi> {
         resizeToAvoidBottomPadding: false,
         body: Container(
             child: ListView(children: <Widget>[
-          new Container(
-              margin: EdgeInsets.only(top: 10),
-              padding: EdgeInsets.fromLTRB(10.0, 10.0, 0, 0),
-              constraints: new BoxConstraints(
-                minHeight: 50.0,
-                minWidth: 5.0,
-                maxHeight: double.infinity,
-                maxWidth: 30.0,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xFFffc83f),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: new Text(widget.title,
-                    style: new TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.black)),
+          new Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
+              child: Container(
+                constraints: new BoxConstraints(
+                  minHeight: 40.0,
+                  minWidth: 320.0,
+                  maxHeight: double.infinity,
+                  maxWidth: 1000.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0xFFF0F6FE),
+                ),
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF3b444f)),
+                ),
+                padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 10.0),
               )),
           deskripsiTeks(),
           Container(
