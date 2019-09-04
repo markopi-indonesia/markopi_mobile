@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             snapshot.data.documents
                 .forEach((data) => listMenu.add(Menu.fromSnapshot(data)));
             return GridView.builder(
-              padding: EdgeInsets.fromLTRB(8.0, 15.0, 8.0, 60.0),
+              padding: EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 40.0),
               shrinkWrap: true,
               itemCount: listMenu.length,
               gridDelegate:
