@@ -47,7 +47,7 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('pengajuan')
-          .orderBy('status')
+          .orderBy('status', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
@@ -136,7 +136,7 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
       String sertifikat,
       String status,
       String pesan,
-      String dateTime) {
+      String dateTime) async {
     String _nama;
     String _photo;
     String _profesi;
@@ -160,7 +160,6 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
               _kecamatan = doc["kecamatan"],
               _alamat = doc["alamat"],
               _bio = doc["bio"],
-              initState()
             ]));
     Navigator.of(context).push(
       MaterialPageRoute(
