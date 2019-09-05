@@ -26,6 +26,7 @@ class _DrawerPageState extends State<DrawerPage> {
   String image = "";
   String email;
   String role = "";
+  int totalDataPengajuan = 0;
 
   @override
   void initState() {
@@ -50,7 +51,20 @@ class _DrawerPageState extends State<DrawerPage> {
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
+
+    countDataPengajuan();
+
     super.initState();
+  }
+
+  void countDataPengajuan() async {
+    QuerySnapshot _myDoc =
+        await Firestore.instance.collection('pengajuan').where('status', isEqualTo: 'Menunggu').getDocuments();
+    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+
+    setState(() {
+      totalDataPengajuan = _myDocCount.length;
+    });
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -248,7 +262,31 @@ class _DrawerPageState extends State<DrawerPage> {
                           .pushNamed("/pengajuan_fasilitator_admin");
                     },
                     child: ListTile(
-                      title: Text('Pengajuan Fasilitator'),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Pengajuan Fasilitator'),
+                          totalDataPengajuan != 0 ? new Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: new BoxDecoration(
+                              color: Color(0xff1d508d),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 20,
+                              minHeight: 20,
+                            ),
+                            child: Text(
+                              '$totalDataPengajuan',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ) : new Container(),
+                        ],
+                      ),
                       leading: Icon(Icons.verified_user),
                     ),
                   ),
