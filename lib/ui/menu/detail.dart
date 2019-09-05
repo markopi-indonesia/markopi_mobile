@@ -120,27 +120,30 @@ class _DetailInformasiState extends State<DetailInformasi> {
                         ),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: widget.images.isNotEmpty
-                              ? Column(
-                                  children: <Widget>[
-                                    for (var img in images)
-                                      Column(
-                                        children: <Widget>[
-                                          PinchZoomImage(
-                                            image: Image.network(img),
-                                            zoomedBackgroundColor:
-                                                Color.fromRGBO(
-                                                    240, 240, 240, 1.0),
-                                            hideStatusBarWhileZooming: true,
-                                            onZoomStart: () {},
-                                            onZoomEnd: () {},
-                                          ),
-                                          Divider(),
-                                        ],
-                                      )
-                                  ],
-                                )
-                              : Text("Tidak ada gambar"),
+                          child: Container(
+                            child: widget.images.isNotEmpty
+                                ? Column(
+                                    children: <Widget>[
+                                      for (var img in images)
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          children: <Widget>[
+                                            PinchZoomImage(
+                                              image: Image.network(img, fit:BoxFit.cover, width: double.infinity),
+                                              zoomedBackgroundColor:
+                                                  Color.fromRGBO(
+                                                      240, 240, 240, 1.0),
+                                              hideStatusBarWhileZooming: true,
+                                              onZoomStart: () {},
+                                              onZoomEnd: () {},
+                                            ),
+                                            Divider(),
+                                          ],
+                                        )
+                                    ],
+                                  )
+                                : Text("Tidak ada gambar"),
+                          ),
                         )
                       ],
                     ),
