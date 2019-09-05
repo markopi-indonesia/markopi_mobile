@@ -166,6 +166,17 @@ class _DrawerPageState extends State<DrawerPage> {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.of(context).pushNamed("/credit");
+                },
+                child: ListTile(
+                  title: Text('Tentang Kami'),
+                  leading: Icon(Icons.info),
+                ),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
                   Navigator.of(context).pushNamed("/login");
                 },
                 child: ListTile(
@@ -298,6 +309,18 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/credit");
+                    },
+                    child: ListTile(
+                      title: Text('Tentang Kami'),
+                      leading: Icon(Icons.info),
+                    ),
+                  ),
+
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(
@@ -415,6 +438,18 @@ class _DrawerPageState extends State<DrawerPage> {
                       ),
                     ),
                   ),
+
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed("/credit");
+                    },
+                    child: ListTile(
+                      title: Text('Tentang Kami'),
+                      leading: Icon(Icons.info),
+                    ),
+                  ),
+
                   InkWell(
                     onTap: () => _navigateToEditProfile(context, _userId),
                     child: ListTile(

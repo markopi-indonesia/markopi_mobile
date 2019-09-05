@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markopi_mobile/pages/manage_user/index.dart';
+import 'package:markopi_mobile/ui/menu/credit.dart';
 import 'package:markopi_mobile/ui/menu/home.dart';
 import 'package:markopi_mobile/ui/color/colors.dart';
 import 'package:markopi_mobile/pages/authentication/register.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/pengajuan_fasilitator': (context) => PengajuanFasilitator(),
         '/pengajuan_fasilitator_admin': (context) =>
             PengajuanFasilitatorAdmin(),
+        '/credit': (context) => Credit(),
       },
     );
   }
