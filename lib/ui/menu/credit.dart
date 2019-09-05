@@ -71,9 +71,11 @@ class Credit extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
       child: Column(
         children: <Widget>[
-          Text(
-            'Aplikasi markopi dikembangkan oleh tim markopi Institut Teknologi Del.',
-            style: TextStyle(fontSize: 16),
+          Align(
+            child: Text(
+              'Aplikasi markopi dikembangkan oleh tim markopi Institut Teknologi Del.',
+              style: TextStyle(fontSize: 16),
+            ),
           ),
         ],
       ),
@@ -104,17 +106,22 @@ class Credit extends StatelessWidget {
             children: <Widget>[
               InkWell(
                 child: RichText(
-                  text: TextSpan(
-                      children: [
-                        new TextSpan(text: "1. Avatar ", style: new TextStyle(
+                  text: TextSpan(children: [
+                    new TextSpan(
+                      text: "1. Avatar ",
+                      style: new TextStyle(
                         fontSize: 14.0,
                         color: Colors.black,
-                      ),),
-                        new TextSpan(text: "(www.sketchappsources.com)", style: new TextStyle(
+                      ),
+                    ),
+                    new TextSpan(
+                      text: "(www.sketchappsources.com)",
+                      style: new TextStyle(
                         fontSize: 14.0,
                         color: Color(0xff297cbb),
-                      ),)
-                      ]),
+                      ),
+                    )
+                  ]),
                 ),
                 onTap: () async {
                   if (await canLaunch("https://www.sketchappsources.com")) {
@@ -124,17 +131,22 @@ class Credit extends StatelessWidget {
               ),
               InkWell(
                 child: RichText(
-                  text: TextSpan(
-                      children: [
-                        new TextSpan(text: "2. Icons ", style: new TextStyle(
+                  text: TextSpan(children: [
+                    new TextSpan(
+                      text: "2. Icons ",
+                      style: new TextStyle(
                         fontSize: 14.0,
                         color: Colors.black,
-                      ),),
-                        new TextSpan(text: "(www.sketchappsources.com)", style: new TextStyle(
+                      ),
+                    ),
+                    new TextSpan(
+                      text: "(www.sketchappsources.com)",
+                      style: new TextStyle(
                         fontSize: 14.0,
                         color: Color(0xff297cbb),
-                      ),)
-                      ]),
+                      ),
+                    )
+                  ]),
                 ),
                 onTap: () async {
                   if (await canLaunch("https://www.sketchappsources.com")) {

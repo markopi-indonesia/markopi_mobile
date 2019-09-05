@@ -228,7 +228,8 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100.0),
                                 image: DecorationImage(
-                                    image: _photoUrlController.text.contains("assets")
+                                    image: _photoUrlController.text
+                                            .contains("assets")
                                         ? AssetImage(_photoUrlController.text)
                                         : NetworkImage(
                                             _photoUrlController.text),
@@ -418,6 +419,14 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
+          title: Center(
+              child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text("Pilih Avatar Anda",
+                      style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                      )))),
           titlePadding: const EdgeInsets.all(0.0),
           contentPadding: const EdgeInsets.all(0.0),
           content: AspectRatio(
@@ -426,7 +435,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 padding: EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 20.0),
                 itemCount: listAvatars.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                    crossAxisCount: 2),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {

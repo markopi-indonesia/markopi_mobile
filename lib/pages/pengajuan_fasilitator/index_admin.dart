@@ -81,7 +81,6 @@ class _PengajuanFasilitatorAdminState extends State<PengajuanFasilitatorAdmin> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(5.0),
           color: status,
         ),
