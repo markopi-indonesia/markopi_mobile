@@ -115,8 +115,8 @@ class _IndexProfileDialogState extends State<IndexProfileDialog> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(75.0)),
                         image: DecorationImage(
-                            image: _photoUrlController.text.isEmpty
-                                ? AssetImage('assets/no_user.jpg')
+                            image: _photoUrlController.text.contains("assets")
+                                ? AssetImage(_photoUrlController.text)
                                 : NetworkImage(_photoUrlController.text),
                             fit: BoxFit.cover),
                         boxShadow: [

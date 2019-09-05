@@ -55,7 +55,7 @@ class _RegisterState extends State<Register> {
           // var string = user.email;
           var nama = _nama;
           ProfileController.addProfile(
-              user.uid, nama, "", "Petani", "", "", "", "", "", "", "");
+              user.uid, nama, "assets/avatars/1.png", "Petani", "", "", "", "", "", "", "");
           user.sendEmailVerification();
           setState(() {
             _isLoading = false;
@@ -172,8 +172,8 @@ class _RegisterState extends State<Register> {
               _showPasswordInput(),
               _showConfirmPasswordInput(),
               _showPrimaryButton(),
-              _showText2(),
-              _showFacebookButton(),
+              // _showText2(),
+              // _showFacebookButton(),
               // _showSecondaryButton(),
               _showErrorMessage(),
             ],

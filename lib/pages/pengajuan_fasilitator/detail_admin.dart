@@ -104,8 +104,8 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(75.0)),
                           image: DecorationImage(
-                              image: widget.photo.isEmpty
-                                  ? AssetImage('assets/no_user.jpg')
+                              image: _photoUrlController.text.contains("assets")
+                                  ? AssetImage(_photoUrlController.text)
                                   : NetworkImage(_photoUrlController.text),
                               fit: BoxFit.cover),
                           boxShadow: [
