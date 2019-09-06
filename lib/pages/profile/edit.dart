@@ -384,6 +384,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                         Navigator.pop(context);
                       });
                     });
+                    setState(() {
+                      _isLoading = false;
+                    });
                   });
                 },
               ),
