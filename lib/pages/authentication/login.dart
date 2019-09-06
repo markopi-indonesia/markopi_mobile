@@ -132,7 +132,7 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               // _showLogo(),
               _header(),
-              _showFacebookButton(),
+              // _showFacebookButton(),
               _showSecondaryButton(),
               _showEmailInput(),
               _showPasswordInput(),

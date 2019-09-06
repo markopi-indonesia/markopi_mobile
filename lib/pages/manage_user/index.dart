@@ -37,6 +37,7 @@ class _ManageUserState extends State<ManageUser> {
               snapshot.data.documents.forEach(
                   (data) => listProfile.add(ProfileModel.fromSnapshot(data)));
               return ListView.builder(
+                padding: const EdgeInsets.only(top: 20.0),
                 itemCount: listProfile.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(

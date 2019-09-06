@@ -30,9 +30,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   String _docID;
   TextEditingController _namaController = TextEditingController();
   TextEditingController _photoUrlController = TextEditingController();
-  TextEditingController _profesiController = TextEditingController();
+  TextEditingController _profesAvatartroller = TextEditingController();
   TextEditingController _noHPController = TextEditingController();
-  TextEditingController _provinsiController = TextEditingController();
+  TextEditingController _provinsAvatartroller = TextEditingController();
   TextEditingController _kabupatenController = TextEditingController();
   TextEditingController _kecamatanController = TextEditingController();
   TextEditingController _alamatController = TextEditingController();
@@ -44,6 +44,22 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   AuthStatus authStatus = AuthStatus.NOT_LOGGED_IN;
   bool _isLoading;
   Image image;
+
+  List<AssetImage> listAvatars = [];
+
+  String currentAsset;
+
+  void _setAvatar(String asset) => setState(() {
+        currentAsset = asset;
+        Navigator.of(context).pop(asset);
+        _repository.updatePhoto(currentAsset, currentUser.uid).then((v) {
+          setState(() {
+            _isLoading = false;
+          });
+          _showUploadDialog();
+          Navigator.pop(context);
+        });
+      });
 
   bool _validateAndSave() {
     final form = _formEditProfileKey.currentState;
@@ -101,9 +117,21 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     }
   }
 
+  void _loadAvatarAsset() {
+    setState(() {
+      listAvatars.add(AssetImage('assets/avatars/1.png'));
+      listAvatars.add(AssetImage('assets/avatars/2.png'));
+      listAvatars.add(AssetImage('assets/avatars/3.png'));
+      listAvatars.add(AssetImage('assets/avatars/4.png'));
+      listAvatars.add(AssetImage('assets/avatars/5.png'));
+      listAvatars.add(AssetImage('assets/avatars/6.png'));
+    });
+  }
+
   @override
   void initState() {
     _isLoading = false;
+    _loadAvatarAsset();
     this.getCurrentUser().then((user) {
       setState(() {
         if (user != null) {
@@ -120,9 +148,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
               _docID = doc.documentID,
               _namaController.text = doc["nama"],
               _photoUrlController.text = doc["photoURL"],
-              _profesiController.text = doc["profesi"],
+              _profesAvatartroller.text = doc["profesi"],
               _noHPController.text = doc["noHP"],
-              _provinsiController.text = doc["provinsi"],
+              _provinsAvatartroller.text = doc["provinsi"],
               _kabupatenController.text = doc["kabupaten"],
               _kecamatanController.text = doc["kecamatan"],
               _alamatController.text = doc["alamat"],
@@ -200,8 +228,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100.0),
                                 image: DecorationImage(
-                                    image: _photoUrlController.text.isEmpty
-                                        ? AssetImage('assets/no_user.jpg')
+                                    image: _photoUrlController.text
+                                            .contains("assets")
+                                        ? AssetImage(_photoUrlController.text)
                                         : NetworkImage(
                                             _photoUrlController.text),
                                     fit: BoxFit.cover),
@@ -239,7 +268,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                           labelText: "Profesi",
                           border: new OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(5.0))),
-                      controller: _profesiController,
+                      controller: _profesAvatartroller,
                       onSaved: (value) => _profesi = value,
                     ),
                     new Padding(padding: new EdgeInsets.only(top: 20.0)),
@@ -259,7 +288,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                           labelText: "Provinsi",
                           border: new OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(5.0))),
-                      controller: _provinsiController,
+                      controller: _provinsAvatartroller,
                       onSaved: (value) => _provinsi = value,
                     ),
                     new Padding(padding: new EdgeInsets.only(top: 20.0)),
@@ -355,7 +384,21 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                         Navigator.pop(context);
                       });
                     });
+                    setState(() {
+                      _isLoading = false;
+                    });
                   });
+                },
+              ),
+              SimpleDialogOption(
+                child: Text(
+                  'Pilih dari daftar avatar',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.blue, fontSize: 17),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _changeAvatar();
                 },
               ),
               SimpleDialogOption(
@@ -371,6 +414,57 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
             ],
           );
         }));
+  }
+
+  void _changeAvatar() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Center(
+              child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text("Pilih Avatar Anda",
+                      style: TextStyle(
+                        fontFamily: 'SF Pro Text',
+                        fontWeight: FontWeight.bold,
+                      )))),
+          titlePadding: const EdgeInsets.all(0.0),
+          contentPadding: const EdgeInsets.all(0.0),
+          content: AspectRatio(
+            aspectRatio: 12 / 20,
+            child: GridView.builder(
+                padding: EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 20.0),
+                itemCount: listAvatars.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      _setAvatar(listAvatars[index].assetName.toString());
+                    },
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      color: Color(0xffE3EFFF),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Image(
+                              image: listAvatars[index],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        );
+      },
+    );
   }
 
   void _showUploadDialog() {
