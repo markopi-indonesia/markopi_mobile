@@ -120,27 +120,36 @@ class _DetailInformasiState extends State<DetailInformasi> {
                         ),
                         Container(
                           margin: EdgeInsets.all(10.0),
-                          child: widget.images.isNotEmpty
-                              ? Column(
-                                  children: <Widget>[
-                                    for (var img in images)
-                                      Column(
-                                        children: <Widget>[
-                                          PinchZoomImage(
-                                            image: Image.network(img),
-                                            zoomedBackgroundColor:
-                                                Color.fromRGBO(
-                                                    240, 240, 240, 1.0),
-                                            hideStatusBarWhileZooming: true,
-                                            onZoomStart: () {},
-                                            onZoomEnd: () {},
-                                          ),
-                                          Divider(),
-                                        ],
-                                      )
-                                  ],
-                                )
-                              : Text("Tidak ada gambar"),
+                          child: Container(
+                            child: widget.images.isNotEmpty
+                                ? GridView.builder(
+                                    padding: EdgeInsets.fromLTRB(
+                                        8.0, 10.0, 8.0, 10.0),
+                                    shrinkWrap: true,
+                                    itemCount: images.length,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: InkWell(
+                                            onTap: () {
+                                              popupImage(
+                                                  context, images[index]);
+                                              print(images[index]);
+                                            },
+                                            child: Image.network(
+                                              "${images[index]}",
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                            )),
+                                      );
+                                    },
+                                  )
+                                : Text("Tidak ada gambar"),
+                          ),
                         )
                       ],
                     ),
@@ -266,6 +275,27 @@ class _DetailInformasiState extends State<DetailInformasi> {
     return new Container(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         child: Column(children: list));
+  }
+
+  void popupImage(BuildContext context, imag) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              titlePadding: const EdgeInsets.all(0.0),
+              contentPadding: const EdgeInsets.all(0.0),
+              content: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: PinchZoomImage(
+                  image: Image.network(imag.toString(),
+                      fit: BoxFit.cover, width: double.infinity),
+                  zoomedBackgroundColor: null,
+                  hideStatusBarWhileZooming: true,
+                  onZoomStart: () {},
+                  onZoomEnd: () {},
+                ),
+              ));
+        });
   }
 
   void _update(
