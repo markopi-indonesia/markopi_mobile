@@ -6,6 +6,7 @@ import 'package:markopi_mobile/pages/crud_informasi/edit.dart';
 import 'package:pinch_zoom_image/pinch_zoom_image.dart';
 import 'package:youtube_player/youtube_player.dart';
 import 'package:markopi_mobile/models/profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailInformasi extends StatefulWidget {
   final String documentID;
@@ -173,10 +174,28 @@ class _DetailInformasiState extends State<DetailInformasi> {
                                           color: Color(0xFF3B444F))),
                                 ),
                               ),
-                              YoutubePlayer(
-                                context: context,
-                                source: widget.video,
-                                quality: YoutubeQuality.LOW,
+                              // YoutubePlayer(
+                              //   context: context,
+                              //   source: widget.video,
+                              //   quality: YoutubeQuality.LOW,
+                              // ),
+                              InkWell(
+                                child: RichText(
+                                  text: TextSpan(children: [
+                                    new TextSpan(
+                                      text: "Klik untuk melihat video",
+                                      style: new TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xff297cbb),
+                                      ),
+                                    )
+                                  ]),
+                                ),
+                                onTap: () async {
+                                  if (await canLaunch(widget.video)) {
+                                    await launch(widget.video);
+                                  }
+                                },
                               ),
                             ],
                           ),
