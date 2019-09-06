@@ -58,8 +58,10 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   void countDataPengajuan() async {
-    QuerySnapshot _myDoc =
-        await Firestore.instance.collection('pengajuan').where('status', isEqualTo: 'Menunggu').getDocuments();
+    QuerySnapshot _myDoc = await Firestore.instance
+        .collection('pengajuan')
+        .where('status', isEqualTo: 'Menunggu')
+        .getDocuments();
     List<DocumentSnapshot> _myDocCount = _myDoc.documents;
 
     setState(() {
@@ -232,11 +234,10 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                     currentAccountPicture: GestureDetector(
                       child: new CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage: image.isNotEmpty
-                            ? NetworkImage(image)
-                            : AssetImage('assets/no_user.jpg'),
-                      ),
+                          backgroundColor: Colors.white,
+                          backgroundImage: image.contains("assets")
+                              ? AssetImage(image)
+                              : NetworkImage(image)),
                     ),
                     decoration: new BoxDecoration(
                       color: Color(0xFF142B44),
@@ -277,25 +278,27 @@ class _DrawerPageState extends State<DrawerPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text('Pengajuan Fasilitator'),
-                          totalDataPengajuan != 0 ? new Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: new BoxDecoration(
-                              color: Color(0xff1d508d),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            constraints: BoxConstraints(
-                              minWidth: 20,
-                              minHeight: 20,
-                            ),
-                            child: Text(
-                              '$totalDataPengajuan',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ) : new Container(),
+                          totalDataPengajuan != 0
+                              ? new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff1d508d),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 20,
+                                    minHeight: 20,
+                                  ),
+                                  child: Text(
+                                    '$totalDataPengajuan',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : new Container(),
                         ],
                       ),
                       leading: Icon(Icons.verified_user),
@@ -398,11 +401,10 @@ class _DrawerPageState extends State<DrawerPage> {
                     ),
                     currentAccountPicture: GestureDetector(
                       child: new CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: image.isNotEmpty
-                            ? NetworkImage(image)
-                            : AssetImage('assets/no_user.jpg'),
-                      ),
+                          backgroundColor: Colors.white,
+                          backgroundImage: image.contains("assets")
+                              ? AssetImage(image)
+                              : NetworkImage(image)),
                     ),
                     decoration: new BoxDecoration(
                       color: Color(0xFF142B44),

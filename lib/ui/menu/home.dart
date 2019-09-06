@@ -6,7 +6,7 @@ import 'package:markopi_mobile/models/menu.dart';
 import 'package:markopi_mobile/models/profile.dart';
 import 'package:markopi_mobile/pages/crud_menu/add.dart';
 import 'package:markopi_mobile/ui/menu/submenu.dart';
-
+import 'package:markopi_mobile/ui/menu/informasi.dart';
 // Self import
 import 'package:markopi_mobile/components/header.dart';
 
@@ -77,7 +77,13 @@ class _HomePageState extends State<HomePage> {
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: () {
+                  onTap: () {listMenu[index].name == "Kedai Kopi"?
+                    _navigateInformasi(
+                        context,
+                        listMenu[index].reference.documentID,
+                        listMenu[index].name,
+                        listMenu[index].color,
+                        listMenu[index].name):
                     _navigateSubMenu(
                         context,
                         listMenu[index].reference.documentID,
@@ -124,6 +130,20 @@ class _HomePageState extends State<HomePage> {
           role: role,
           image: _image,
         ),
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
+  void _navigateInformasi(BuildContext context, String menuID, String subMenuID,
+      String _color, String subMenuName) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Informasi(
+            menuID: menuID,
+            subMenuID: subMenuID,
+            color: _color,
+            subMenuName: subMenuName),
         fullscreenDialog: true,
       ),
     );

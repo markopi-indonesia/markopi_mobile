@@ -196,7 +196,11 @@ class InformasiState extends State<Informasi> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
+      stream: widget.menuID=="-LmEUctbdIggIn9Xe6IR"? Firestore.instance
+          .collection('informasi')
+          .where("menuID", isEqualTo: widget.menuID)
+          .orderBy("title", descending: false)
+          .snapshots(): Firestore.instance
           .collection('informasi')
           .where("subMenuID", isEqualTo: widget.subMenuID)
           .snapshots(),
@@ -245,10 +249,10 @@ class InformasiState extends State<Informasi> {
             child: Container(
                 padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
                 width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+                // decoration: BoxDecoration(
+                //     border: Border(
+                //         bottom:
+                //             BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
                 child: new Text(text[0]))));
       }
       for (var i = 1; i < text.length; i++) {
@@ -257,20 +261,20 @@ class InformasiState extends State<Informasi> {
             child: Container(
                 padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 0.0),
                 width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
+                // decoration: BoxDecoration(
+                //     border: Border(
+                //         bottom:
+                //             BorderSide(color: Color(0xFF99a9b3), width: 0.5))),
                 child: new Text(text[i]))));
       }
       return Padding(
           key: ValueKey(informasi.title),
-          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
           child: Card(
-            elevation: 8.0,
+            elevation: 3.0,
               child: Column(
             children: <Widget>[
-              Text(informasi.title, style: TextStyle(color: Color(0xff000000), fontSize: 18, fontWeight: FontWeight.w600)),
+              Padding(padding:EdgeInsets.only(top:10.0) ,child: Text(informasi.title, style: TextStyle(color: Color(0xff288ad6), fontSize: 18, fontWeight: FontWeight.w600))),
               ListTile(
                 onTap: () => _detail(
                     context,
