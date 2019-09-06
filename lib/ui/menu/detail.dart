@@ -33,6 +33,7 @@ class DetailInformasi extends StatefulWidget {
 
 class _DetailInformasiState extends State<DetailInformasi> {
   var images = [];
+  var countImg = 0;
   var _isVisible = false;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
@@ -40,6 +41,7 @@ class _DetailInformasiState extends State<DetailInformasi> {
   void initState() {
     setState(() {
       images = widget.images.split(";");
+      countImg = images.length;
     });
     this.getCurrentUser().then((user) {
       if (user != null) {
@@ -122,35 +124,47 @@ class _DetailInformasiState extends State<DetailInformasi> {
                         Container(
                           margin: EdgeInsets.all(10.0),
                           child: Container(
-                            child: widget.images.isNotEmpty
-                                ? GridView.builder(
-                                    padding: EdgeInsets.fromLTRB(
-                                        8.0, 10.0, 8.0, 10.0),
-                                    shrinkWrap: true,
-                                    itemCount: images.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: InkWell(
-                                            onTap: () {
-                                              popupImage(
-                                                  context, images[index]);
-                                              print(images[index]);
-                                            },
-                                            child: Image.network(
-                                              "${images[index]}",
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                            )),
-                                      );
-                                    },
-                                  )
-                                : Text("Tidak ada gambar"),
-                          ),
+                              child: widget.images.isNotEmpty
+                                  ? Container(
+                                      child: images.length > 1
+                                          ? GridView.builder(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  8.0, 10.0, 8.0, 10.0),
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              itemCount: images.length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount: 2),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Container(
+                                                  padding: EdgeInsets.all(5.0),
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        popupImage(context,
+                                                            images[index]);
+                                                        print(images[index]);
+                                                      },
+                                                      child: Image.network(
+                                                        "${images[index]}",
+                                                        fit: BoxFit.cover,
+                                                        width: double.infinity,
+                                                      )),
+                                                );
+                                              },
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                popupImage(context, images[0]);
+                                                print(images[0]);
+                                              },
+                                              child: Image.network(
+                                                "${images[0]}",
+                                              )),
+                                    )
+                                  : Text("Tidak ada gambar")),
                         )
                       ],
                     ),
@@ -303,12 +317,13 @@ class _DetailInformasiState extends State<DetailInformasi> {
           return AlertDialog(
               titlePadding: const EdgeInsets.all(0.0),
               contentPadding: const EdgeInsets.all(0.0),
+              backgroundColor: Colors.transparent,
               content: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: PinchZoomImage(
                   image: Image.network(imag.toString(),
                       fit: BoxFit.cover, width: double.infinity),
-                  zoomedBackgroundColor: null,
+                  zoomedBackgroundColor: Colors.transparent,
                   hideStatusBarWhileZooming: true,
                   onZoomStart: () {},
                   onZoomEnd: () {},
