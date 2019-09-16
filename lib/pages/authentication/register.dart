@@ -299,8 +299,6 @@ class _RegisterState extends State<Register> {
             return "Email tidak boleh kosong";
           } else if (!value.contains("@") && !value.contains(".")) {
             return "Format email salah";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _email = value,
@@ -330,8 +328,6 @@ class _RegisterState extends State<Register> {
         validator: (value) {
           if (value.isEmpty) {
             return "Nama tidak boleh kosong";
-          } else {
-            return "";
           }
         },
         onSaved: (value) => _nama = value,
