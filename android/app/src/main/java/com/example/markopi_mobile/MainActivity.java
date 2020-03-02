@@ -1,4 +1,4 @@
-package com.example.markopi_mobile;
+package com.markopi.markopi_mobile;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

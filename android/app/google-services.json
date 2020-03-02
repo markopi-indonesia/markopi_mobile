@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:60427625294:android:ac78b83f237103bf",
         "android_client_info": {
-          "package_name": "com.example.markopi_mobile"
+          "package_name": "com.markopi.markopi_mobile"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "60427625294-vl77fjgm4fj7dnvnjq1e4fr3419dj93f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.markopi_mobile",
+            "package_name": "com.markopi.markopi_mobile",
             "certificate_hash": "d6e4d9bda85787d99ebd222748308b6b6dc97942"
           }
         },
