@@ -40,7 +40,7 @@ class _AddPengajuanDialogState extends State<AddPengajuanDialog> {
 
   void _openFileExplorer() async {
     try {
-      _paths = await FilePicker.getMultiFilePath(type: FileType.IMAGE);
+      _paths = await FilePicker.getMultiFilePath(type: FileType.image);
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
