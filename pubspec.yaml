@@ -52,6 +52,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
+  page_transition: ^1.1.5
+  cached_network_image: ^2.0.0
+  intl: ^0.16.1
+  grouped_buttons: ^1.0.4
+  carousel_slider: ^1.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -97,6 +103,9 @@ flutter:
     - assets/avatars/5.png
     - assets/avatars/6.png
 
+    - assets/sample/
+    - assets/icon/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
@@ -114,6 +123,13 @@ flutter:
         - asset: fonts/SFProText-Bold.ttf
         - asset: fonts/SFProText-SemiBold.ttf
         - asset: fonts/SFProText-Medium.ttf
+
+    - family: Nunito Sans
+      fonts:
+        - asset: assets/font/NunitoSans-Regular.ttf
+          style: normal
+        - asset: assets/font/NunitoSans-Bold.ttf
+          weight: 800
       # - family: Sanfransisco
       #  fonts:
       #    - asset: fonts/SFProText-Heavy.ttf
