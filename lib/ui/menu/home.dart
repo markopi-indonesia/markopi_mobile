@@ -9,6 +9,7 @@ import 'package:markopi_mobile/ui/menu/submenu.dart';
 import 'package:markopi_mobile/ui/menu/informasi.dart';
 // Self import
 import 'package:markopi_mobile/components/header.dart';
+import 'package:markopi_mobile/route.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -77,19 +78,24 @@ class _HomePageState extends State<HomePage> {
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: () {listMenu[index].name == "Kedai Kopi"?
-                    _navigateInformasi(
-                        context,
-                        listMenu[index].reference.documentID,
-                        listMenu[index].name,
-                        listMenu[index].color,
-                        listMenu[index].name):
-                    _navigateSubMenu(
-                        context,
-                        listMenu[index].reference.documentID,
-                        listMenu[index].name,
-                        listMenu[index].color,
-                        listMenu[index].image);
+                  onTap: () {
+                    if (listMenu[index].name == "Kedai Kopi") {
+                      _navigateInformasi(
+                          context,
+                          listMenu[index].reference.documentID,
+                          listMenu[index].name,
+                          listMenu[index].color,
+                          listMenu[index].name);
+                    } else if (listMenu[index].name == "Penjualan") {
+                      Navigator.pushNamed(context, AppRoute.TRADE_ROUTE);
+                    } else {
+                      _navigateSubMenu(
+                          context,
+                          listMenu[index].reference.documentID,
+                          listMenu[index].name,
+                          listMenu[index].color,
+                          listMenu[index].image);
+                    }
                   },
                   child: CardMenu(
                       name: listMenu[index].name,
@@ -119,8 +125,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _navigateSubMenu(
-      BuildContext context, String documentID, String nameMenu, String _color, String _image) {
+  void _navigateSubMenu(BuildContext context, String documentID,
+      String nameMenu, String _color, String _image) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SubMenu(
